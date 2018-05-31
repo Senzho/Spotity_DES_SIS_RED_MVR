@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="740.0" prefWidth="1227.0" style="-fx-background-color: #474747;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.VentanaMenuDirectorController">
+   <children>
+      <GridPane layoutX="207.0" layoutY="86.0" prefHeight="624.0" prefWidth="1120.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="207.0" AnchorPane.rightAnchor="93.0" AnchorPane.topAnchor="86.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Pane fx:id="panelPrincipal" prefHeight="624.0" prefWidth="860.0" style="-fx-background-color: # #EDEDED;" />
+         </children>
+      </GridPane>
+      <Pane prefHeight="52.0" prefWidth="1227.0" style="-fx-background-color: #000000;">
+         <children>
+            <Label layoutX="31.0" layoutY="11.0" text="Spotify" textFill="WHITE">
+               <font>
+                  <Font name="Gill Sans MT" size="27.0" />
+               </font>
+            </Label>
+            <Label fx:id="etiquetaNombreUsuario" contentDisplay="CENTER" layoutX="1094.0" layoutY="14.0" prefHeight="31.0" prefWidth="157.0" text="Usuario" textFill="WHITE">
+               <font>
+                  <Font name="Gill Sans MT Bold" size="20.0" />
+               </font>
+            </Label>
+            <MaterialDesignIconView fill="WHITE" glyphName="ACCOUNT_CIRCLE" layoutX="1067.0" layoutY="39.0" size="25" text="" />
+         </children>
+      </Pane>
+      <GridPane layoutX="8.0" layoutY="52.0" prefHeight="684.0" prefWidth="191.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="1028.0" AnchorPane.topAnchor="52.0">
+        <columnConstraints>
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="136.8" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="136.0" minHeight="10.0" prefHeight="38.2" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="136.8" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="136.8" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="136.8" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button mnemonicParsing="false" prefHeight="37.0" prefWidth="169.0" text="Consultar Bibliotecas">
+               <graphic>
+                  <FontAwesomeIconView glyphName="SPOTIFY" size="35" wrappingWidth="38.0" />
+               </graphic>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="37.0" prefWidth="169.0" text="Listas de Reproducción" GridPane.rowIndex="1">
+               <graphic>
+                  <FontAwesomeIconView glyphName="HEADPHONES" size="20" />
+               </graphic>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="37.0" prefWidth="169.0" text="Subir Canción" GridPane.rowIndex="2">
+               <graphic>
+                  <FontAwesomeIconView glyphName="UPLOAD" size="30" />
+               </graphic>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="37.0" prefWidth="169.0" text="Establecer Calidad" GridPane.rowIndex="3">
+               <graphic>
+                  <FontAwesomeIconView glyphName="COGS" size="30" />
+               </graphic>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="37.0" prefWidth="169.0" text="Cerrar Sesión" GridPane.rowIndex="4">
+               <graphic>
+                  <FontAwesomeIconView glyphName="SIGN_OUT" size="30" />
+               </graphic>
+            </Button>
+         </children>
+      </GridPane>
+   </children>
+</AnchorPane>
