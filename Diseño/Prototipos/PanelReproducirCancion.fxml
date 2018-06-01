@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="497.0" prefWidth="293.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="86.0" fitWidth="77.0" layoutX="110.0" layoutY="291.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@1486348532-music-play-pause-control-go-arrow_80458.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="29.0" layoutY="366.0" text="Canción:">
+         <font>
+            <Font name="Arial Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="29.0" layoutY="386.0" text="Artista:">
+         <font>
+            <Font name="Arial Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="29.0" layoutY="406.0" text="Album:">
+         <font>
+            <Font name="Arial Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="111.0" layoutY="366.0" prefHeight="20.0" prefWidth="171.0" text="Nombre de canción.">
+         <font>
+            <Font name="Arial" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="111.0" layoutY="386.0" prefHeight="20.0" prefWidth="171.0" text="Nombre de artista.">
+         <font>
+            <Font name="Arial" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="111.0" layoutY="406.0" prefHeight="20.0" prefWidth="171.0" text="Nombre de album.">
+         <font>
+            <Font name="Arial" size="16.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="260.0" fitWidth="474.0" layoutX="23.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@stock-vector-abstract-music-disk-background-vector-illustration-for-your-design-112280339.jpg" />
+         </image>
+      </ImageView>
+      <Label layoutX="111.0" layoutY="426.0" prefHeight="20.0" prefWidth="171.0" text="Genero.">
+         <font>
+            <Font name="Arial" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="29.0" layoutY="426.0" text="Genero:">
+         <font>
+            <Font name="Arial Bold" size="16.0" />
+         </font>
+      </Label>
+      <Button layoutX="29.0" layoutY="457.0" mnemonicParsing="false" text="Generar estación de radio">
+         <font>
+            <Font name="Arial" size="14.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
