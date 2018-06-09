@@ -40,6 +40,8 @@ public class VentanaMenuPrincipalController implements Initializable {
     private Button botonEstablecerCalidad;
     @FXML
     private Button botonCerrarSesion;
+    @FXML
+    private Button botonHistorial;
 
     /**
      * Initializes the controller class.
@@ -129,6 +131,16 @@ public class VentanaMenuPrincipalController implements Initializable {
         Parent root = (Parent) loader.load();
         PanelListasReproduccionController panelListas = loader.getController();
         panelPrincipal.getChildren().clear();
+        panelPrincipal.setCenter(root);
+    }
+
+    @FXML
+    private void desplegarPanelHistorial(ActionEvent event) throws IOException{
+        FXMLLoader loader = new FXMLLoader(VentanaMenuPrincipalController.class.getResource("/vista/PanelHistorialReproduccion.fxml"));
+        Parent root = (Parent) loader.load();
+        //PanelSubirCancionController panelSubir = loader.getController();
+        panelPrincipal.getChildren().clear();
+        //panelPrincipal.getChildren().add(root);
         panelPrincipal.setCenter(root);
     }
 }

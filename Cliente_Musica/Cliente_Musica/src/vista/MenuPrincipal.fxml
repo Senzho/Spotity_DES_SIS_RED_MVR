@@ -49,6 +49,7 @@
             <RowConstraints maxHeight="136.0" minHeight="10.0" prefHeight="38.2" vgrow="SOMETIMES" />
           <RowConstraints maxHeight="136.8" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="136.8" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="136.8" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints maxHeight="136.8" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
@@ -72,9 +73,14 @@
                   <FontAwesomeIconView glyphName="COGS" size="30" />
                </graphic>
             </Button>
-            <Button fx:id="botonCerrarSesion" mnemonicParsing="false" onAction="#cerrarSesion" prefHeight="37.0" prefWidth="169.0" text="Cerrar Sesión" GridPane.rowIndex="4">
+            <Button fx:id="botonCerrarSesion" mnemonicParsing="false" onAction="#cerrarSesion" prefHeight="37.0" prefWidth="169.0" text="Cerrar Sesión" GridPane.rowIndex="5">
                <graphic>
                   <FontAwesomeIconView glyphName="SIGN_OUT" size="30" />
+               </graphic>
+            </Button>
+            <Button fx:id="botonHistorial" mnemonicParsing="false" onAction="#desplegarPanelHistorial" prefHeight="37.0" prefWidth="169.0" text="Historial " GridPane.rowIndex="4">
+               <graphic>
+                  <FontAwesomeIconView glyphName="ALIGN_LEFT" size="20" />
                </graphic>
             </Button>
          </children>
