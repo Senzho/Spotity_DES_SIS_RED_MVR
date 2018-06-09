@@ -1,5 +1,6 @@
 package negocio;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 public class Usuario implements Serializable {

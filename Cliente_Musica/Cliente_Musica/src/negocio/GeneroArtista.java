@@ -1,4 +1,4 @@
-package Modelo;
+package negocio;
 
 public class GeneroArtista{
     private int idGenero;

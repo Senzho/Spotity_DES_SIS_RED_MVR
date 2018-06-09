@@ -1,6 +1,7 @@
 package negocio;
 
 import java.util.Collection;
+import java.util.Date;
 
 public class Album{
     private int idAlbum;
@@ -8,7 +9,7 @@ public class Album{
     private Date fechaLanzamiento;
     private String companiaDiscografica;
     private Artista idArtista;
-    private Collction<Cancion> cancionCollection;
+    private Collection<Cancion> cancionCollection;
 
     public Album() {
 
