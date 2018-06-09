@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
@@ -7,17 +11,17 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="481.0" prefWidth="734.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="481.0" prefWidth="734.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.PanelBibliotecaPublicaController">
    <children>
       <Label layoutX="12.0" text="Catálogo" AnchorPane.leftAnchor="12.0" AnchorPane.topAnchor="0.0">
          <font>
             <Font name="System Bold" size="36.0" />
          </font>
       </Label>
-      <ComboBox layoutX="173.0" layoutY="14.0" prefWidth="150.0" promptText="Géneros" AnchorPane.leftAnchor="173.0" AnchorPane.topAnchor="14.0" />
+      <ComboBox fx:id="comboNavegacion" layoutX="173.0" layoutY="14.0" onAction="#comboNavegacion_onClick" prefWidth="150.0" promptText="Géneros" AnchorPane.leftAnchor="173.0" AnchorPane.topAnchor="14.0" />
       <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="12.0" layoutY="53.0" prefHeight="415.0" prefWidth="707.0" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="53.0">
          <content>
-            <FlowPane prefHeight="200.0" prefWidth="200.0" />
+            <FlowPane fx:id="panelNavegacion" hgap="5.0" prefHeight="200.0" prefWidth="200.0" vgap="5.0" />
          </content>
       </ScrollPane>
    </children>

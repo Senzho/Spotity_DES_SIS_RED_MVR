@@ -6,11 +6,10 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="180.0" prefWidth="150.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="180.0" prefWidth="150.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.PanelGeneroController">
    <children>
       <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <Label layoutX="8.0" layoutY="155.0" text="Nombre de género" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="8.0">
+      <Label fx:id="nombre" layoutX="8.0" layoutY="155.0" text="Nombre de género" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="8.0">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
