@@ -6,10 +6,9 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="180.0" prefWidth="150.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="224.0" prefWidth="150.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="18.0" layoutY="165.0" text="Nombre de álbum" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="8.0">
+      <Label fx:id="nombre" layoutX="18.0" layoutY="165.0" text="Nombre de álbum" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="155.0">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
@@ -19,5 +18,15 @@
             <Image url="@../../../../../Downloads/cd.png" />
          </image>
       </ImageView>
+      <Label fx:id="fecha" layoutX="8.0" layoutY="175.0" text="Fecha" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="175.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="compania" layoutX="8.0" layoutY="195.0" text="Compañia" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="195.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

@@ -1,6 +1,8 @@
 package negocio;
 
 import java.util.Collection;
+import java.util.List;
+import serviciosCliente.ClienteGeneroArtista;
 
 public class Artista{
     private int idArtista;
@@ -42,5 +44,9 @@ public class Artista{
     }
     public void setCancionCollection(Collection<Cancion> cancionCollection) {
         this.cancionCollection = cancionCollection;
+    }
+    
+    public List<GeneroArtista> obtenerGeneros(){
+        return new ClienteGeneroArtista().obtenerGenerosArtista(this.idArtista);
     }
 }

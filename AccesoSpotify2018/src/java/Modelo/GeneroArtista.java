@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Desktop
+ * @author Victor Javier
  */
 @Entity
 @Table(name = "genero_artista")
@@ -30,7 +30,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "GeneroArtista.findAll", query = "SELECT g FROM GeneroArtista g")
     , @NamedQuery(name = "GeneroArtista.findByIdGenero", query = "SELECT g FROM GeneroArtista g WHERE g.idGenero = :idGenero")
-    , @NamedQuery(name = "GeneroArtista.findByGenero", query = "SELECT g FROM GeneroArtista g WHERE g.genero = :genero")})
+    , @NamedQuery(name = "GeneroArtista.findByGenero", query = "SELECT g FROM GeneroArtista g WHERE g.genero = :genero")
+    , @NamedQuery(name = "GeneroArtista.findByArtista", query = "SELECT g FROM GeneroArtista g WHERE g.idArtista.idArtista = :idArtista")
+})
 public class GeneroArtista implements Serializable {
 
     private static final long serialVersionUID = 1L;

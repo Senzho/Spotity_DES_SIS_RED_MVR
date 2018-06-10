@@ -1,9 +1,11 @@
 package servicios;
 
+import java.util.ArrayList;
 import Modelo.GeneroArtista;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -72,6 +74,21 @@ public class GeneroArtistaFacadeREST extends AbstractFacade<GeneroArtista> {
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
         return String.valueOf(super.count());
+    }
+    
+    @GET
+    @Path("de_artista/{idArtista}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<GeneroArtista> obtenerGenerosArtista(@PathParam("idArtista") Integer idArtista){
+        List<GeneroArtista> generos = new ArrayList();
+        try{
+            generos = this.getEntityManager().createNamedQuery("GeneroArtista.findByArtista")
+                    .setParameter("idArtista", idArtista)
+                    .getResultList();
+        }catch(NoResultException excepcion){
+            //loger
+        }
+        return generos;
     }
 
     @Override

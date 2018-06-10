@@ -1,16 +1,12 @@
 package negocio;
 
 import java.io.Serializable;
-import java.util.Collection;
 
 public class Usuario implements Serializable {
     private int idUsuario;
     private String nombre;
     private String contrasena;
-    private Collection<Historialreproduccion> historialreproduccionCollection;
-    private Collection<Cancionprivada> cancionprivadaCollection;
-    private Collection<Listareproduccion> listareproduccionCollection;
-
+    
     public Usuario() {
 
     }
@@ -32,24 +28,5 @@ public class Usuario implements Serializable {
     }
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
-    }
-    public Collection<Historialreproduccion> getHistorialreproduccionCollection() {
-        return historialreproduccionCollection;
-    }
-
-    public void setHistorialreproduccionCollection(Collection<Historialreproduccion> historialreproduccionCollection) {
-        this.historialreproduccionCollection = historialreproduccionCollection;
-    }
-    public Collection<Cancionprivada> getCancionprivadaCollection() {
-        return cancionprivadaCollection;
-    }
-    public void setCancionprivadaCollection(Collection<Cancionprivada> cancionprivadaCollection) {
-        this.cancionprivadaCollection = cancionprivadaCollection;
-    }
-    public Collection<Listareproduccion> getListareproduccionCollection() {
-        return listareproduccionCollection;
-    }
-    public void setListareproduccionCollection(Collection<Listareproduccion> listareproduccionCollection) {
-        this.listareproduccionCollection = listareproduccionCollection;
     }
 }
