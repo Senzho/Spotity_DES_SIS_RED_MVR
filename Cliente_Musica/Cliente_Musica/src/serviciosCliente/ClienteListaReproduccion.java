@@ -5,9 +5,13 @@
  */
 package serviciosCliente;
 
+import java.util.List;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+import negocio.Artista;
+import negocio.Listareproduccion;
 
 /**
  * Jersey REST client generated for REST resource:ListareproduccionFacadeREST
@@ -84,9 +88,9 @@ public class ClienteListaReproduccion {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
-    public <T> T findAll_JSON(Class<T> responseType) throws ClientErrorException {
+    public List<Listareproduccion> findAll_JSON() throws ClientErrorException {
         WebTarget resource = webTarget;
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(new GenericType<List<Listareproduccion>>(){});
     }
 
     public void remove(String id) throws ClientErrorException {
@@ -98,3 +102,5 @@ public class ClienteListaReproduccion {
     }
     
 }
+
+

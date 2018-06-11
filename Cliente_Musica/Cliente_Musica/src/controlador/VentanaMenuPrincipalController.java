@@ -134,6 +134,7 @@ public class VentanaMenuPrincipalController implements Initializable, Escuchador
         FXMLLoader loader = new FXMLLoader(VentanaMenuPrincipalController.class.getResource("/vista/PanelListasReproduccion.fxml"));
         Parent root = (Parent) loader.load();
         PanelListasReproduccionController panelListas = loader.getController();
+        panelListas.iniciarPantalla();
         panelPrincipal.getChildren().clear();
         panelPrincipal.setCenter(root);
     }
