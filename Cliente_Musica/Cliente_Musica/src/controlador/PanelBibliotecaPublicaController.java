@@ -27,6 +27,7 @@ public class PanelBibliotecaPublicaController implements Initializable {
     
     private List<GeneroArtista> generos;
     private List<Artista> artistas;
+    private EscuchadorArtista escuchador;
     
     private void cargarCombo(){
         this.comboNavegacion.getItems().clear();
@@ -77,7 +78,7 @@ public class PanelBibliotecaPublicaController implements Initializable {
                 try {
                     AnchorPane pane = loader.load();
                     PanelArtistaController controller = loader.getController();
-                    controller.iniciar(artista);
+                    controller.iniciar(artista, this.escuchador);
                     this.panelNavegacion.getChildren().add(pane);
                 } catch (IOException ex) {
                     Logger.getLogger(PanelBibliotecaPublicaController.class.getName()).log(Level.SEVERE, null, ex);
@@ -88,7 +89,13 @@ public class PanelBibliotecaPublicaController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        
+    }
+    
+    public void iniciar(EscuchadorArtista escuchador){
+        this.escuchador = escuchador;
         this.cargarCombo();
+        this.artistas = new ArrayList();
         Platform.runLater(()-> {
             this.generos = new ClienteGeneroArtista().findAll_JSON();
             this.cargarGeneros(this.filtrarGeneros());
@@ -99,10 +106,12 @@ public class PanelBibliotecaPublicaController implements Initializable {
     
     public void comboNavegacion_onClick(){
         if (this.comboNavegacion.getSelectionModel().getSelectedIndex() == 0){
-            this.cargarGeneros(generos);
+            this.cargarGeneros(this.generos);
         }else{
             Platform.runLater(() -> {
-                this.obtenerArtistas();
+                if (this.artistas.isEmpty()){
+                    this.obtenerArtistas();
+                }
                 this.cargarArtistas();
             });
         }

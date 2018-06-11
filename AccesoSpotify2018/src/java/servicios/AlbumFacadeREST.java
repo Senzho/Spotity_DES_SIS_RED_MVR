@@ -6,6 +6,7 @@
 package servicios;
 
 import Modelo.Album;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -74,6 +75,20 @@ public class AlbumFacadeREST extends AbstractFacade<Album> {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Album> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
+    }
+    @GET
+    @Path("de_artista/{idArtista}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Album> findRange(@PathParam("idArtista") Integer idArtista) {
+        List<Album> albumes = new ArrayList();
+        try{
+            albumes = this.getEntityManager().createNamedQuery("Album.findByArtista")
+                    .setParameter("idArtista", idArtista)
+                    .getResultList();
+        }catch(Exception excepcion){
+            //logger
+        }
+        return albumes;
     }
 
     @GET

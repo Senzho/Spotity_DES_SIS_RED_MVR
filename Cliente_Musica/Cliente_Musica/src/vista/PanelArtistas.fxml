@@ -5,15 +5,14 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="461.0" prefWidth="690.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="461.0" prefWidth="690.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.PanelArtistasController">
    <children>
-      <Label layoutX="7.0" text="Nombre de artista" AnchorPane.leftAnchor="12.0" AnchorPane.topAnchor="0.0">
+      <Label fx:id="nombre" layoutX="7.0" text="Nombre de artista" AnchorPane.leftAnchor="12.0" AnchorPane.topAnchor="0.0">
          <font>
             <Font name="System Bold" size="36.0" />
          </font>
       </Label>
-      <ComboBox layoutX="327.0" layoutY="14.0" prefWidth="150.0" promptText="Vista de canciones" AnchorPane.topAnchor="14.0" />
-      <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="14.0" layoutY="53.0" prefHeight="395.0" prefWidth="662.0" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="53.0" />
+      <ComboBox fx:id="combo" layoutX="327.0" layoutY="14.0" prefWidth="150.0" promptText="Vista de canciones" AnchorPane.topAnchor="14.0" />
+      <ScrollPane fx:id="scroll" fitToHeight="true" fitToWidth="true" layoutX="14.0" layoutY="53.0" prefHeight="395.0" prefWidth="662.0" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="53.0" />
    </children>
 </AnchorPane>

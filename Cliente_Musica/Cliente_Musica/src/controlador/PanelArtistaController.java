@@ -14,6 +14,7 @@ public class PanelArtistaController implements Initializable{
     private Label generos;
     
     private Artista artista;
+    private EscuchadorArtista escuchador;
     
     private void cargarArtista(){
         this.nombre.setText(this.artista.getNombre());
@@ -28,8 +29,15 @@ public class PanelArtistaController implements Initializable{
         
     }
     
-    public void iniciar(Artista artista){
+    public void iniciar(Artista artista, EscuchadorArtista escuchador){
+        this.escuchador = escuchador;
         this.artista = artista;
         this.cargarArtista();
+    }
+    
+    //Eventos:
+    
+    public void onClick(){
+        this.escuchador.artistaSeleccionado(this.artista);
     }
 }

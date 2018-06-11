@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Desktop
+ * @author Victor Javier
  */
 @Entity
 @Table(name = "album")
@@ -38,7 +38,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Album.findByIdAlbum", query = "SELECT a FROM Album a WHERE a.idAlbum = :idAlbum")
     , @NamedQuery(name = "Album.findByNombre", query = "SELECT a FROM Album a WHERE a.nombre = :nombre")
     , @NamedQuery(name = "Album.findByFechaLanzamiento", query = "SELECT a FROM Album a WHERE a.fechaLanzamiento = :fechaLanzamiento")
-    , @NamedQuery(name = "Album.findByCompaniaDiscografica", query = "SELECT a FROM Album a WHERE a.companiaDiscografica = :companiaDiscografica")})
+    , @NamedQuery(name = "Album.findByCompaniaDiscografica", query = "SELECT a FROM Album a WHERE a.companiaDiscografica = :companiaDiscografica")
+    , @NamedQuery(name = "Album.findByArtista", query = "SELECT a FROM Album a WHERE a.idArtista.idArtista = :idArtista")
+})
 public class Album implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -140,7 +142,7 @@ public class Album implements Serializable {
 
     @Override
     public String toString() {
-        return "Modelo.Album[ idAlbum=" + idAlbum + " ]";
+        return "modelo.Album[ idAlbum=" + idAlbum + " ]";
     }
     
 }

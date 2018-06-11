@@ -17,6 +17,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import negocio.Album;
+import negocio.Artista;
 import org.controlsfx.control.PopOver;
 
 /**
@@ -24,7 +26,7 @@ import org.controlsfx.control.PopOver;
  *
  * @author Renato
  */
-public class VentanaMenuPrincipalController implements Initializable {
+public class VentanaMenuPrincipalController implements Initializable, EscuchadorArtista {
 
     @FXML
     private BorderPane panelPrincipal;
@@ -83,6 +85,8 @@ public class VentanaMenuPrincipalController implements Initializable {
                 try {
                     FXMLLoader loader = new FXMLLoader(VentanaMenuPrincipalController.class.getResource("/vista/PanelBibliotecaPublica.fxml"));
                     Parent root = (Parent) loader.load();
+                    PanelBibliotecaPublicaController controller = loader.getController();
+                    controller.iniciar(VentanaMenuPrincipalController.this);
                     //Panel panelSubir = loader.getController();****************************
                     pop.hide();
                     panelPrincipal.getChildren().clear();
@@ -142,5 +146,19 @@ public class VentanaMenuPrincipalController implements Initializable {
         panelPrincipal.getChildren().clear();
         //panelPrincipal.getChildren().add(root);
         panelPrincipal.setCenter(root);
+    }
+
+    @Override
+    public void artistaSeleccionado(Artista artista) {
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/vista/PanelArtistas.fxml"));
+        try {
+            Parent root = (Parent) loader.load();
+            PanelArtistasController controller = loader.getController();
+            controller.iniciar(artista);
+            this.panelPrincipal.getChildren().clear();
+            this.panelPrincipal.setCenter(root);
+        } catch (IOException ex) {
+            Logger.getLogger(VentanaMenuPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

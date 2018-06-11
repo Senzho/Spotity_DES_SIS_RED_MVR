@@ -2,6 +2,8 @@ package negocio;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import serviciosCliente.ClienteAlbum;
 
 public class Album{
     private int idAlbum;
@@ -51,5 +53,9 @@ public class Album{
     }
     public void setCancionCollection(Collection<Cancion> cancionCollection) {
         this.cancionCollection = cancionCollection;
+    }
+    
+    public List<Album> adquirirAlbumes(int idArtista){
+        return new ClienteAlbum().obtenerPorArtista(idArtista);
     }
 }

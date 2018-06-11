@@ -5,9 +5,12 @@
  */
 package serviciosCliente;
 
+import java.util.List;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+import negocio.Album;
 
 /**
  * Jersey REST client generated for REST resource:AlbumFacadeREST
@@ -57,6 +60,11 @@ public class ClienteAlbum {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("{0}", new Object[]{id}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+    public List<Album> obtenerPorArtista(int idArtista){
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("de_artista/{0}", new Object[]{idArtista}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(new GenericType<List<Album>>(){});
     }
 
     public <T> T findRange_XML(Class<T> responseType, String from, String to) throws ClientErrorException {
