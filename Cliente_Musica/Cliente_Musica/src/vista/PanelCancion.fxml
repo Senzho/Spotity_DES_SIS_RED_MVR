@@ -6,19 +6,19 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="54.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="54.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.PanelCancionController">
    <children>
       <ImageView fitHeight="54.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <image>
             <Image url="@../../../../../Downloads/musical_notes1600.png" />
          </image>
       </ImageView>
-      <Label layoutX="54.0" layoutY="-1.0" text="Nombre de cancion" AnchorPane.leftAnchor="54.0" AnchorPane.rightAnchor="389.0" AnchorPane.topAnchor="0.0">
+      <Label fx:id="nombre" layoutX="54.0" layoutY="-1.0" text="Nombre de cancion" AnchorPane.leftAnchor="54.0" AnchorPane.rightAnchor="389.0" AnchorPane.topAnchor="0.0">
          <font>
             <Font name="Dubai Regular" size="20.0" />
          </font>
       </Label>
-      <Label layoutX="54.0" layoutY="23.0" text="Duracion" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="54.0">
+      <Label fx:id="duracion" layoutX="54.0" layoutY="23.0" text="Duracion" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="54.0">
          <font>
             <Font name="Dubai Regular" size="15.0" />
          </font>
@@ -28,7 +28,7 @@
             <Image url="@../../../../../Downloads/kebab-vertical-.png" />
          </image>
       </ImageView>
-      <Label layoutX="430.0" text="Disponible sin conexion" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="0.0">
+      <Label fx:id="disponible" layoutX="430.0" text="Disponible sin conexion" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="0.0">
          <font>
             <Font name="Dubai Regular" size="15.0" />
          </font>

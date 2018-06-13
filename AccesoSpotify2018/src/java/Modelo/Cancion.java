@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Desktop
+ * @author Victor Javier
  */
 @Entity
 @Table(name = "cancion")
@@ -35,7 +35,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Cancion.findByIdCancion", query = "SELECT c FROM Cancion c WHERE c.idCancion = :idCancion")
     , @NamedQuery(name = "Cancion.findByNombre", query = "SELECT c FROM Cancion c WHERE c.nombre = :nombre")
     , @NamedQuery(name = "Cancion.findByGenero", query = "SELECT c FROM Cancion c WHERE c.genero = :genero")
-    , @NamedQuery(name = "Cancion.findByDuracion", query = "SELECT c FROM Cancion c WHERE c.duracion = :duracion")})
+    , @NamedQuery(name = "Cancion.findByDuracion", query = "SELECT c FROM Cancion c WHERE c.duracion = :duracion")
+    , @NamedQuery(name = "Cancion.findByAlbum", query = "SELECT c FROM Cancion c WHERE c.idAlbum.idAlbum = :idAlbum")
+})
 public class Cancion implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -170,7 +172,7 @@ public class Cancion implements Serializable {
 
     @Override
     public String toString() {
-        return "Modelo.Cancion[ idCancion=" + idCancion + " ]";
+        return "modelo.Cancion[ idCancion=" + idCancion + " ]";
     }
     
 }
