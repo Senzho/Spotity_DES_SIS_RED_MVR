@@ -6,6 +6,7 @@
 package servicios;
 
 import Modelo.Cancionprivada;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -68,7 +69,20 @@ public class CancionprivadaFacadeREST extends AbstractFacade<Cancionprivada> {
     public List<Cancionprivada> findAll() {
         return super.findAll();
     }
-
+    @GET
+    @Path("de_usuario/{idUsuario}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Cancionprivada> obtenerDeUsuario(@PathParam("idUsuario") Integer idUsuario) {
+        List<Cancionprivada> canciones = new ArrayList();
+        try{
+            canciones = this.getEntityManager().createNamedQuery("Cancionprivada.findByUsuario")
+                    .setParameter("idUsuario", idUsuario)
+                    .getResultList();
+        }catch (Exception excepcion){
+            //logger
+        }
+        return canciones;
+    }
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})

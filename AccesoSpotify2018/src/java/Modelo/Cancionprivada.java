@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Desktop
+ * @author Victor Javier
  */
 @Entity
 @Table(name = "cancionprivada")
@@ -30,7 +30,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Cancionprivada.findAll", query = "SELECT c FROM Cancionprivada c")
     , @NamedQuery(name = "Cancionprivada.findById", query = "SELECT c FROM Cancionprivada c WHERE c.id = :id")
     , @NamedQuery(name = "Cancionprivada.findByCalificacion", query = "SELECT c FROM Cancionprivada c WHERE c.calificacion = :calificacion")
-    , @NamedQuery(name = "Cancionprivada.findByDisponibleSnConexion", query = "SELECT c FROM Cancionprivada c WHERE c.disponibleSnConexion = :disponibleSnConexion")})
+    , @NamedQuery(name = "Cancionprivada.findByDisponibleSnConexion", query = "SELECT c FROM Cancionprivada c WHERE c.disponibleSnConexion = :disponibleSnConexion")
+    , @NamedQuery(name = "Cancionprivada.findByUsuario", query = "SELECT c FROM Cancionprivada c WHERE c.idUsuario.idUsuario = :idUsuario")
+})
 public class Cancionprivada implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -119,7 +121,7 @@ public class Cancionprivada implements Serializable {
 
     @Override
     public String toString() {
-        return "Modelo.Cancionprivada[ id=" + id + " ]";
+        return "modelo.Cancionprivada[ id=" + id + " ]";
     }
     
 }

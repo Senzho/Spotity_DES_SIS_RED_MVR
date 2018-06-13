@@ -17,11 +17,7 @@
             <Font name="System Bold" size="36.0" />
          </font>
       </Label>
-      <ScrollPane fx:id="scroll" fitToHeight="true" fitToWidth="true" layoutX="12.0" layoutY="53.0" prefHeight="415.0" prefWidth="707.0" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="53.0">
-         <content>
-            <FlowPane prefHeight="200.0" prefWidth="200.0" />
-         </content>
-      </ScrollPane>
+      <ScrollPane fx:id="scroll" fitToHeight="true" fitToWidth="true" layoutX="12.0" layoutY="53.0" prefHeight="415.0" prefWidth="707.0" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="53.0" />
       <ComboBox fx:id="combo" layoutX="330.0" layoutY="21.0" prefWidth="150.0" AnchorPane.leftAnchor="330.0" AnchorPane.topAnchor="14.0" />
    </children>
 </AnchorPane>
