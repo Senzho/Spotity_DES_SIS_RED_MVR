@@ -40,9 +40,11 @@ public class PanelArtistasController implements Initializable{
         this.combo.getItems().clear();
         this.combo.getItems().add("Vista de albumes");
         this.combo.getItems().add("Vista de canciones");
+        this.combo.setValue("Vista de albumes");
     }
     private void cargarAlbumes(){
         if (!this.albumes.isEmpty()){
+            this.panelAlbumes.getChildren().clear();
             this.scroll.setContent(this.panelAlbumes);
             this.albumes.forEach((album) -> {
                 FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/vista/PanelAlbum.fxml"));
@@ -57,12 +59,31 @@ public class PanelArtistasController implements Initializable{
             });
         }
     }
+    private void cargarCanciones(){
+        if (!this.albumes.isEmpty()){
+            this.panelCancionesAlbum.getChildren().clear();
+            this.scroll.setContent(this.panelCancionesAlbum);
+            this.albumes.forEach((album) -> {
+                FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/vista/PanelCancionesAlbum.fxml"));
+                try {
+                    AnchorPane pane = loader.load();
+                    PanelCancionesAlbumController controller = loader.getController();
+                    controller.iniciar(album);
+                    this.panelCancionesAlbum.getChildren().add(pane);
+                } catch (IOException ex) {
+                    Logger.getLogger(PanelArtistasController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        }
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.panelAlbumes = new FlowPane();
         this.panelAlbumes.setVgap(5);
         this.panelAlbumes.setHgap(5);
+        this.panelCancionesAlbum = new VBox();
+        this.panelCancionesAlbum.setSpacing(5);
         this.albumes = new ArrayList();
     }
     
@@ -73,6 +94,18 @@ public class PanelArtistasController implements Initializable{
         Platform.runLater(() -> {
             this.albumes = new Album().adquirirAlbumes(artista.getIdArtista());
             this.cargarAlbumes();
+        });
+    }
+    
+    //Eventos:
+    
+    public void combo_onAction(){
+        Platform.runLater(() -> {
+            if (this.combo.getSelectionModel().getSelectedIndex() == 0){
+                this.cargarAlbumes();
+            }else{
+                this.cargarCanciones();
+            }
         });
     }
 }
