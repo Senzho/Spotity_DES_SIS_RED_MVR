@@ -5,9 +5,12 @@
  */
 package serviciosCliente;
 
+import java.util.List;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+import negocio.CancionLista;
 
 /**
  * Jersey REST client generated for REST resource:CancionListaFacadeREST
@@ -26,7 +29,7 @@ public class ClienteCancionLista {
 
     private WebTarget webTarget;
     private Client client;
-    private static final String BASE_URI = "http://localhost:8080/AccesoSpotify2018/webresources";
+    private static final String BASE_URI = "http://localhost:8080/Spotify/webresources";
 
     public ClienteCancionLista() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
@@ -84,10 +87,11 @@ public class ClienteCancionLista {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
-    public <T> T findAll_JSON(Class<T> responseType) throws ClientErrorException {
+    public List<CancionLista> findAll_JSON() throws ClientErrorException {
         WebTarget resource = webTarget;
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(new GenericType<List<CancionLista>>(){});
     }
+    
 
     public void remove(String id) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{id})).request().delete();

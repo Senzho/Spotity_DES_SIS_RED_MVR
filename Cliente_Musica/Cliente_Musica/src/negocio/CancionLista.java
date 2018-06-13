@@ -3,6 +3,7 @@ package negocio;
 public class CancionLista{
     private int id;
     private Cancion idCancion;
+    private Listareproduccion idLista;
 
     public CancionLista() {
 
@@ -20,4 +21,20 @@ public class CancionLista{
     public void setIdCancion(Cancion idCancion) {
         this.idCancion = idCancion;
     }
+
+    /**
+     * @return the idListareproduccion
+     */
+    public Listareproduccion getIdLista() {
+        return idLista;
+    }
+
+    /**
+     * @param idListareproduccion the idListareproduccion to set
+     */
+    public void setIdLista(Listareproduccion idListareproduccion) {
+        this.idLista = idListareproduccion;
+    }
+
+
 }

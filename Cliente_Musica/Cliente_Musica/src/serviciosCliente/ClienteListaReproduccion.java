@@ -30,7 +30,7 @@ public class ClienteListaReproduccion {
 
     private WebTarget webTarget;
     private Client client;
-    private static final String BASE_URI = "http://localhost:8080/AccesoSpotify2018/webresources";
+    private static final String BASE_URI = "http://localhost:8080/Spotify/webresources";
 
     public ClienteListaReproduccion() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
@@ -57,10 +57,10 @@ public class ClienteListaReproduccion {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
-    public <T> T find_JSON(Class<T> responseType, String id) throws ClientErrorException {
+    public Listareproduccion find_JSON(int id) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("{0}", new Object[]{id}));
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(new GenericType<Listareproduccion>(){});
     }
 
     public <T> T findRange_XML(Class<T> responseType, String from, String to) throws ClientErrorException {
