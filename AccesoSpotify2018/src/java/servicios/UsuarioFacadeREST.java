@@ -9,6 +9,7 @@ import Modelo.Usuario;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.ws.rs.Consumes;
@@ -29,7 +30,7 @@ import javax.ws.rs.core.MediaType;
 @Path("modelo.usuario")
 public class UsuarioFacadeREST extends AbstractFacade<Usuario> {
 
-    @PersistenceContext(unitName = "AccesoSpotify2018PU")
+    @PersistenceContext(unitName = "SpotifyPU")
     private EntityManager em;
 
     public UsuarioFacadeREST() {
@@ -56,13 +57,20 @@ public class UsuarioFacadeREST extends AbstractFacade<Usuario> {
         super.remove(super.find(id));
     }
     @GET
-    @Path("/inicioSesion/{usuario}/{contrasena}")//
+    @Path("/inicioSesion/{nombre}/{contrasena}")//
     @Produces({MediaType.APPLICATION_JSON})
-    public Usuario iniciarsesion(@PathParam("usuario") String  usuario, @PathParam("contrasena") String contrasena){
+    public Usuario iniciarsesion(@PathParam("nombre") String  nombre, @PathParam("contrasena") String contrasena){
         Query query = getEntityManager().createNamedQuery("Usuario.findUserLogin");
-        query.setParameter("usuario", usuario);
+        query.setParameter("nombre", nombre);
         query.setParameter("contrasena",contrasena);
-        Usuario user = (Usuario) query.getSingleResult();
+        Usuario user = null;
+        try{
+            user = (Usuario) query.getSingleResult();
+        }catch(NoResultException e){
+            user = new Usuario();
+            user.setIdUsuario(0);
+        }
+        
         return user;
     }
     @GET

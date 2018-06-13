@@ -8,6 +8,8 @@ package serviciosCliente;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+import negocio.Usuario;
 
 /**
  * Jersey REST client generated for REST resource:UsuarioFacadeREST
@@ -26,17 +28,17 @@ public class ClienteUsuario {
 
     private WebTarget webTarget;
     private Client client;
-    private static final String BASE_URI = "http://localhost:8080/AccesoSpotify2018/webresources";
+    private static final String BASE_URI = "http://localhost:8080/Spotify/webresources";
 
     public ClienteUsuario() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
         webTarget = client.target(BASE_URI).path("modelo.usuario");
     }
 
-    public <T> T iniciarsesion(Class<T> responseType, String usuario, String contrasena) throws ClientErrorException {
+    public Usuario iniciarsesion(String usuario, String contrasena) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("inicioSesion/{0}/{1}", new Object[]{usuario, contrasena}));
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(new GenericType<Usuario>(){});
     }
 
     public String countREST() throws ClientErrorException {

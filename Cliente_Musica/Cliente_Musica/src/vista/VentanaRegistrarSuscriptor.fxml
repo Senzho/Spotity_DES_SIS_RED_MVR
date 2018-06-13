@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.layout.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="264.0" prefWidth="358.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="264.0" prefWidth="358.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.VentanaRegistrarSuscriptorController">
    <children>
-      <Button layoutX="254.0" layoutY="217.0" mnemonicParsing="false" text="Registrar" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="17.0">
+      <Button layoutX="254.0" layoutY="217.0" mnemonicParsing="false" onAction="#registrarse" text="Registrar" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="17.0">
          <font>
             <Font name="Arial" size="16.0" />
          </font>
       </Button>
-      <PasswordField layoutX="114.0" layoutY="159.0" prefHeight="25.0" prefWidth="226.0" AnchorPane.leftAnchor="114.0" AnchorPane.rightAnchor="18.0" />
-      <PasswordField layoutX="114.0" layoutY="123.0" prefHeight="25.0" prefWidth="226.0" AnchorPane.leftAnchor="114.0" AnchorPane.rightAnchor="18.0" />
-      <TextField layoutX="114.0" layoutY="88.0" prefHeight="25.0" prefWidth="226.0" AnchorPane.leftAnchor="114.0" AnchorPane.rightAnchor="18.0" />
+      <PasswordField fx:id="txtConfirmar" layoutX="114.0" layoutY="159.0" prefHeight="25.0" prefWidth="226.0" AnchorPane.leftAnchor="114.0" AnchorPane.rightAnchor="18.0" />
+      <PasswordField fx:id="txtContrasena" layoutX="114.0" layoutY="123.0" prefHeight="25.0" prefWidth="226.0" AnchorPane.leftAnchor="114.0" AnchorPane.rightAnchor="18.0" />
+      <TextField fx:id="txtNombre" layoutX="114.0" layoutY="88.0" prefHeight="25.0" prefWidth="226.0" AnchorPane.leftAnchor="114.0" AnchorPane.rightAnchor="18.0" />
       <Label layoutX="19.0" layoutY="161.0" text="Confirmar:" AnchorPane.leftAnchor="19.0">
          <font>
             <Font name="Arial" size="16.0" />
