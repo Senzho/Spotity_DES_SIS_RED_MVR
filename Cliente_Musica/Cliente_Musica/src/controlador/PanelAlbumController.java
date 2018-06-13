@@ -17,6 +17,7 @@ public class PanelAlbumController implements Initializable{
     private Label compania;
     
     private Album album;
+    private EscuchadorAlbum escuchador;
     
     private void cargarAlbum(){
         this.nombre.setText(this.album.getNombre());
@@ -29,8 +30,15 @@ public class PanelAlbumController implements Initializable{
         
     }
     
-    public void inicar(Album album){
+    public void inicar(Album album, EscuchadorAlbum escuchador){
         this.album = album;
+        this.escuchador = escuchador;
         this.cargarAlbum();
+    }
+    
+    //Eventos:
+    
+    public void onClick(){
+        this.escuchador.albumSeleccionado(this.album);
     }
 }

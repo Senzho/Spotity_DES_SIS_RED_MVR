@@ -26,7 +26,7 @@ import org.controlsfx.control.PopOver;
  *
  * @author Renato
  */
-public class VentanaMenuPrincipalController implements Initializable, EscuchadorArtista {
+public class VentanaMenuPrincipalController implements Initializable, EscuchadorArtista, EscuchadorAlbum {
 
     @FXML
     private BorderPane panelPrincipal;
@@ -155,7 +155,21 @@ public class VentanaMenuPrincipalController implements Initializable, Escuchador
         try {
             Parent root = (Parent) loader.load();
             PanelArtistasController controller = loader.getController();
-            controller.iniciar(artista);
+            controller.iniciar(artista, this);
+            this.panelPrincipal.getChildren().clear();
+            this.panelPrincipal.setCenter(root);
+        } catch (IOException ex) {
+            Logger.getLogger(VentanaMenuPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public void albumSeleccionado(Album album) {
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/vista/PanelCanciones.fxml"));
+        try {
+            Parent root = (Parent) loader.load();
+            PanelCancionesController controller = loader.getController();
+            controller.iniciar(album);
             this.panelPrincipal.getChildren().clear();
             this.panelPrincipal.setCenter(root);
         } catch (IOException ex) {

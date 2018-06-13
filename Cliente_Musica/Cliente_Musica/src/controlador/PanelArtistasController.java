@@ -32,6 +32,7 @@ public class PanelArtistasController implements Initializable{
     private VBox panelCancionesAlbum;
     private Artista artista;
     private List<Album> albumes;
+    private EscuchadorAlbum escuchador;
     
     private void cargarArtista(){
         this.nombre.setText(this.artista.getNombre());
@@ -51,7 +52,7 @@ public class PanelArtistasController implements Initializable{
                 try {
                     AnchorPane pane = loader.load();
                     PanelAlbumController controller = loader.getController();
-                    controller.inicar(album);
+                    controller.inicar(album, this.escuchador);
                     this.panelAlbumes.getChildren().add(pane);
                 } catch (IOException ex) {
                     Logger.getLogger(PanelArtistasController.class.getName()).log(Level.SEVERE, null, ex);
@@ -87,8 +88,9 @@ public class PanelArtistasController implements Initializable{
         this.albumes = new ArrayList();
     }
     
-    public void iniciar(Artista artista){
+    public void iniciar(Artista artista, EscuchadorAlbum escuchador){
         this.artista = artista;
+        this.escuchador = escuchador;
         this.cargarCombo();
         this.cargarArtista();
         Platform.runLater(() -> {
