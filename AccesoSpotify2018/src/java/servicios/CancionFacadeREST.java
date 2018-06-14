@@ -6,8 +6,15 @@
 package servicios;
 
 import Modelo.Cancion;
+import Util.Ruta;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -82,6 +89,28 @@ public class CancionFacadeREST extends AbstractFacade<Cancion> {
             //logger
         }
         return canciones;
+    }
+    @GET
+    @Path("descargar/{idCancion}")
+    @Produces({MediaType.TEXT_PLAIN})
+    public byte[] descargar(@PathParam("idCancion") Integer idCancion){
+        byte[] buffer = null;
+        FileInputStream imputStream = null;
+        try {
+            File file = new File(Ruta.getRutaCancion(idCancion));
+            imputStream = new FileInputStream(file);
+            buffer = new byte[(int) file.length()];
+            imputStream.read(buffer);
+        } catch (IOException ex) {
+            Logger.getLogger(CancionFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                imputStream.close();
+            } catch (IOException ex) {
+                Logger.getLogger(CancionFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return buffer;
     }
 
     @GET

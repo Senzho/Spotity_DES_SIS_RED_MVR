@@ -96,6 +96,11 @@ public class ClienteCancion {
         resource = resource.path(java.text.MessageFormat.format("de_album/{0}", new Object[]{idAlbum}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(new GenericType<List<Cancion>>(){});
     }
+    public byte[] descargar(int idCancion){
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("descargar/{0}", new Object[]{idCancion}));
+        return resource.request(javax.ws.rs.core.MediaType.TEXT_PLAIN).get(byte[].class);
+    }
 
     public void remove(String id) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{id})).request().delete();

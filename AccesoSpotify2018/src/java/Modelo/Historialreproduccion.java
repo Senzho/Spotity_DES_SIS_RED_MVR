@@ -21,14 +21,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Desktop
+ * @author Victor Javier
  */
 @Entity
 @Table(name = "historialreproduccion")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Historialreproduccion.findAll", query = "SELECT h FROM Historialreproduccion h")
-    , @NamedQuery(name = "Historialreproduccion.findById", query = "SELECT h FROM Historialreproduccion h WHERE h.id = :id")})
+    , @NamedQuery(name = "Historialreproduccion.findById", query = "SELECT h FROM Historialreproduccion h WHERE h.id = :id")
+    , @NamedQuery(name = "Historialreproduccion.findByUsuario", query = "SELECT c FROM Cancion c, Historialreproduccion h WHERE c.idCancion = h.idCancion.idCancion AND h.idUsuario.idUsuario = :idUsuario")
+})
 public class Historialreproduccion implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -97,7 +99,7 @@ public class Historialreproduccion implements Serializable {
 
     @Override
     public String toString() {
-        return "Modelo.Historialreproduccion[ id=" + id + " ]";
+        return "modelo.Historialreproduccion[ id=" + id + " ]";
     }
     
 }

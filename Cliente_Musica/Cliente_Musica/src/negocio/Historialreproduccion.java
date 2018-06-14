@@ -1,5 +1,8 @@
 package negocio;
 
+import java.util.List;
+import serviciosCliente.ClienteHistorialReproduccion;
+
 public class Historialreproduccion{
     private int id;
     private Cancion idCancion;
@@ -26,5 +29,9 @@ public class Historialreproduccion{
     }
     public void setIdUsuario(Usuario idUsuario) {
         this.idUsuario = idUsuario;
+    }
+    
+    public List<Cancion> consultarHistorial(int idUduario){
+        return new ClienteHistorialReproduccion().obtenerHistorial(idUduario);
     }
 }

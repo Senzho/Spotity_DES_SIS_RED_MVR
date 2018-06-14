@@ -5,7 +5,9 @@
  */
 package servicios;
 
+import Modelo.Cancion;
 import Modelo.Historialreproduccion;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -74,6 +76,20 @@ public class HistorialreproduccionFacadeREST extends AbstractFacade<Historialrep
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Historialreproduccion> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
+    }
+    @GET
+    @Path("/usuario/{idUsuario}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Cancion> obtenerHistorial(@PathParam("idUsuario") Integer idUsuario) {
+        List<Cancion> canciones = new ArrayList();
+        try{
+            canciones = this.getEntityManager().createNamedQuery("Historialreproduccion.findByUsuario")
+                    .setParameter("idUsuario", idUsuario)
+                    .getResultList();
+        }catch(Exception excepcion){
+            //Logger
+        }
+        return canciones;
     }
 
     @GET
