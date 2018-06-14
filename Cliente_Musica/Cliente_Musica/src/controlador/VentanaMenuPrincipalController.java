@@ -74,6 +74,7 @@ public class VentanaMenuPrincipalController implements Initializable, Escuchador
                     FXMLLoader loader = new FXMLLoader(VentanaMenuPrincipalController.class.getResource("/vista/PanelBibliotecaPersonal.fxml"));
                     Parent root = (Parent) loader.load();
                     PanelBibliotecaPersonalController controller = loader.getController();
+                    controller.inicar(VentanaMenuPrincipalController.this.usuarioActual.getIdUsuario());
                     //Panel panelSubir = loader.getController();****************************
                     pop.hide();
                     panelPrincipal.getChildren().clear();

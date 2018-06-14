@@ -1,7 +1,9 @@
 package negocio;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import serviciosCliente.ClienteArtista;
 import serviciosCliente.ClienteGeneroArtista;
 
 public class Artista{
@@ -48,5 +50,15 @@ public class Artista{
     
     public List<GeneroArtista> obtenerGeneros(){
         return new ClienteGeneroArtista().obtenerGenerosArtista(this.idArtista);
+    }
+    public List<Artista> obtenerArtistas(String genero){
+        List<Artista> artistas = new ArrayList();
+        new ClienteGeneroArtista().obtenerArtistaDeGenero(genero).forEach((genArt) -> {
+            artistas.add(genArt.getIdArtista());
+        });
+        return artistas;
+    }
+    public List<Artista> obtenerArtistas(){
+        return new ClienteArtista().findAll_JSON();
     }
 }

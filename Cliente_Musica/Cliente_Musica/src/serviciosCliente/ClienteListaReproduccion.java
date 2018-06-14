@@ -30,7 +30,7 @@ public class ClienteListaReproduccion {
 
     private WebTarget webTarget;
     private Client client;
-    private static final String BASE_URI = "http://localhost:8080/Spotify/webresources";
+    private static final String BASE_URI = "http://localhost:8080/AccesoSpotify2018/webresources";
 
     public ClienteListaReproduccion() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
@@ -47,7 +47,7 @@ public class ClienteListaReproduccion {
         webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{id})).request(javax.ws.rs.core.MediaType.APPLICATION_XML).put(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_XML));
     }
 
-    public void edit_JSON(ListaReproduccion lista, int id) throws ClientErrorException {
+    public void edit_JSON(Listareproduccion lista, int id) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{id})).request(javax.ws.rs.core.MediaType.APPLICATION_JSON).put(javax.ws.rs.client.Entity.entity(lista, javax.ws.rs.core.MediaType.APPLICATION_JSON));
     }
 

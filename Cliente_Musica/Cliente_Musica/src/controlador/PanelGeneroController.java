@@ -12,6 +12,7 @@ public class PanelGeneroController implements Initializable{
     private Label nombre;
     
     private GeneroArtista genero;
+    private EscuchadorGenero escuchador;
     
     private void cargarGenero(){
         this.nombre.setText(this.genero.getGenero());
@@ -22,8 +23,15 @@ public class PanelGeneroController implements Initializable{
         
     }
     
-    public void iniciar(GeneroArtista genero){
+    public void iniciar(GeneroArtista genero, EscuchadorGenero escuchador){
         this.genero = genero;
+        this.escuchador = escuchador;
         this.cargarGenero();
+    }
+    
+    //Eventos:
+    
+    public void onClick(){
+        this.escuchador.generoSeleccionado(this.genero);
     }
 }

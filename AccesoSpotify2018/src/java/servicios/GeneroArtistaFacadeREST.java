@@ -90,6 +90,20 @@ public class GeneroArtistaFacadeREST extends AbstractFacade<GeneroArtista> {
         }
         return generos;
     }
+    @GET
+    @Path("de_genero/{genero}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<GeneroArtista> obtenerArtistasDeGenero(@PathParam("genero") String genero){
+        List<GeneroArtista> generos = new ArrayList();
+        try{
+            generos = this.getEntityManager().createNamedQuery("GeneroArtista.findByGenero")
+                    .setParameter("genero", genero)
+                    .getResultList();
+        }catch(NoResultException excepcion){
+            //loger
+        }
+        return generos;
+    }
 
     @Override
     protected EntityManager getEntityManager() {

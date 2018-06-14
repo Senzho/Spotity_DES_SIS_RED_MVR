@@ -19,7 +19,7 @@ import negocio.GeneroArtista;
 import serviciosCliente.ClienteArtista;
 import serviciosCliente.ClienteGeneroArtista;
 
-public class PanelBibliotecaPublicaController implements Initializable {
+public class PanelBibliotecaPublicaController implements Initializable, EscuchadorGenero {
     @FXML
     private ComboBox comboNavegacion;
     @FXML
@@ -59,7 +59,7 @@ public class PanelBibliotecaPublicaController implements Initializable {
                 try {
                     AnchorPane pane = loader.load();
                     PanelGeneroController controller = loader.getController();
-                    controller.iniciar(genero);
+                    controller.iniciar(genero, this);
                     this.panelNavegacion.getChildren().add(pane);
                 } catch (IOException ex) {
                     Logger.getLogger(PanelBibliotecaPublicaController.class.getName()).log(Level.SEVERE, null, ex);
@@ -68,7 +68,7 @@ public class PanelBibliotecaPublicaController implements Initializable {
         } 
     }
     private void obtenerArtistas(){
-        this.artistas = new ClienteArtista().findAll_JSON();
+        this.artistas = new Artista().obtenerArtistas();
     }
     private void cargarArtistas(){
         if (!this.artistas.isEmpty()){
@@ -85,6 +85,23 @@ public class PanelBibliotecaPublicaController implements Initializable {
                 }
             });
         } 
+    }
+    private void cargarArtistasPorGenero(String genero){
+        List<Artista> artistasGenero = new Artista().obtenerArtistas(genero);
+        if (!artistasGenero.isEmpty()){
+            this.panelNavegacion.getChildren().clear();
+            artistasGenero.forEach((artista) -> {
+                FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/vista/PanelArtista.fxml"));
+                try {
+                    AnchorPane pane = loader.load();
+                    PanelArtistaController controller = loader.getController();
+                    controller.iniciar(artista, this.escuchador);
+                    this.panelNavegacion.getChildren().add(pane);
+                } catch (IOException ex) {
+                    Logger.getLogger(PanelBibliotecaPublicaController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        }
     }
 
     @Override
@@ -115,5 +132,10 @@ public class PanelBibliotecaPublicaController implements Initializable {
                 this.cargarArtistas();
             });
         }
+    }
+
+    @Override
+    public void generoSeleccionado(GeneroArtista genero) {
+        this.cargarArtistasPorGenero(genero.getGenero());
     }
 }

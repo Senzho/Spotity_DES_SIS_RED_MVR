@@ -11,36 +11,21 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
-import negocio.Album;
-import negocio.Artista;
 import negocio.Cancion;
 import serviciosCliente.ClienteCancionPrivada;
 
 public class PanelBibliotecaPersonalController implements Initializable{
     @FXML
-    private ComboBox combo;
-    @FXML
     private ScrollPane scroll;
     
     private VBox panelCanciones;
-    private FlowPane panelGeneral;
     private List<Cancion> canciones;
-    private List<Artista> artistas;
-    private List<Album> albumes;
     private int idUsuario;
     
-    private void cargarCombo(){
-        this.combo.getItems().add("Canciones");
-        this.combo.getItems().add("Albumes");
-        this.combo.getItems().add("Artistas");
-        this.combo.setValue("Canciones");
-    }
-    private void cargarCanciones(){
+    private void mostrarCanciones(){
         if (!this.canciones.isEmpty()){
             this.scroll.setContent(this.panelCanciones);
             this.canciones.forEach((cancion) -> {
@@ -56,27 +41,24 @@ public class PanelBibliotecaPersonalController implements Initializable{
             });
         }
     }
-    private void cargarTodo(){
+    private void cargarCanciones(){
         Platform.runLater(() -> {
-            new ClienteCancionPrivada().obtenerDeUsuario(1).forEach((canPriv) -> {
-                this.canciones.add(canPriv.getIdCancion());
+            new Cancion().obtenerCancionesUsuario(this.idUsuario).forEach((cancion) -> {
+                this.canciones.add(cancion);
             });
-            this.cargarCanciones();
+            this.mostrarCanciones();
         });
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.cargarCombo();
         this.canciones = new ArrayList();
-        this.artistas = new ArrayList();
-        this.albumes = new ArrayList();
     }
     
     public void inicar(int idUsuario){
         this.idUsuario = idUsuario;
         this.panelCanciones = new VBox();
         this.panelCanciones.setSpacing(5);
-        this.cargarTodo();
+        this.cargarCanciones();
     }
 }

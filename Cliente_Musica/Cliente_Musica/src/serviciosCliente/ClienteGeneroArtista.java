@@ -96,6 +96,11 @@ public class ClienteGeneroArtista {
         resource = resource.path(java.text.MessageFormat.format("de_artista/{0}", new Object[]{idArtista}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(new GenericType<List<GeneroArtista>>(){});
     }
+    public List<GeneroArtista> obtenerArtistaDeGenero(String genero){
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("de_genero/{0}", new Object[]{genero}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(new GenericType<List<GeneroArtista>>(){});
+    }
 
     public void remove(String id) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{id})).request().delete();

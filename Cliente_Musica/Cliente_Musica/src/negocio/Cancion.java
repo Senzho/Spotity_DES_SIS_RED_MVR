@@ -1,7 +1,9 @@
 package negocio;
 
+import java.util.ArrayList;
 import java.util.List;
 import serviciosCliente.ClienteCancion;
+import serviciosCliente.ClienteCancionPrivada;
 
 public class Cancion{
     private int idCancion;
@@ -54,5 +56,12 @@ public class Cancion{
     
     public List<Cancion> obtenerCanciones(int idAlbum){
         return new ClienteCancion().obtenerCancionesAlbum(idAlbum);
+    }
+    public List<Cancion> obtenerCancionesUsuario(int idUsuario){
+        List<Cancion> canciones = new ArrayList();
+        new ClienteCancionPrivada().obtenerDeUsuario(idUsuario).forEach((canPriv) -> {
+            canciones.add(canPriv.getIdCancion());
+        });
+        return canciones;
     }
 }
