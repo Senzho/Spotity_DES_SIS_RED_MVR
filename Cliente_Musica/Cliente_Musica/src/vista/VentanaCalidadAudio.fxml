@@ -1,39 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="285.0" prefWidth="285.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.VentanaCalidadAudioController">
+<AnchorPane prefHeight="285.0" prefWidth="285.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.VentanaCalidadAudioController">
    <children>
       <Label layoutX="28.0" layoutY="24.0" text="Calidad de audio.">
          <font>
             <Font name="Arial Bold" size="24.0" />
          </font>
       </Label>
-      <RadioButton layoutX="28.0" layoutY="72.0" mnemonicParsing="false" text="Bajo.">
+      <RadioButton fx:id="btnBajo" layoutX="28.0" layoutY="72.0" mnemonicParsing="false" text="Bajo.">
          <font>
             <Font name="Arial" size="16.0" />
          </font>
       </RadioButton>
-      <RadioButton layoutX="28.0" layoutY="103.0" mnemonicParsing="false" text="Medio.">
+      <RadioButton fx:id="btnMedio" layoutX="28.0" layoutY="103.0" mnemonicParsing="false" text="Medio.">
          <font>
             <Font name="Arial" size="16.0" />
          </font>
       </RadioButton>
-      <RadioButton layoutX="28.0" layoutY="137.0" mnemonicParsing="false" text="Alto.">
+      <RadioButton fx:id="btnAlto" layoutX="28.0" layoutY="137.0" mnemonicParsing="false" text="Alto.">
          <font>
             <Font name="Arial" size="16.0" />
          </font>
       </RadioButton>
-      <RadioButton layoutX="28.0" layoutY="169.0" mnemonicParsing="false" text="Automático.">
-         <font>
-            <Font name="Arial" size="16.0" />
-         </font>
-      </RadioButton>
-      <Button layoutX="119.0" layoutY="231.0" mnemonicParsing="false" text="Cambiar calidad">
+      <Button layoutX="119.0" layoutY="231.0" mnemonicParsing="false" onMouseClicked="#guardarCalidad" text="Cambiar calidad">
          <font>
             <Font name="Arial" size="16.0" />
          </font>
