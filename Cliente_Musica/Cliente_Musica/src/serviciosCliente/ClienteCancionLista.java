@@ -93,7 +93,7 @@ public class ClienteCancionLista {
     }
     
 
-    public void remove(String id) throws ClientErrorException {
+    public void remove(int id) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{id})).request().delete();
     }
 

@@ -17,11 +17,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javax.swing.JOptionPane;
+import negocio.Usuario;
 
 
 
@@ -44,6 +50,9 @@ public class PanelListasReproduccionController implements Initializable {
     private static Listareproduccion listaSeleccionada;
     @FXML
     private AnchorPane panelPrincipal;
+    @FXML
+    private Button botonCrearLista;
+    private Usuario usuario;
     public void inicializarTablaListas() {
         columnaNombreLista.setCellValueFactory(new PropertyValueFactory<Listareproduccion, String>("nombre"));
         listas = FXCollections.observableArrayList();
@@ -56,18 +65,22 @@ public class PanelListasReproduccionController implements Initializable {
         
     }    
     
-    public void iniciarPantalla(){
+    public void iniciarPantalla(Usuario usuarioActual){
+        usuario=usuarioActual;
+        int usuarioLista;
+        boolean listaVacia;
+        int idUsuarioActual=usuarioActual.getIdUsuario();
         inicializarTablaListas();
         this.listaListas=new ClienteListaReproduccion().findAll_JSON();
         if(listaListas.isEmpty()){
-            System.out.println("Lista Vacia");
+            listaVacia=true;
         }else{
-            System.out.println("Lista con elementos");
             for(int i=0; i<listaListas.size(); i++){
                 Listareproduccion nuevaLista = listaListas.get(i);
-                this.listas.add(nuevaLista);
-                
-                //System.out.println(i+" elemento "+listaListas.get(i).getNombre());
+                usuarioLista=nuevaLista.getIdUsuario().getIdUsuario();
+                if(usuarioLista==idUsuarioActual){
+                    this.listas.add(nuevaLista);
+                }
             }
         }
         
@@ -80,8 +93,7 @@ public class PanelListasReproduccionController implements Initializable {
                         FXMLLoader loader = new FXMLLoader(PanelListasReproduccionController.class.getResource("/vista/PanelListaReproduccion.fxml"));
                         Parent root = (Parent) loader.load();
                         PanelListaReproduccionController listaController= loader.getController();
-                        listaController.iniciarVentana(listaSeleccionada.getIdLista());
-                        //Panel panelSubir = loader.getController();****************************
+                        listaController.iniciarVentana(listaSeleccionada.getIdLista(), usuario);
                         panelPrincipal.getChildren().clear();
                         panelPrincipal.getChildren().add(root);
                     } catch (IOException ex) {
@@ -94,5 +106,43 @@ public class PanelListasReproduccionController implements Initializable {
         
         
     }
-    
+
+    @FXML
+    private void crearListaReproduccion(ActionEvent event) throws IOException {
+        String nombreNuevaLista= JOptionPane.showInputDialog("Por favor ingrese el nombre de la nueva lista que desea crear: ");
+        Listareproduccion nuevaLista = new Listareproduccion();
+        nuevaLista.setNombre(nombreNuevaLista);
+        nuevaLista.setIdUsuario(usuario);
+        String mensaje;
+        int usuarioLista;
+        boolean listaCreada;
+        if((!nombreNuevaLista.equals(""))||(!nombreNuevaLista.equals(" "))){
+            new ClienteListaReproduccion().create_JSON(nuevaLista);
+            mensaje="La lista fué creada exitosamente!";
+            listaCreada=true;
+        }else{
+            mensaje="Lo sentimos, parace haber ocurrido un error...";
+            listaCreada=false;
+        }
+        
+        Alert aviso = new Alert(Alert.AlertType.WARNING);
+        aviso.setTitle("información");
+        aviso.setHeaderText("Aviso");
+        aviso.setContentText(mensaje);
+        ButtonType botonOK = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        aviso.getButtonTypes().setAll(botonOK);
+        aviso.showAndWait();
+        if(listaCreada){
+            listas.clear();
+            this.listaListas=new ClienteListaReproduccion().findAll_JSON();
+            for(int i=0; i<listaListas.size(); i++){
+                Listareproduccion listaAgregar = listaListas.get(i);
+                usuarioLista=listaAgregar.getIdUsuario().getIdUsuario();
+                if(usuarioLista==usuario.getIdUsuario()){
+                    this.listas.add(listaAgregar);
+                }
+            }
+        } 
+        
+    }
 }

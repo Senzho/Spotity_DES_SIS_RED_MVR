@@ -19,6 +19,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import negocio.Album;
 import negocio.Artista;
+import negocio.Usuario;
 import org.controlsfx.control.PopOver;
 
 /**
@@ -44,10 +45,13 @@ public class VentanaMenuPrincipalController implements Initializable, Escuchador
     private Button botonCerrarSesion;
     @FXML
     private Button botonHistorial;
+    private Usuario usuarioActual;
 
     /**
      * Initializes the controller class.
      */
+    
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
@@ -69,6 +73,7 @@ public class VentanaMenuPrincipalController implements Initializable, Escuchador
                 try {
                     FXMLLoader loader = new FXMLLoader(VentanaMenuPrincipalController.class.getResource("/vista/PanelBibliotecaPersonal.fxml"));
                     Parent root = (Parent) loader.load();
+                    PanelBibliotecaPersonalController controller = loader.getController();
                     //Panel panelSubir = loader.getController();****************************
                     pop.hide();
                     panelPrincipal.getChildren().clear();
@@ -134,7 +139,7 @@ public class VentanaMenuPrincipalController implements Initializable, Escuchador
         FXMLLoader loader = new FXMLLoader(VentanaMenuPrincipalController.class.getResource("/vista/PanelListasReproduccion.fxml"));
         Parent root = (Parent) loader.load();
         PanelListasReproduccionController panelListas = loader.getController();
-        panelListas.iniciarPantalla();
+        panelListas.iniciarPantalla(usuarioActual);
         panelPrincipal.getChildren().clear();
         panelPrincipal.setCenter(root);
     }
@@ -175,5 +180,10 @@ public class VentanaMenuPrincipalController implements Initializable, Escuchador
         } catch (IOException ex) {
             Logger.getLogger(VentanaMenuPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void setUsuario(Usuario usuario){
+        this.usuarioActual=usuario;
+        etiquetaNombreUsuario.setText(usuarioActual.getNombre());
     }
 }
