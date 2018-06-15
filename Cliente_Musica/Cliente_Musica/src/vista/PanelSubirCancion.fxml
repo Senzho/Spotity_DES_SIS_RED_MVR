@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -37,7 +37,7 @@
                         </Label>
                         <Label GridPane.columnIndex="1" />
                         <Label prefHeight="17.0" prefWidth="329.0" text="Para las canciones se requiere de archivos en formato mp3 " GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                        <Label prefHeight="17.0" prefWidth="329.0" text="Para albumes se necesita que este se encuentre formato zip" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                        <Label prefHeight="17.0" prefWidth="338.0" text="Para albumes se necesita que este se encuentre en formato zip" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                      </children>
                   </GridPane>
                   <GridPane prefHeight="384.0" prefWidth="708.0">
@@ -53,29 +53,23 @@
                       <RowConstraints maxHeight="229.0" minHeight="10.0" prefHeight="163.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Button mnemonicParsing="false" text="Canción" GridPane.columnIndex="1" GridPane.halignment="CENTER">
-                           <graphic>
-                              <FontAwesomeIconView glyphName="PLAY_CIRCLE" size="18" />
-                           </graphic>
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Button>
-                        <Button mnemonicParsing="false" text="Albúm" GridPane.columnIndex="2" GridPane.halignment="CENTER">
-                           <graphic>
-                              <FontAwesomeIconView glyphName="MUSIC" size="18" />
-                           </graphic>
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Button>
-                        <Button mnemonicParsing="false" text="Examinar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                        <Label prefHeight="121.0" prefWidth="108.0" text="El archivo no &#10;es compatible" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.valignment="TOP" />
-                        <Button mnemonicParsing="false" text="Subir" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                        <Button fx:id="botonElegirArchivo" mnemonicParsing="false" onAction="#elegirArchivo" text="Examinar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                        <Label fx:id="etiquetaRutaArchivo" prefHeight="121.0" prefWidth="108.0" text="El archivo no &#10;es compatible" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+                        <Button fx:id="botonSubirArchivo" mnemonicParsing="false" onAction="#subirArchivo" text="Subir" GridPane.columnIndex="2" GridPane.rowIndex="2">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Button>
+                        <RadioButton fx:id="radioCancion" mnemonicParsing="false" onAction="#setArchivoCancion" text="Canción" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="24.0" />
+                           </font>
+                        </RadioButton>
+                        <RadioButton fx:id="radioAlbum" mnemonicParsing="false" onAction="#setArchivoAlbum" text="Albúm" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="24.0" />
+                           </font>
+                        </RadioButton>
                      </children>
                   </GridPane>
                </children></VBox>

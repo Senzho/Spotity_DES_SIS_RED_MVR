@@ -115,6 +115,7 @@ public class VentanaMenuPrincipalController implements Initializable, Escuchador
         FXMLLoader loader = new FXMLLoader(VentanaMenuPrincipalController.class.getResource("/vista/PanelSubirCancion.fxml"));
         Parent root = (Parent) loader.load();
         PanelSubirCancionController panelSubir = loader.getController();
+        panelSubir.iniciarVentana(usuarioActual);
         panelPrincipal.getChildren().clear();
         //panelPrincipal.getChildren().add(root);
         panelPrincipal.setCenter(root);
@@ -161,7 +162,7 @@ public class VentanaMenuPrincipalController implements Initializable, Escuchador
         try {
             Parent root = (Parent) loader.load();
             PanelArtistasController controller = loader.getController();
-            controller.iniciar(artista, this);
+            controller.iniciar(artista, this, usuarioActual);
             this.panelPrincipal.getChildren().clear();
             this.panelPrincipal.setCenter(root);
         } catch (IOException ex) {
@@ -175,7 +176,7 @@ public class VentanaMenuPrincipalController implements Initializable, Escuchador
         try {
             Parent root = (Parent) loader.load();
             PanelCancionesController controller = loader.getController();
-            controller.iniciar(album);
+            controller.iniciar(album, usuarioActual);
             this.panelPrincipal.getChildren().clear();
             this.panelPrincipal.setCenter(root);
         } catch (IOException ex) {

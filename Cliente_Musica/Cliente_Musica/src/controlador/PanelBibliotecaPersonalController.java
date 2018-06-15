@@ -15,7 +15,9 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import negocio.Cancion;
+import negocio.Usuario;
 import serviciosCliente.ClienteCancionPrivada;
+import serviciosCliente.ClienteUsuario;
 
 public class PanelBibliotecaPersonalController implements Initializable{
     @FXML
@@ -33,7 +35,7 @@ public class PanelBibliotecaPersonalController implements Initializable{
                 try {
                     AnchorPane pane = loader.load();
                     PanelCancionController controller = loader.getController();
-                    controller.iniciar(cancion);
+                    controller.iniciar(cancion, adquirirUsuarioActual());
                     this.panelCanciones.getChildren().add(pane);
                 } catch (IOException ex) {
                     Logger.getLogger(PanelArtistasController.class.getName()).log(Level.SEVERE, null, ex);
@@ -60,5 +62,11 @@ public class PanelBibliotecaPersonalController implements Initializable{
         this.panelCanciones = new VBox();
         this.panelCanciones.setSpacing(5);
         this.cargarCanciones();
+    }
+    
+    public Usuario adquirirUsuarioActual(){
+        Usuario usuarioAdquirido;
+        usuarioAdquirido=new ClienteUsuario().find_JSON(idUsuario);
+        return usuarioAdquirido;
     }
 }

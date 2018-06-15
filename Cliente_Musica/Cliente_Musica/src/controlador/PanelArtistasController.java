@@ -19,6 +19,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import negocio.Album;
 import negocio.Artista;
+import negocio.Usuario;
 
 public class PanelArtistasController implements Initializable{
     @FXML
@@ -33,6 +34,7 @@ public class PanelArtistasController implements Initializable{
     private Artista artista;
     private List<Album> albumes;
     private EscuchadorAlbum escuchador;
+    private Usuario usuarioActual;
     
     private void cargarArtista(){
         this.nombre.setText(this.artista.getNombre());
@@ -69,7 +71,7 @@ public class PanelArtistasController implements Initializable{
                 try {
                     AnchorPane pane = loader.load();
                     PanelCancionesAlbumController controller = loader.getController();
-                    controller.iniciar(album);
+                    controller.iniciar(album, usuarioActual);
                     this.panelCancionesAlbum.getChildren().add(pane);
                 } catch (IOException ex) {
                     Logger.getLogger(PanelArtistasController.class.getName()).log(Level.SEVERE, null, ex);
@@ -88,7 +90,8 @@ public class PanelArtistasController implements Initializable{
         this.albumes = new ArrayList();
     }
     
-    public void iniciar(Artista artista, EscuchadorAlbum escuchador){
+    public void iniciar(Artista artista, EscuchadorAlbum escuchador, Usuario usuario){
+        this.usuarioActual=usuario;
         this.artista = artista;
         this.escuchador = escuchador;
         this.cargarCombo();

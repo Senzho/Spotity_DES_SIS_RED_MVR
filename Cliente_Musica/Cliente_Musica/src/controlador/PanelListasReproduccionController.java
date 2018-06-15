@@ -143,6 +143,5 @@ public class PanelListasReproduccionController implements Initializable {
                 }
             }
         } 
-        
     }
 }

@@ -72,7 +72,7 @@ public class PanelListaReproduccionController implements Initializable {
             try {
                 AnchorPane pane = loader.load();
                 PanelCancionController controller = loader.getController();
-                controller.iniciar(cancionesListaReproduccion.get(i).getIdCancion());
+                controller.iniciar(cancionesListaReproduccion.get(i).getIdCancion(), usuarioActual);
                 this.vboxCanciones.getChildren().add(pane);
             } catch (IOException ex) {
                 Logger.getLogger(PanelArtistasController.class.getName()).log(Level.SEVERE, null, ex);

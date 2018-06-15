@@ -14,6 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import negocio.Album;
+import negocio.Usuario;
 import serviciosCliente.ClienteCancion;
 
 public class PanelCancionesController implements Initializable {
@@ -23,6 +24,7 @@ public class PanelCancionesController implements Initializable {
     private ImageView imagen;
     @FXML
     private VBox panelCanciones;
+    private Usuario usuarioActual;
     
     private Album album;
     
@@ -32,7 +34,7 @@ public class PanelCancionesController implements Initializable {
             try {
                 AnchorPane pane = loader.load();
                 PanelCancionController controller = loader.getController();
-                controller.iniciar(cancion);
+                controller.iniciar(cancion, usuarioActual);
                 this.panelCanciones.getChildren().add(pane);
             } catch (IOException ex) {
                 Logger.getLogger(PanelArtistasController.class.getName()).log(Level.SEVERE, null, ex);
@@ -48,7 +50,8 @@ public class PanelCancionesController implements Initializable {
         
     } 
     
-    public void iniciar(Album album){
+    public void iniciar(Album album, Usuario usuario){
+        usuarioActual=usuario;
         this.album = album;
         this.cargarAlbum();
         Platform.runLater(() -> {
