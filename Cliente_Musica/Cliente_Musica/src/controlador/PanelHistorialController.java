@@ -14,10 +14,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import negocio.Cancion;
 import negocio.Historialreproduccion;
+import serviciosCliente.ClienteUsuario;
 
 public class PanelHistorialController implements Initializable{
     @FXML
     private VBox panelCanciones;
+    private int idUsuario;
     
     private List<Cancion> canciones;
     
@@ -28,7 +30,7 @@ public class PanelHistorialController implements Initializable{
                 try {
                     AnchorPane pane = loader.load();
                     PanelCancionController controller = loader.getController();
-                    controller.iniciar(cancion);
+                    controller.iniciar(cancion, new ClienteUsuario().find_JSON(this.idUsuario));
                     this.panelCanciones.getChildren().add(pane);
                 } catch (IOException ex) {
                     Logger.getLogger(PanelArtistasController.class.getName()).log(Level.SEVERE, null, ex);
@@ -43,6 +45,7 @@ public class PanelHistorialController implements Initializable{
     }
     
     public void iniciar(int idUsuario){
+        this.idUsuario= idUsuario;
         Platform.runLater(() -> {
             this.canciones = new Historialreproduccion().consultarHistorial(idUsuario);
             this.cargarHistorial();

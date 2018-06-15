@@ -67,6 +67,11 @@ public class PanelCancionController implements Initializable{
         this.cargarCancion();
     }
     
+    public void iniciar(Cancion cancion){
+        this.cancion = cancion;
+        this.cargarCancion();
+    }
+    
     //Eventos:
     
     public void opciones_onClick(){
