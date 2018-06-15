@@ -29,7 +29,7 @@ public class ClienteGeneroArtista {
 
     private WebTarget webTarget;
     private Client client;
-    private static final String BASE_URI = "http://localhost:8080/AccesoSpotify2018/webresources";
+    private static final String BASE_URI = "http://localhost:8080/Spotify/webresources";
 
     public ClienteGeneroArtista() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
@@ -78,8 +78,8 @@ public class ClienteGeneroArtista {
         webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_XML).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_XML));
     }
 
-    public void create_JSON(Object requestEntity) throws ClientErrorException {
-        webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON));
+    public void create_JSON(GeneroArtista genArt) throws ClientErrorException {
+        webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(genArt, javax.ws.rs.core.MediaType.APPLICATION_JSON));
     }
 
     public <T> T findAll_XML(Class<T> responseType) throws ClientErrorException {

@@ -29,7 +29,7 @@ public class ClienteAlbum {
 
     private WebTarget webTarget;
     private Client client;
-    private static final String BASE_URI = "http://localhost:8080/AccesoSpotify2018/webresources";
+    private static final String BASE_URI = "http://localhost:8080/Spotify/webresources";
 
     public ClienteAlbum() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
@@ -83,8 +83,8 @@ public class ClienteAlbum {
         webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_XML).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_XML));
     }
 
-    public void create_JSON(Object requestEntity) throws ClientErrorException {
-        webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON));
+    public void create_JSON(Album album) throws ClientErrorException {
+        webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(album, javax.ws.rs.core.MediaType.APPLICATION_JSON));
     }
 
     public <T> T findAll_XML(Class<T> responseType) throws ClientErrorException {
@@ -92,9 +92,9 @@ public class ClienteAlbum {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
-    public <T> T findAll_JSON(Class<T> responseType) throws ClientErrorException {
+    public List<Album> findAll_JSON() throws ClientErrorException {
         WebTarget resource = webTarget;
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(new GenericType<List<Album>>(){});
     }
 
     public void remove(String id) throws ClientErrorException {

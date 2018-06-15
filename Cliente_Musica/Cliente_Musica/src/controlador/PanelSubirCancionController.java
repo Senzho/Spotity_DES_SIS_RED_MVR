@@ -1,15 +1,48 @@
 
 package controlador;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.StageStyle;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import negocio.Album;
+import negocio.Artista;
+import negocio.Cancion;
+import negocio.GeneroArtista;
 import negocio.Usuario;
+import org.farng.mp3.MP3File;
+import org.farng.mp3.id3.ID3v1;
+import org.farng.mp3.TagException;
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioFileIO;
+import serviciosCliente.ClienteAlbum;
+import serviciosCliente.ClienteArtista;
+import serviciosCliente.ClienteCancion;
+import serviciosCliente.ClienteGeneroArtista;
+import static sun.audio.AudioPlayer.player;
+
 
 /**
  * FXML Controller class
@@ -30,6 +63,14 @@ public class PanelSubirCancionController implements Initializable {
     private RadioButton radioAlbum;
     private String tipoArchivo;
     private Usuario usuarioActual;
+    private String rutaOrigen;
+    private String rutaCancion;
+    private String rutaNueva;
+    boolean archivoCargado;
+
+    
+    
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -40,16 +81,88 @@ public class PanelSubirCancionController implements Initializable {
         tipoArchivo="cancion";
         radioCancion.setSelected(true);
         radioAlbum.setSelected(false);
+        archivoCargado=false;
     }
 
     @FXML
-    private void elegirArchivo(ActionEvent event) {
-        
-        
+    private void elegirArchivo(ActionEvent event) throws IOException, TagException {
+        String fileName=null;
+        JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+            "MP3 Files", "mp3");
+        chooser.setFileFilter(filter);
+        int returnVal = chooser.showOpenDialog(null);
+        if(returnVal == JFileChooser.APPROVE_OPTION) {
+           fileName=chooser.getSelectedFile().getAbsolutePath();
+        }
+        String path = fileName.replace("\\", "\\\\");
+        rutaCancion=path;
+        etiquetaRutaArchivo.setText(rutaCancion);
+        archivoCargado=true;
     }
 
+
     @FXML
-    private void subirArchivo(ActionEvent event) {
+    private void subirArchivo(ActionEvent event) throws IOException, TagException {
+        String nombreArtista;
+        String nombreAlbum;
+        String allo;
+        if(!archivoCargado){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.initStyle(StageStyle.UTILITY);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error de archivo");
+            alert.setContentText("No ha cargado ningún archivo");
+            alert.showAndWait();
+        }else{
+            String nombreCompania= JOptionPane.showInputDialog("Por favor ingrese la compañia discografica ");
+            MP3File mp3file = new MP3File(rutaCancion);
+            nombreArtista=mp3file.getID3v2Tag().getLeadArtist();
+            if((nombreArtista.equals(""))||(nombreArtista.equals(" "))||(nombreArtista.equals(null))){
+                nombreArtista="Desconocido";
+            }
+            nombreAlbum=mp3file.getID3v2Tag().getAlbumTitle();
+            if((nombreAlbum.equals(""))||(nombreAlbum.equals(" "))||(nombreAlbum.equals(null))){
+                nombreAlbum="Desconocido";
+            }
+            
+            allo = mp3file.getID3v2Tag().getYearReleased();
+            
+            Cancion nuevaCancion = new Cancion();
+            nuevaCancion.setNombre(mp3file.getID3v2Tag().getSongTitle());
+            nuevaCancion.setGenero(mp3file.getID3v2Tag().getSongGenre());
+            nuevaCancion.setDuracion(obtenerDuracion(rutaCancion));
+            nuevaCancion.setIdArtista(adquirirArtista(nombreArtista, mp3file.getID3v2Tag().getSongGenre()));
+            nuevaCancion.setIdAlbum(adquirirAlbum(nombreAlbum, nuevaCancion.getIdArtista(), nombreCompania, allo));
+            
+            if(!cancionExiste(nuevaCancion)){
+                new ClienteCancion().create_JSON(nuevaCancion);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.initStyle(StageStyle.UTILITY);
+                alert.setTitle("Exito");
+                alert.setHeaderText("Exito al subir archivo");
+                alert.setContentText("La canción fué subida exitosamente al sistema");
+                alert.showAndWait();
+            }else{
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.initStyle(StageStyle.UTILITY);
+                alert.setTitle("Error");
+                alert.setHeaderText("Error de archivo");
+                alert.setContentText("Esa Cancion ya existe...");
+                alert.showAndWait();
+            }
+            
+            /*System.out.println("Nombre: "+mp3file.getID3v2Tag().getSongTitle());
+            System.out.println("Artista: "+mp3file.getID3v2Tag().getLeadArtist());
+            System.out.println("Album: "+mp3file.getID3v2Tag().getAlbumTitle());
+            System.out.println("Genero: "+mp3file.getID3v2Tag().getSongGenre());
+            System.out.println("Duración: "+obtenerDuracion(rutaCancion));
+            System.out.println("Año: "+mp3file.getID3v2Tag().getYearReleased());
+            System.out.println("Comapñia: "+nombreCompania);*/
+            
+        
+        }
+        
         
         
     }
@@ -69,4 +182,107 @@ public class PanelSubirCancionController implements Initializable {
         radioAlbum.setSelected(true);
     }
     
+    public String obtenerDuracion(String ruta){
+        String duracion="";
+        String minutos="";
+        int minutosEnteros;
+        String segundos="";
+        char[] arregloSegundos;
+        try{
+            int duration;
+            double duracionMinutos;
+            File file=new File(ruta);
+            AudioFile audioFile = AudioFileIO.read(file);
+            duration= audioFile.getAudioHeader().getTrackLength();
+            duracionMinutos=(double)duration;
+            minutosEnteros=duration/60;
+            minutos=String.valueOf(minutosEnteros);
+            duracionMinutos=duracionMinutos/60;
+            double x = duracionMinutos - (long) duracionMinutos;
+            x=(x*60)/100;
+            
+            segundos=String.valueOf(x);
+            segundos=segundos.substring(2, 4);
+            duracion=minutos+":"+segundos;
+            
+        }catch(Exception e){
+         System.out.print("ERROR "+e);
+        }
+        
+        return duracion;
+    }
+    
+    public Artista adquirirArtista(String nombreArtista, String genero){
+        List<Artista> listaArtistas=new ClienteArtista().findAll_JSON();
+        //List<Album> listaAlbums=new ClienteAlbum().findAll_JSON();
+        boolean artistaExiste=false;
+        Artista artistaCancion=new Artista();
+        for(int i=0; i<listaArtistas.size(); i++){
+            if(listaArtistas.get(i).getNombre().equals(nombreArtista)){
+                artistaExiste=true;
+                artistaCancion=listaArtistas.get(i);
+            }
+        }
+        if(artistaExiste==false){
+            Artista nuevoArtista= new Artista();
+            nuevoArtista.setNombre(nombreArtista);
+            new ClienteArtista().create_JSON(nuevoArtista);
+            listaArtistas=new ClienteArtista().findAll_JSON();
+            for(int i=0; i<listaArtistas.size(); i++){
+                if(listaArtistas.get(i).getNombre().equals(nombreArtista)){
+                    artistaCancion=listaArtistas.get(i);
+                }
+            }
+            
+        }
+        GeneroArtista relGenArt=new GeneroArtista();
+        relGenArt.setGenero(genero);
+        relGenArt.setIdArtista(artistaCancion);
+        new ClienteGeneroArtista().create_JSON(relGenArt);
+        return artistaCancion;
+    }
+    
+    public Album adquirirAlbum(String nombreAlbum, Artista nuevoArtista, String nombreCompania, String alloLanzamiento){
+        List<Album> listaAlbums=new ClienteAlbum().findAll_JSON();
+        boolean albumExiste=false;
+        Album albumCancion=new Album();
+        for(int i=0; i<listaAlbums.size(); i++){
+            if(listaAlbums.get(i).getNombre().equals(nombreAlbum)){
+                albumExiste=true;
+                albumCancion=listaAlbums.get(i);
+            }
+        }
+        if(albumExiste==false){
+            Album nuevoAlbum= new Album();
+            nuevoAlbum.setNombre(nombreAlbum);
+            nuevoAlbum.setCompaniaDiscografica(nombreCompania);
+            nuevoAlbum.setIdArtista(nuevoArtista);
+            Calendar cal = Calendar.getInstance();
+            
+            cal.set(Integer.parseInt(alloLanzamiento), 0, 0);
+            Date fecha = cal.getTime();
+            nuevoAlbum.setFechaLanzamiento(fecha);
+            new ClienteAlbum().create_JSON(nuevoAlbum);
+            listaAlbums=new ClienteAlbum().findAll_JSON();
+            for(int i=0; i<listaAlbums.size(); i++){
+                if(listaAlbums.get(i).getNombre().equals(nombreAlbum)){
+                    albumCancion=listaAlbums.get(i);
+                }
+            }
+            
+        }
+        return albumCancion;
+    }
+    
+    public boolean cancionExiste(Cancion cancionComprobar){
+        boolean existe=false;
+        List<Cancion> listaCanciones = new ClienteCancion().obtenerCancionesAlbum(cancionComprobar.getIdAlbum().getIdAlbum());
+        for(int i=0; i<listaCanciones.size();i++){
+            if(listaCanciones.get(i).equals(cancionComprobar)){
+                existe=true;
+            }
+        }
+        
+        return existe;
+    }
 }
