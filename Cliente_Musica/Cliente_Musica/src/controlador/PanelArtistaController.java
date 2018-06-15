@@ -2,9 +2,12 @@ package controlador;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import negocio.Artista;
 
 public class PanelArtistaController implements Initializable{
@@ -12,6 +15,8 @@ public class PanelArtistaController implements Initializable{
     private Label nombre;
     @FXML
     private Label generos;
+    @FXML
+    private ImageView imagen;
     
     private Artista artista;
     private EscuchadorArtista escuchador;
@@ -21,6 +26,9 @@ public class PanelArtistaController implements Initializable{
         this.generos.setText("");
         this.artista.obtenerGeneros().forEach((genero) -> {
             this.generos.setText(this.generos.getText() + " | " + genero.getGenero());
+        });
+        Platform.runLater(() -> {
+            this.imagen.setImage(new Image("http://localhost:8080/AccesoSpotify2018/Artistas/" + this.artista.getIdArtista() + ".jpg"));
         });
     }
 

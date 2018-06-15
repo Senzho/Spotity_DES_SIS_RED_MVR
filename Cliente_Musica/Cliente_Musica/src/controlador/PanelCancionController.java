@@ -48,6 +48,7 @@ public class PanelCancionController implements Initializable{
     private Listareproduccion listaSeleccionada;
     private String nombreListaSeleccionada;
     private Usuario usuarioActual;
+    private EscuchadorCancion escuchador;
     
     private void cargarCancion(){
         this.nombre.setText(this.cancion.getNombre());
@@ -61,13 +62,9 @@ public class PanelCancionController implements Initializable{
         
     }
     
-    public void iniciar(Cancion cancion, Usuario usuario){
+    public void iniciar(Cancion cancion, Usuario usuario, EscuchadorCancion escuchador){
         this.usuarioActual=usuario;
-        this.cancion = cancion;
-        this.cargarCancion();
-    }
-    
-    public void iniciar(Cancion cancion){
+        this.escuchador = escuchador;
         this.cancion = cancion;
         this.cargarCancion();
     }
@@ -92,7 +89,13 @@ public class PanelCancionController implements Initializable{
         Button botonGenerarRadio= new Button();
         botonGenerarRadio.setMaxWidth(189.0);
         botonGenerarRadio.setText("Generar Estación de Radio");
-        box.getChildren().addAll(botonAgregar, botonGenerarRadio, botonDescargar);
+        Button botonAgregarSiguiente= new Button();
+        botonGenerarRadio.setMaxWidth(189.0);
+        botonGenerarRadio.setText("Agregar siguiente");
+        Button botonAgregarFinal= new Button();
+        botonGenerarRadio.setMaxWidth(189.0);
+        botonGenerarRadio.setText("Agregar al final");
+        box.getChildren().addAll(botonAgregar, botonGenerarRadio, botonDescargar, botonAgregarSiguiente, botonAgregarFinal);
         pop.setContentNode(box);
         pop.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
         pop.show(opciones);
@@ -102,6 +105,27 @@ public class PanelCancionController implements Initializable{
             public void handle(ActionEvent event) {
                 pop.hide();
                 manejarBotonAgregarLista();
+            }
+        });
+        botonGenerarRadio.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                pop.hide();
+                PanelCancionController.this.escuchador.cancionGenerarEstacion(cancion);
+            }
+        });
+        botonAgregarSiguiente.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                pop.hide();
+                PanelCancionController.this.escuchador.cancionSiguienteCola(cancion);
+            }
+        });
+        botonAgregarFinal.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                PanelCancionController.this.escuchador.cancionFinalCola(cancion);
+                pop.hide();
             }
         });
     }
@@ -237,7 +261,6 @@ public class PanelCancionController implements Initializable{
         aviso.getButtonTypes().setAll(botonOK);
         aviso.showAndWait();
     }
-    
     public boolean cancionRepetida(){
         boolean repetida=false;
         List<CancionLista> listaCanciones=new ClienteCancionLista().findAll_JSON();
@@ -267,4 +290,9 @@ public class PanelCancionController implements Initializable{
 
     }
 
+    //Eventos:
+    
+    public void play_onClick(){
+        this.escuchador.cancionAReproduccion(this.cancion);
+    }
 }

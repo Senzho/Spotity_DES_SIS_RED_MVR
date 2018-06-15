@@ -47,12 +47,15 @@ public class PanelListaReproduccionController implements Initializable {
     @FXML
     private AnchorPane panelPrincipal;
     private Usuario usuarioActual;
+    private EscuchadorCancion escuchador;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     }    
     
-    public void iniciarVentana(int idLista, Usuario usuarioLogueado){
+    public void iniciarVentana(int idLista, Usuario usuarioLogueado, EscuchadorCancion escuchador){
         usuarioActual=usuarioLogueado;
+        this.escuchador = escuchador;
         listaSeleccionada=new ClienteListaReproduccion().find_JSON(idLista);
         List<CancionLista> listaCanciones = new ArrayList();
         List<CancionLista> cancionesListaReproduccion = new ArrayList();
@@ -72,7 +75,7 @@ public class PanelListaReproduccionController implements Initializable {
             try {
                 AnchorPane pane = loader.load();
                 PanelCancionController controller = loader.getController();
-                controller.iniciar(cancionesListaReproduccion.get(i).getIdCancion(), usuarioActual);
+                controller.iniciar(cancionesListaReproduccion.get(i).getIdCancion(), usuarioActual, this.escuchador);
                 this.vboxCanciones.getChildren().add(pane);
             } catch (IOException ex) {
                 Logger.getLogger(PanelArtistasController.class.getName()).log(Level.SEVERE, null, ex);
@@ -105,7 +108,7 @@ public class PanelListaReproduccionController implements Initializable {
         FXMLLoader loader = new FXMLLoader(VentanaMenuPrincipalController.class.getResource("/vista/PanelListasReproduccion.fxml"));
         Parent root = (Parent) loader.load();
         PanelListasReproduccionController panelListas = loader.getController();
-        panelListas.iniciarPantalla(usuarioActual);
+        panelListas.iniciarPantalla(usuarioActual, this.escuchador);
         panelPrincipal.getChildren().clear();
         panelPrincipal.getChildren().add(root);
     }
@@ -119,7 +122,7 @@ public class PanelListaReproduccionController implements Initializable {
                 FXMLLoader loader = new FXMLLoader(VentanaMenuPrincipalController.class.getResource("/vista/PanelListasReproduccion.fxml"));
                 Parent root = (Parent) loader.load();
                 PanelListasReproduccionController panelListas = loader.getController();
-                panelListas.iniciarPantalla(usuarioActual);
+                panelListas.iniciarPantalla(usuarioActual, this.escuchador);
                 panelPrincipal.getChildren().clear();
                 panelPrincipal.getChildren().add(root);
             }           

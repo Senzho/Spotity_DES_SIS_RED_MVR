@@ -20,6 +20,7 @@ public class PanelHistorialController implements Initializable{
     @FXML
     private VBox panelCanciones;
     private int idUsuario;
+    private EscuchadorCancion escuchador;
     
     private List<Cancion> canciones;
     
@@ -30,7 +31,7 @@ public class PanelHistorialController implements Initializable{
                 try {
                     AnchorPane pane = loader.load();
                     PanelCancionController controller = loader.getController();
-                    controller.iniciar(cancion, new ClienteUsuario().find_JSON(this.idUsuario));
+                    controller.iniciar(cancion, new ClienteUsuario().find_JSON(this.idUsuario), this.escuchador);
                     this.panelCanciones.getChildren().add(pane);
                 } catch (IOException ex) {
                     Logger.getLogger(PanelArtistasController.class.getName()).log(Level.SEVERE, null, ex);
@@ -44,8 +45,9 @@ public class PanelHistorialController implements Initializable{
         
     }
     
-    public void iniciar(int idUsuario){
+    public void iniciar(int idUsuario, EscuchadorCancion escuchador){
         this.idUsuario= idUsuario;
+        this.escuchador = escuchador;
         Platform.runLater(() -> {
             this.canciones = new Historialreproduccion().consultarHistorial(idUsuario);
             this.cargarHistorial();

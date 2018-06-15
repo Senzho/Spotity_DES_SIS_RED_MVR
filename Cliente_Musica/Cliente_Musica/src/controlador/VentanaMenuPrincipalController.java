@@ -3,6 +3,8 @@ package controlador;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,13 +14,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import negocio.Album;
 import negocio.Artista;
+import negocio.Cancion;
 import negocio.Usuario;
 import org.controlsfx.control.PopOver;
 
@@ -27,7 +32,7 @@ import org.controlsfx.control.PopOver;
  *
  * @author Renato
  */
-public class VentanaMenuPrincipalController implements Initializable, EscuchadorArtista, EscuchadorAlbum {
+public class VentanaMenuPrincipalController implements Initializable, EscuchadorArtista, EscuchadorAlbum, EscuchadorCancion {
 
     @FXML
     private BorderPane panelPrincipal;
@@ -45,7 +50,10 @@ public class VentanaMenuPrincipalController implements Initializable, Escuchador
     private Button botonCerrarSesion;
     @FXML
     private Button botonHistorial;
+    
     private Usuario usuarioActual;
+    private List<Cancion> cola;
+    private PanelReproducirCancionController reproduccion;
 
     /**
      * Initializes the controller class.
@@ -55,7 +63,7 @@ public class VentanaMenuPrincipalController implements Initializable, Escuchador
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
-    }    
+    }
 
     @FXML
     private void desplegarPanelBibliotecas(ActionEvent event) {
@@ -74,7 +82,7 @@ public class VentanaMenuPrincipalController implements Initializable, Escuchador
                     FXMLLoader loader = new FXMLLoader(VentanaMenuPrincipalController.class.getResource("/vista/PanelBibliotecaPersonal.fxml"));
                     Parent root = (Parent) loader.load();
                     PanelBibliotecaPersonalController controller = loader.getController();
-                    controller.inicar(VentanaMenuPrincipalController.this.usuarioActual.getIdUsuario());
+                    controller.inicar(VentanaMenuPrincipalController.this.usuarioActual.getIdUsuario(), VentanaMenuPrincipalController.this);
                     //Panel panelSubir = loader.getController();****************************
                     pop.hide();
                     panelPrincipal.getChildren().clear();
@@ -141,7 +149,7 @@ public class VentanaMenuPrincipalController implements Initializable, Escuchador
         FXMLLoader loader = new FXMLLoader(VentanaMenuPrincipalController.class.getResource("/vista/PanelListasReproduccion.fxml"));
         Parent root = (Parent) loader.load();
         PanelListasReproduccionController panelListas = loader.getController();
-        panelListas.iniciarPantalla(usuarioActual);
+        panelListas.iniciarPantalla(usuarioActual, this);
         panelPrincipal.getChildren().clear();
         panelPrincipal.setCenter(root);
     }
@@ -176,7 +184,7 @@ public class VentanaMenuPrincipalController implements Initializable, Escuchador
         try {
             Parent root = (Parent) loader.load();
             PanelCancionesController controller = loader.getController();
-            controller.iniciar(album, usuarioActual);
+            controller.iniciar(album, usuarioActual, this);
             this.panelPrincipal.getChildren().clear();
             this.panelPrincipal.setCenter(root);
         } catch (IOException ex) {
@@ -187,5 +195,34 @@ public class VentanaMenuPrincipalController implements Initializable, Escuchador
     public void setUsuario(Usuario usuario){
         this.usuarioActual=usuario;
         etiquetaNombreUsuario.setText(usuarioActual.getNombre());
+        this.cola = new ArrayList();
+        try {
+            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/vista/PanelReproducirCancion.fxml"));
+            AnchorPane root = loader.load();
+            Scene scene = new Scene(root, 200, 500);
+            stage.setScene(scene);
+            this.reproduccion = loader.getController();
+            this.reproduccion.iniciar(stage, this.usuarioActual, this);
+        } catch (IOException ex) {
+            Logger.getLogger(VentanaMenuPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public void cancionAReproduccion(Cancion cancion) {
+        this.reproduccion.setCancion(cancion);
+    }
+    @Override
+    public void cancionGenerarEstacion(Cancion cancion) {
+        this.reproduccion.generarEstacion(cancion.getGenero());
+    }
+    @Override
+    public void cancionSiguienteCola(Cancion cancion) {
+        this.reproduccion.agregarSiguiente(cancion);
+    }
+    @Override
+    public void cancionFinalCola(Cancion cancion) {
+        this.reproduccion.agregarFinal(cancion);
     }
 }

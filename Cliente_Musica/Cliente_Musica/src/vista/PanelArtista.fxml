@@ -13,7 +13,7 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#onClick" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <ImageView fx:id="imagen" fitHeight="150.0" fitWidth="150.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#onClick" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <Label fx:id="generos" alignment="TOP_LEFT" layoutX="8.0" layoutY="175.0" onMouseClicked="#onClick" prefHeight="83.0" prefWidth="134.0" text="Géneros" wrapText="true" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="175.0">
          <font>
             <Font size="14.0" />

@@ -71,7 +71,7 @@ public class PanelArtistasController implements Initializable{
                 try {
                     AnchorPane pane = loader.load();
                     PanelCancionesAlbumController controller = loader.getController();
-                    controller.iniciar(album, usuarioActual);
+                    controller.iniciar(album, usuarioActual, (EscuchadorCancion) this.escuchador);
                     this.panelCancionesAlbum.getChildren().add(pane);
                 } catch (IOException ex) {
                     Logger.getLogger(PanelArtistasController.class.getName()).log(Level.SEVERE, null, ex);

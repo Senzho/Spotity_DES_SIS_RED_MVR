@@ -53,6 +53,8 @@ public class PanelListasReproduccionController implements Initializable {
     @FXML
     private Button botonCrearLista;
     private Usuario usuario;
+    private EscuchadorCancion escuchador;
+    
     public void inicializarTablaListas() {
         columnaNombreLista.setCellValueFactory(new PropertyValueFactory<Listareproduccion, String>("nombre"));
         listas = FXCollections.observableArrayList();
@@ -65,8 +67,9 @@ public class PanelListasReproduccionController implements Initializable {
         
     }    
     
-    public void iniciarPantalla(Usuario usuarioActual){
+    public void iniciarPantalla(Usuario usuarioActual, EscuchadorCancion escuchador){
         usuario=usuarioActual;
+        this.escuchador = escuchador;
         int usuarioLista;
         boolean listaVacia;
         int idUsuarioActual=usuarioActual.getIdUsuario();
@@ -93,7 +96,7 @@ public class PanelListasReproduccionController implements Initializable {
                         FXMLLoader loader = new FXMLLoader(PanelListasReproduccionController.class.getResource("/vista/PanelListaReproduccion.fxml"));
                         Parent root = (Parent) loader.load();
                         PanelListaReproduccionController listaController= loader.getController();
-                        listaController.iniciarVentana(listaSeleccionada.getIdLista(), usuario);
+                        listaController.iniciarVentana(listaSeleccionada.getIdLista(), usuario, PanelListasReproduccionController.this.escuchador);
                         panelPrincipal.getChildren().clear();
                         panelPrincipal.getChildren().add(root);
                     } catch (IOException ex) {

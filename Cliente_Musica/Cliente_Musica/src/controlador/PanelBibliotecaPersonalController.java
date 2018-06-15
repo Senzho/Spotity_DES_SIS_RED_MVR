@@ -26,6 +26,7 @@ public class PanelBibliotecaPersonalController implements Initializable{
     private VBox panelCanciones;
     private List<Cancion> canciones;
     private int idUsuario;
+    private EscuchadorCancion escuchador;
     
     private void mostrarCanciones(){
         if (!this.canciones.isEmpty()){
@@ -35,7 +36,7 @@ public class PanelBibliotecaPersonalController implements Initializable{
                 try {
                     AnchorPane pane = loader.load();
                     PanelCancionController controller = loader.getController();
-                    controller.iniciar(cancion, adquirirUsuarioActual());
+                    controller.iniciar(cancion, adquirirUsuarioActual(), this.escuchador);
                     this.panelCanciones.getChildren().add(pane);
                 } catch (IOException ex) {
                     Logger.getLogger(PanelArtistasController.class.getName()).log(Level.SEVERE, null, ex);
@@ -57,8 +58,9 @@ public class PanelBibliotecaPersonalController implements Initializable{
         this.canciones = new ArrayList();
     }
     
-    public void inicar(int idUsuario){
+    public void inicar(int idUsuario, EscuchadorCancion escuchador){
         this.idUsuario = idUsuario;
+        this.escuchador = escuchador;
         this.panelCanciones = new VBox();
         this.panelCanciones.setSpacing(5);
         this.cargarCanciones();

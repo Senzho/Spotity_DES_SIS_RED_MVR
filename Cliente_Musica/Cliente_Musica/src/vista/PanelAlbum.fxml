@@ -13,7 +13,7 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#onClick" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <ImageView fx:id="imagen" fitHeight="150.0" fitWidth="150.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#onClick" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <image>
             <Image url="@../../../../../Downloads/cd.png" />
          </image>
