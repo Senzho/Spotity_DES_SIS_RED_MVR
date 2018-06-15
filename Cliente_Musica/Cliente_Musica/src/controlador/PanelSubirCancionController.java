@@ -4,6 +4,7 @@ package controlador;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Paths;
@@ -12,6 +13,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -65,6 +68,7 @@ public class PanelSubirCancionController implements Initializable {
     private Usuario usuarioActual;
     private String rutaOrigen;
     private String rutaCancion;
+    private String rutaArchivo;
     private String rutaNueva;
     boolean archivoCargado;
 
@@ -86,21 +90,73 @@ public class PanelSubirCancionController implements Initializable {
 
     @FXML
     private void elegirArchivo(ActionEvent event) throws IOException, TagException {
-        String fileName=null;
-        JFileChooser chooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter(
-            "MP3 Files", "mp3");
-        chooser.setFileFilter(filter);
-        int returnVal = chooser.showOpenDialog(null);
-        if(returnVal == JFileChooser.APPROVE_OPTION) {
-           fileName=chooser.getSelectedFile().getAbsolutePath();
+        String fileName="";
+        if(tipoArchivo.equals("cancion")){
+            JFileChooser chooser = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "MP3 Files", "mp3");
+            chooser.setFileFilter(filter);
+            int returnVal = chooser.showOpenDialog(null);
+            if(returnVal == JFileChooser.APPROVE_OPTION) {
+               fileName=chooser.getSelectedFile().getAbsolutePath();
+            }
+            String path = fileName.replace("\\", "\\\\");
+            rutaCancion=path;
+            etiquetaRutaArchivo.setText(rutaCancion);
+            archivoCargado=true;
+        }else{
+            JFileChooser chooser = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "ZIP Files", "zip");
+            chooser.setFileFilter(filter);
+            int returnVal = chooser.showOpenDialog(null);
+            if(returnVal == JFileChooser.APPROVE_OPTION) {
+               fileName=chooser.getSelectedFile().getAbsolutePath();
+            }
+            String path = fileName.replace("\\", "\\\\");
+            
+            rutaArchivo=path;
+            etiquetaRutaArchivo.setText(rutaArchivo);
+            archivoCargado=true;
+            
         }
-        String path = fileName.replace("\\", "\\\\");
-        rutaCancion=path;
-        etiquetaRutaArchivo.setText(rutaCancion);
-        archivoCargado=true;
+        
     }
 
+    private void subirCancion(String direccion, File archivo) throws IOException, TagException{
+        String nombreArtista;
+        String nombreAlbum;
+        String allo;
+        String archivoActual=archivo.getAbsolutePath();
+        archivoActual = archivoActual.replace("\\", "\\\\");
+        System.out.println("Archivo Actual "+archivoActual);
+        MP3File mp3file = new MP3File(archivoActual);
+                nombreArtista=mp3file.getID3v2Tag().getLeadArtist();
+                if((nombreArtista.equals(""))||(nombreArtista.equals(" "))||(nombreArtista.equals(null))){
+                    nombreArtista="Desconocido";
+                }
+                nombreAlbum=mp3file.getID3v2Tag().getAlbumTitle();
+                if((nombreAlbum.equals(""))||(nombreAlbum.equals(" "))||(nombreAlbum.equals(null))){
+                    nombreAlbum="Desconocido";
+                }
+
+                allo = mp3file.getID3v2Tag().getYearReleased();
+
+                Cancion nuevaCancion = new Cancion();
+                nuevaCancion.setNombre(mp3file.getID3v2Tag().getSongTitle());
+                nuevaCancion.setGenero(mp3file.getID3v2Tag().getSongGenre());
+                nuevaCancion.setDuracion(obtenerDuracion(rutaCancion));
+                nuevaCancion.setIdArtista(adquirirArtista(nombreArtista, mp3file.getID3v2Tag().getSongGenre()));
+                nuevaCancion.setIdAlbum(adquirirAlbum(nombreAlbum, nuevaCancion.getIdArtista(), "nombreCompania", allo));
+
+                if(!cancionExiste(nuevaCancion)){
+                    new ClienteCancion().create_JSON(nuevaCancion);
+                }
+        
+        
+        
+    
+    }
 
     @FXML
     private void subirArchivo(ActionEvent event) throws IOException, TagException {
@@ -115,52 +171,76 @@ public class PanelSubirCancionController implements Initializable {
             alert.setContentText("No ha cargado ningún archivo");
             alert.showAndWait();
         }else{
-            String nombreCompania= JOptionPane.showInputDialog("Por favor ingrese la compañia discografica ");
-            MP3File mp3file = new MP3File(rutaCancion);
-            nombreArtista=mp3file.getID3v2Tag().getLeadArtist();
-            if((nombreArtista.equals(""))||(nombreArtista.equals(" "))||(nombreArtista.equals(null))){
-                nombreArtista="Desconocido";
-            }
-            nombreAlbum=mp3file.getID3v2Tag().getAlbumTitle();
-            if((nombreAlbum.equals(""))||(nombreAlbum.equals(" "))||(nombreAlbum.equals(null))){
-                nombreAlbum="Desconocido";
-            }
+            if(tipoArchivo.equals("cancion")){
+                String nombreCompania= JOptionPane.showInputDialog("Por favor ingrese la compañia discografica ");
+                MP3File mp3file = new MP3File(rutaCancion);
+                nombreArtista=mp3file.getID3v2Tag().getLeadArtist();
+                if((nombreArtista.equals(""))||(nombreArtista.equals(" "))||(nombreArtista.equals(null))){
+                    nombreArtista="Desconocido";
+                }
+                nombreAlbum=mp3file.getID3v2Tag().getAlbumTitle();
+                if((nombreAlbum.equals(""))||(nombreAlbum.equals(" "))||(nombreAlbum.equals(null))){
+                    nombreAlbum="Desconocido";
+                }
+
+                allo = mp3file.getID3v2Tag().getYearReleased();
+
+                Cancion nuevaCancion = new Cancion();
+                nuevaCancion.setNombre(mp3file.getID3v2Tag().getSongTitle());
+                nuevaCancion.setGenero(mp3file.getID3v2Tag().getSongGenre());
+                nuevaCancion.setDuracion(obtenerDuracion(rutaCancion));
+                nuevaCancion.setIdArtista(adquirirArtista(nombreArtista, mp3file.getID3v2Tag().getSongGenre()));
+                nuevaCancion.setIdAlbum(adquirirAlbum(nombreAlbum, nuevaCancion.getIdArtista(), nombreCompania, allo));
+
+                if(!cancionExiste(nuevaCancion)){
+                    new ClienteCancion().create_JSON(nuevaCancion);
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.initStyle(StageStyle.UTILITY);
+                    alert.setTitle("Exito");
+                    alert.setHeaderText("Exito al subir archivo");
+                    alert.setContentText("La canción fué subida exitosamente al sistema");
+                    alert.showAndWait();
+                }else{
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.initStyle(StageStyle.UTILITY);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Error de archivo");
+                    alert.setContentText("Esa Cancion ya existe...");
+                    alert.showAndWait();
+                }
+            }else{
             
-            allo = mp3file.getID3v2Tag().getYearReleased();
+                unzip(rutaArchivo, "src/Archivos");
             
-            Cancion nuevaCancion = new Cancion();
-            nuevaCancion.setNombre(mp3file.getID3v2Tag().getSongTitle());
-            nuevaCancion.setGenero(mp3file.getID3v2Tag().getSongGenre());
-            nuevaCancion.setDuracion(obtenerDuracion(rutaCancion));
-            nuevaCancion.setIdArtista(adquirirArtista(nombreArtista, mp3file.getID3v2Tag().getSongGenre()));
-            nuevaCancion.setIdAlbum(adquirirAlbum(nombreAlbum, nuevaCancion.getIdArtista(), nombreCompania, allo));
-            
-            if(!cancionExiste(nuevaCancion)){
-                new ClienteCancion().create_JSON(nuevaCancion);
+                File dir = new File(rutaArchivo);
+                String nombreCarpeta=dir.getName();
+                nombreCarpeta=nombreCarpeta.substring(0, nombreCarpeta.length()-4);
+                String direccion="src/Archivos/"+nombreCarpeta;
+                File actual = new File("src/Archivos/"+nombreCarpeta);
+                for( File f : actual.listFiles()){
+                    subirCancion(direccion, f);
+                }
+
+                //Elimina archivos temporales
+                actual = new File("src/Archivos/"+nombreCarpeta);
+                for( File f : actual.listFiles()){
+                    f.delete();
+                }
+
+                actual = new File("src/Archivos/");
+                for( File f : actual.listFiles()){
+                    f.delete();
+                }
+                
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.initStyle(StageStyle.UTILITY);
                 alert.setTitle("Exito");
                 alert.setHeaderText("Exito al subir archivo");
-                alert.setContentText("La canción fué subida exitosamente al sistema");
+                alert.setContentText("El albúm se subió exitosamente al sistema");
                 alert.showAndWait();
-            }else{
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.initStyle(StageStyle.UTILITY);
-                alert.setTitle("Error");
-                alert.setHeaderText("Error de archivo");
-                alert.setContentText("Esa Cancion ya existe...");
-                alert.showAndWait();
+                
+            
             }
-            
-            /*System.out.println("Nombre: "+mp3file.getID3v2Tag().getSongTitle());
-            System.out.println("Artista: "+mp3file.getID3v2Tag().getLeadArtist());
-            System.out.println("Album: "+mp3file.getID3v2Tag().getAlbumTitle());
-            System.out.println("Genero: "+mp3file.getID3v2Tag().getSongGenre());
-            System.out.println("Duración: "+obtenerDuracion(rutaCancion));
-            System.out.println("Año: "+mp3file.getID3v2Tag().getYearReleased());
-            System.out.println("Comapñia: "+nombreCompania);*/
-            
-        
         }
         
         
@@ -285,4 +365,44 @@ public class PanelSubirCancionController implements Initializable {
         
         return existe;
     }
+    
+    private static void unzip(String zipFilePath, String destDir) {
+        File dir = new File(destDir);
+        // create output directory if it doesn't exist
+        //if(!dir.exists()) dir.mkdirs();
+        FileInputStream fis;
+        //buffer for read and write data to file
+        byte[] buffer = new byte[1024];
+        try {
+            fis = new FileInputStream(zipFilePath);
+            ZipInputStream zis = new ZipInputStream(fis);
+            ZipEntry ze = zis.getNextEntry();
+            while(ze != null){
+                String fileName = ze.getName();
+                File newFile = new File(destDir +File.separator+fileName);
+                System.out.println("Unzipping to "+newFile.getAbsolutePath());
+                new File(newFile.getParent()).mkdirs();
+                FileOutputStream fos = new FileOutputStream(newFile);
+                int len;
+                while ((len = zis.read(buffer)) > 0) {
+                fos.write(buffer, 0, len);
+                }
+                fos.close();
+                zis.closeEntry();
+                ze = zis.getNextEntry();
+            }
+            zis.closeEntry();
+            zis.close();
+            fis.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        
+    }
+    
+    
+
+    
+    
 }
