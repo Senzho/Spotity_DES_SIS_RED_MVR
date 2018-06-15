@@ -6,8 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="497.0" prefWidth="293.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="497.0" prefWidth="597.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.PanelReproducirCancionController">
    <children>
       <ImageView fitHeight="86.0" fitWidth="77.0" layoutX="110.0" layoutY="291.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -44,7 +43,7 @@
             <Font name="Arial" size="16.0" />
          </font>
       </Label>
-      <ImageView fitHeight="260.0" fitWidth="474.0" layoutX="23.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="260.0" fitWidth="474.0" layoutX="14.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@stock-vector-abstract-music-disk-background-vector-illustration-for-your-design-112280339.jpg" />
          </image>
@@ -59,10 +58,15 @@
             <Font name="Arial Bold" size="16.0" />
          </font>
       </Label>
-      <Button layoutX="29.0" layoutY="457.0" mnemonicParsing="false" text="Generar estación de radio">
+      <Button fx:id="btnGenerarestacion" layoutX="29.0" layoutY="457.0" mnemonicParsing="false" onMouseClicked="#btnGenerarestacion_onClick" text="Generar estación de radio">
          <font>
             <Font name="Arial" size="14.0" />
          </font>
       </Button>
+      <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="282.0" layoutY="31.0" prefHeight="451.0" prefWidth="306.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="9.0" AnchorPane.topAnchor="31.0">
+         <content>
+            <VBox fx:id="listaCanciones" prefHeight="200.0" prefWidth="100.0" />
+         </content>
+      </ScrollPane>
    </children>
 </AnchorPane>

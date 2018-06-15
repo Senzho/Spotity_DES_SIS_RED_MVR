@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -36,7 +37,7 @@ import javax.ws.rs.core.MediaType;
 @Path("modelo.cancion")
 public class CancionFacadeREST extends AbstractFacade<Cancion> {
 
-    @PersistenceContext(unitName = "AccesoSpotify2018PU")
+    @PersistenceContext(unitName = "SpotifyPU")
     private EntityManager em;
 
     public CancionFacadeREST() {
@@ -89,6 +90,14 @@ public class CancionFacadeREST extends AbstractFacade<Cancion> {
             //logger
         }
         return canciones;
+    }
+    @GET
+    @Path("/estacionRadio/{genero}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Cancion> buscarCanciones(@PathParam("genero") String genero) {
+        Query query = getEntityManager().createNamedQuery("Cancion.findByGenero");
+        query.setParameter("genero", genero);
+        return query.getResultList();
     }
     @GET
     @Path("descargar/{idCancion}")
