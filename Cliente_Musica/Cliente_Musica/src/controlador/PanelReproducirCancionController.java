@@ -33,7 +33,6 @@ public class PanelReproducirCancionController implements Initializable {
 
     @FXML
     private VBox listaCanciones;
-
     private ClienteCancion clienteCancion;
     private List<Cancion> cola;
     private Stage stage;
@@ -42,7 +41,6 @@ public class PanelReproducirCancionController implements Initializable {
     private Usuario usuario;
 
     private void agregarAVista(Cancion cancion, int posicion) {
-        listaCanciones.getChildren().clear();
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/vista/PanelCancion.fxml"));
         AnchorPane panel;
         try {
@@ -84,7 +82,7 @@ public class PanelReproducirCancionController implements Initializable {
     //verificar reproducción antes de mostrar esta ventana:
 
     public void generarEstacion(String genero) {
-        this.cola.clear();
+        listaCanciones.getChildren().clear();
         cola = this.clienteCancion.buscarCanciones(genero);
         for (Cancion cancion : cola) {
             this.agregarAVista(cancion, this.cola.size());
@@ -107,6 +105,7 @@ public class PanelReproducirCancionController implements Initializable {
 
     public void btnGenerarestacion_onClick() {
         cola = new ArrayList();
+        listaCanciones.getChildren().clear();
         cola = this.clienteCancion.buscarCanciones(this.cancionActual.getGenero());
         for (Cancion cancion : cola) {
             this.agregarAVista(cancion, this.cola.size());
