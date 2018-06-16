@@ -5,12 +5,23 @@
  */
 package serviciosCliente;
 
+import java.io.BufferedInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import negocio.Cancion;
+import negocio.Peticion;
 
 /**
  * Jersey REST client generated for REST resource:CancionFacadeREST
@@ -29,7 +40,7 @@ public class ClienteCancion {
 
     private WebTarget webTarget;
     private Client client;
-    private static final String BASE_URI = "http://localhost:8080/AccesoSpotify2018/webresources";
+    private static final String BASE_URI = "http://localhost:8080/Spotify/webresources";
 
     public ClienteCancion() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
@@ -108,6 +119,22 @@ public class ClienteCancion {
 
     public void close() {
         client.close();
+    }
+    
+    public void subirCancion(File archivo, Cancion datosCancion) throws IOException{
+        
+        byte[] cancion= new byte [(int)archivo.length()];
+        FileInputStream fis = new FileInputStream(archivo);
+        fis.read(cancion);
+        int idAlbum=datosCancion.getIdAlbum().getIdAlbum();
+        int idCancion=datosCancion.getIdCancion();
+        int idArtista=datosCancion.getIdArtista().getIdArtista();
+        Peticion peticion=new Peticion("subir", cancion, idAlbum, idCancion, idArtista);
+        Socket socket = new Socket("localhost",9000);
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+        oos.writeObject(peticion);
+        oos.close();
+        socket.close();
     }
     
 }

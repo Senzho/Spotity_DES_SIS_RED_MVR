@@ -17,7 +17,7 @@
          <content>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <GridPane prefHeight="76.0" prefWidth="708.0">
+                  <GridPane prefHeight="123.0" prefWidth="834.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="532.0" minWidth="10.0" prefWidth="57.0" />
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="595.0" minWidth="10.0" prefWidth="592.0" />
@@ -37,10 +37,10 @@
                         </Label>
                         <Label GridPane.columnIndex="1" />
                         <Label prefHeight="17.0" prefWidth="329.0" text="Para las canciones se requiere de archivos en formato mp3 " GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                        <Label prefHeight="17.0" prefWidth="338.0" text="Para albumes se necesita que este se encuentre en formato zip" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                        <Label prefHeight="44.0" prefWidth="583.0" text="Para albumes se necesita que este se encuentre en formato zip, y se requiere que dentro del zip &#10;haya una carpeta con las canciones" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                      </children>
                   </GridPane>
-                  <GridPane prefHeight="384.0" prefWidth="708.0">
+                  <GridPane prefHeight="437.0" prefWidth="834.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="242.0" minWidth="10.0" prefWidth="200.0" />
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="172.0" minWidth="10.0" prefWidth="151.0" />
@@ -54,8 +54,8 @@
                     </rowConstraints>
                      <children>
                         <Button fx:id="botonElegirArchivo" mnemonicParsing="false" onAction="#elegirArchivo" text="Examinar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                        <Label fx:id="etiquetaRutaArchivo" prefHeight="121.0" prefWidth="108.0" text="El archivo no &#10;es compatible" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.valignment="TOP" />
-                        <Button fx:id="botonSubirArchivo" mnemonicParsing="false" onAction="#subirArchivo" text="Subir" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                        <Label fx:id="etiquetaRutaArchivo" prefHeight="115.0" prefWidth="147.0" text="Archivo No Cargado" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+                        <Button fx:id="botonSubirArchivo" mnemonicParsing="false" onAction="#subirArchivo" prefHeight="36.0" prefWidth="69.0" text="Subir" GridPane.columnIndex="2" GridPane.rowIndex="2">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>

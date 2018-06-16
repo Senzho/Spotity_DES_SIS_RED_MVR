@@ -1,14 +1,11 @@
 
 package controlador;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -22,10 +19,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.StageStyle;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -36,7 +29,6 @@ import negocio.Cancion;
 import negocio.GeneroArtista;
 import negocio.Usuario;
 import org.farng.mp3.MP3File;
-import org.farng.mp3.id3.ID3v1;
 import org.farng.mp3.TagException;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
@@ -44,14 +36,7 @@ import serviciosCliente.ClienteAlbum;
 import serviciosCliente.ClienteArtista;
 import serviciosCliente.ClienteCancion;
 import serviciosCliente.ClienteGeneroArtista;
-import static sun.audio.AudioPlayer.player;
 
-
-/**
- * FXML Controller class
- *
- * @author Renato
- */
 public class PanelSubirCancionController implements Initializable {
 
     @FXML
@@ -104,7 +89,7 @@ public class PanelSubirCancionController implements Initializable {
             rutaCancion=path;
             etiquetaRutaArchivo.setText(rutaCancion);
             archivoCargado=true;
-        }else{
+        }else if(tipoArchivo.equals("album")){
             JFileChooser chooser = new JFileChooser();
             FileNameExtensionFilter filter = new FileNameExtensionFilter(
                 "ZIP Files", "zip");
@@ -127,35 +112,50 @@ public class PanelSubirCancionController implements Initializable {
         String nombreArtista;
         String nombreAlbum;
         String allo;
+        String tituloCancion;
+        String genero;
+        String duracion;
         String archivoActual=archivo.getAbsolutePath();
         archivoActual = archivoActual.replace("\\", "\\\\");
-        System.out.println("Archivo Actual "+archivoActual);
+        //System.out.println("Archivo Actual "+archivoActual);
         MP3File mp3file = new MP3File(archivoActual);
-                nombreArtista=mp3file.getID3v2Tag().getLeadArtist();
-                if((nombreArtista.equals(""))||(nombreArtista.equals(" "))||(nombreArtista.equals(null))){
-                    nombreArtista="Desconocido";
-                }
-                nombreAlbum=mp3file.getID3v2Tag().getAlbumTitle();
-                if((nombreAlbum.equals(""))||(nombreAlbum.equals(" "))||(nombreAlbum.equals(null))){
-                    nombreAlbum="Desconocido";
-                }
+        nombreArtista=mp3file.getID3v2Tag().getLeadArtist();
+        if((nombreArtista.equals(""))||(nombreArtista.equals(" "))||(nombreArtista.equals(null))){
+            nombreArtista="Desconocido";
+        }
+        nombreAlbum=mp3file.getID3v2Tag().getAlbumTitle();
+        if((nombreAlbum.equals(""))||(nombreAlbum.equals(" "))||(nombreAlbum.equals(null))){
+            nombreAlbum="Desconocido";
+        }
 
-                allo = mp3file.getID3v2Tag().getYearReleased();
+        allo = mp3file.getID3v2Tag().getYearReleased();
+        if((allo.equals(""))||(allo.equals(" "))|(allo.equals(null))){
+            allo="Desconocido";
+        }
+        tituloCancion=mp3file.getID3v2Tag().getSongTitle();
+        if((tituloCancion.equals(""))||(tituloCancion.equals(" "))||(tituloCancion.equals(null))){
+            tituloCancion="Desconocido";
+        }
 
-                Cancion nuevaCancion = new Cancion();
-                nuevaCancion.setNombre(mp3file.getID3v2Tag().getSongTitle());
-                nuevaCancion.setGenero(mp3file.getID3v2Tag().getSongGenre());
-                nuevaCancion.setDuracion(obtenerDuracion(rutaCancion));
-                nuevaCancion.setIdArtista(adquirirArtista(nombreArtista, mp3file.getID3v2Tag().getSongGenre()));
-                nuevaCancion.setIdAlbum(adquirirAlbum(nombreAlbum, nuevaCancion.getIdArtista(), "nombreCompania", allo));
 
-                if(!cancionExiste(nuevaCancion)){
-                    new ClienteCancion().create_JSON(nuevaCancion);
-                }
-        
-        
-        
-    
+        genero=mp3file.getID3v2Tag().getSongGenre();
+        if((genero.equals(""))||(genero.equals(" "))||(genero.equals(null))){
+            genero="Desconocido";
+        }
+
+        duracion=obtenerDuracion(archivoActual);
+
+
+        Cancion nuevaCancion = new Cancion();
+        nuevaCancion.setNombre(tituloCancion);
+        nuevaCancion.setGenero(genero);
+        nuevaCancion.setDuracion(duracion);
+        nuevaCancion.setIdArtista(adquirirArtista(nombreArtista, mp3file.getID3v2Tag().getSongGenre()));
+        nuevaCancion.setIdAlbum(adquirirAlbum(nombreAlbum, nuevaCancion.getIdArtista(), "nombreCompania", allo));
+
+        if(!cancionExiste(nuevaCancion)){
+            new ClienteCancion().create_JSON(nuevaCancion);
+        }
     }
 
     @FXML
@@ -173,6 +173,7 @@ public class PanelSubirCancionController implements Initializable {
         }else{
             if(tipoArchivo.equals("cancion")){
                 String nombreCompania= JOptionPane.showInputDialog("Por favor ingrese la compañia discografica ");
+                File cancionSubir = new File(rutaCancion);
                 MP3File mp3file = new MP3File(rutaCancion);
                 nombreArtista=mp3file.getID3v2Tag().getLeadArtist();
                 if((nombreArtista.equals(""))||(nombreArtista.equals(" "))||(nombreArtista.equals(null))){
@@ -193,7 +194,19 @@ public class PanelSubirCancionController implements Initializable {
                 nuevaCancion.setIdAlbum(adquirirAlbum(nombreAlbum, nuevaCancion.getIdArtista(), nombreCompania, allo));
 
                 if(!cancionExiste(nuevaCancion)){
+                    //new ClienteCancion().create_JSON(nuevaCancion);
+                    //Cancion cancionAdquirirda=new ClienteCancion().crear(nuevaCancion.getNombre());
                     new ClienteCancion().create_JSON(nuevaCancion);
+                    //System.out.println("id cancion: "+idCancionCreada);
+                    List<Cancion> listaCanciones= new ClienteCancion().obtenerCancionesAlbum(nuevaCancion.getIdAlbum().getIdAlbum());
+                    for(int i=0; i<listaCanciones.size(); i++){
+                        if(listaCanciones.get(i).getNombre().equals(nuevaCancion.getNombre())){
+                            System.out.println("ID cancion="+listaCanciones.get(i).getIdCancion());
+                            nuevaCancion.setIdCancion(listaCanciones.get(i).getIdCancion());
+                            break;
+                        }
+                    }
+                    new serviciosCliente.ClienteCancion().subirCancion(cancionSubir, nuevaCancion);
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.initStyle(StageStyle.UTILITY);
                     alert.setTitle("Exito");
@@ -208,20 +221,22 @@ public class PanelSubirCancionController implements Initializable {
                     alert.setContentText("Esa Cancion ya existe...");
                     alert.showAndWait();
                 }
-            }else{
-            
-                unzip(rutaArchivo, "src/Archivos");
-            
+            }else if(tipoArchivo.equals("album")){
                 File dir = new File(rutaArchivo);
                 String nombreCarpeta=dir.getName();
                 nombreCarpeta=nombreCarpeta.substring(0, nombreCarpeta.length()-4);
                 String direccion="src/Archivos/"+nombreCarpeta;
                 File actual = new File("src/Archivos/"+nombreCarpeta);
-                if (!actual.exists()){
+                unzip(rutaArchivo, "src/Archivos");
+            
+                //System.out.println("Nombre Carpeta: "+actual.getAbsoluteFile());
+                /*if (!actual.exists()){
                     actual.mkdir();
-                }
+                }*/
+                
                 for( File f : actual.listFiles()){
                     subirCancion(direccion, f);
+                    //System.out.println("Archivo actual= "+f.getAbsolutePath());
                 }
 
                 //Elimina archivos temporales
@@ -277,6 +292,9 @@ public class PanelSubirCancionController implements Initializable {
             File file=new File(ruta);
             AudioFile audioFile = AudioFileIO.read(file);
             duration= audioFile.getAudioHeader().getTrackLength();
+            /*if((null==duration)){
+                duration=0;
+            */
             duracionMinutos=(double)duration;
             minutosEnteros=duration/60;
             minutos=String.valueOf(minutosEnteros);
@@ -289,7 +307,7 @@ public class PanelSubirCancionController implements Initializable {
             duracion=minutos+":"+segundos;
             
         }catch(Exception e){
-         System.out.print("ERROR "+e);
+            System.out.print("ERROR "+e);
         }
         
         return duracion;
@@ -297,7 +315,6 @@ public class PanelSubirCancionController implements Initializable {
     
     public Artista adquirirArtista(String nombreArtista, String genero){
         List<Artista> listaArtistas=new ClienteArtista().findAll_JSON();
-        //List<Album> listaAlbums=new ClienteAlbum().findAll_JSON();
         boolean artistaExiste=false;
         Artista artistaCancion=new Artista();
         for(int i=0; i<listaArtistas.size(); i++){
@@ -319,6 +336,9 @@ public class PanelSubirCancionController implements Initializable {
             
         }
         GeneroArtista relGenArt=new GeneroArtista();
+        //System.out.println("genero: "+ genero);
+        
+        
         relGenArt.setGenero(genero);
         relGenArt.setIdArtista(artistaCancion);
         new ClienteGeneroArtista().create_JSON(relGenArt);
@@ -371,10 +391,7 @@ public class PanelSubirCancionController implements Initializable {
     
     private static void unzip(String zipFilePath, String destDir) {
         File dir = new File(destDir);
-        // create output directory if it doesn't exist
-        //if(!dir.exists()) dir.mkdirs();
         FileInputStream fis;
-        //buffer for read and write data to file
         byte[] buffer = new byte[1024];
         try {
             fis = new FileInputStream(zipFilePath);
@@ -383,7 +400,7 @@ public class PanelSubirCancionController implements Initializable {
             while(ze != null){
                 String fileName = ze.getName();
                 File newFile = new File(destDir +File.separator+fileName);
-                System.out.println("Unzipping to "+newFile.getAbsolutePath());
+                //System.out.println("Unzipping to "+newFile.getAbsolutePath());
                 new File(newFile.getParent()).mkdirs();
                 FileOutputStream fos = new FileOutputStream(newFile);
                 int len;
