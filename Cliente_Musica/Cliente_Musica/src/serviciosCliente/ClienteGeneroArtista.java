@@ -29,7 +29,7 @@ public class ClienteGeneroArtista {
 
     private WebTarget webTarget;
     private Client client;
-    private static final String BASE_URI = "http://localhost:8080/Spotify/webresources";
+    private static final String BASE_URI = "http://192.168.43.126:8080/AccesoSpotify2018/webresources";
 
     public ClienteGeneroArtista() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
