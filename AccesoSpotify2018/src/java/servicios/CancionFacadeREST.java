@@ -6,10 +6,8 @@
 package servicios;
 
 import Modelo.Cancion;
-import Util.Ruta;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +35,7 @@ import javax.ws.rs.core.MediaType;
 @Path("modelo.cancion")
 public class CancionFacadeREST extends AbstractFacade<Cancion> {
 
-    @PersistenceContext(unitName = "SpotifyPU")
+    @PersistenceContext(unitName = "AccesoSpotify2018PU")
     private EntityManager em;
 
     public CancionFacadeREST() {
@@ -99,29 +97,6 @@ public class CancionFacadeREST extends AbstractFacade<Cancion> {
         query.setParameter("genero", genero);
         return query.getResultList();
     }
-    @GET
-    @Path("descargar/{idCancion}")
-    @Produces({MediaType.TEXT_PLAIN})
-    public byte[] descargar(@PathParam("idCancion") Integer idCancion){
-        byte[] buffer = null;
-        FileInputStream imputStream = null;
-        try {
-            File file = new File(Ruta.getRutaCancion(idCancion));
-            imputStream = new FileInputStream(file);
-            buffer = new byte[(int) file.length()];
-            imputStream.read(buffer);
-        } catch (IOException ex) {
-            Logger.getLogger(CancionFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                imputStream.close();
-            } catch (IOException ex) {
-                Logger.getLogger(CancionFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        return buffer;
-    }
-
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})

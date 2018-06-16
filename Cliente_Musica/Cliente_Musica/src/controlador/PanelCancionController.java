@@ -90,11 +90,11 @@ public class PanelCancionController implements Initializable{
         botonGenerarRadio.setMaxWidth(189.0);
         botonGenerarRadio.setText("Generar Estación de Radio");
         Button botonAgregarSiguiente= new Button();
-        botonGenerarRadio.setMaxWidth(189.0);
-        botonGenerarRadio.setText("Agregar siguiente");
+        botonAgregarSiguiente.setMaxWidth(189.0);
+        botonAgregarSiguiente.setText("Agregar siguiente");
         Button botonAgregarFinal= new Button();
-        botonGenerarRadio.setMaxWidth(189.0);
-        botonGenerarRadio.setText("Agregar al final");
+        botonAgregarFinal.setMaxWidth(189.0);
+        botonAgregarFinal.setText("Agregar al final");
         box.getChildren().addAll(botonAgregar, botonGenerarRadio, botonDescargar, botonAgregarSiguiente, botonAgregarFinal);
         pop.setContentNode(box);
         pop.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
@@ -124,8 +124,15 @@ public class PanelCancionController implements Initializable{
         botonAgregarFinal.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-                PanelCancionController.this.escuchador.cancionFinalCola(cancion);
                 pop.hide();
+                PanelCancionController.this.escuchador.cancionFinalCola(cancion);
+            }
+        });
+        botonDescargar.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                pop.hide();
+                cancion.descargarCancion();
             }
         });
     }

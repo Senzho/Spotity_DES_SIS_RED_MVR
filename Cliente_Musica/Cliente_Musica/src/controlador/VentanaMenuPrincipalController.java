@@ -158,6 +158,8 @@ public class VentanaMenuPrincipalController implements Initializable, Escuchador
     private void desplegarPanelHistorial(ActionEvent event) throws IOException{
         FXMLLoader loader = new FXMLLoader(VentanaMenuPrincipalController.class.getResource("/vista/PanelHistorialReproduccion.fxml"));
         Parent root = (Parent) loader.load();
+        PanelHistorialController controller = loader.getController();
+        controller.iniciar(this.usuarioActual.getIdUsuario(), this);
         //PanelSubirCancionController panelSubir = loader.getController();
         panelPrincipal.getChildren().clear();
         //panelPrincipal.getChildren().add(root);

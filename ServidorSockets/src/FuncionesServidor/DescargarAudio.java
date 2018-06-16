@@ -5,13 +5,14 @@
  */
 package FuncionesServidor;
 
+import Util.Ruta;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.Socket;
-import servidorsockets.Peticion;
+import negocio.Peticion;
 
 /**
  *
@@ -26,24 +27,25 @@ public class DescargarAudio implements Runnable {
 
     public DescargarAudio(Socket cliente, Peticion peticion) {
         this.cliente = cliente;
-        this.peticion = peticion;//aqui debe buscarse el archivo 
+        this.peticion = peticion;//aqui debe buscarse el archivo
+        
     }
 
     @Override
     public void run() {
         int in;
         byte[] byteArray;
-        final String nombre = "C:\\Users\\Desktop\\Music\\Descargas de musica\\Hell.mp3";
+        final String nombre = Ruta.getRutaCancion(this.peticion.getIdCancion());
         try {
-            System.out.println("segunda entradas");
+            this.salida = new BufferedOutputStream(this.cliente.getOutputStream());
             File archivo = new File(nombre);
-            FileInputStream imputStream = new FileInputStream(archivo);
+            //FileInputStream imputStream = new FileInputStream(archivo);
             byte[] buffer = new byte[(int) archivo.length()];
             salida.write(buffer, 0, buffer.length);
             /*aqui se convirtio a arreglo de bytes.. .y solo importa el arreglo*/
-            imputStream.read(buffer);
+            //imputStream.read(buffer);
         } catch (Exception e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
     }
 

@@ -5,6 +5,7 @@
  */
 package servidorsockets;
 
+import negocio.Peticion;
 import FuncionesServidor.DescargarAudio;
 import java.io.IOException;
 import java.io.ObjectInputStream;

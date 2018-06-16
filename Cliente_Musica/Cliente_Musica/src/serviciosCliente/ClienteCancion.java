@@ -29,7 +29,7 @@ public class ClienteCancion {
 
     private WebTarget webTarget;
     private Client client;
-    private static final String BASE_URI = "http://localhost:8080/Spotify/webresources";
+    private static final String BASE_URI = "http://localhost:8080/AccesoSpotify2018/webresources";
 
     public ClienteCancion() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
@@ -100,11 +100,6 @@ public class ClienteCancion {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("de_album/{0}", new Object[]{idAlbum}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(new GenericType<List<Cancion>>(){});
-    }
-    public byte[] descargar(int idCancion){
-        WebTarget resource = webTarget;
-        resource = resource.path(java.text.MessageFormat.format("descargar/{0}", new Object[]{idCancion}));
-        return resource.request(javax.ws.rs.core.MediaType.TEXT_PLAIN).get(byte[].class);
     }
 
     public void remove(String id) throws ClientErrorException {
