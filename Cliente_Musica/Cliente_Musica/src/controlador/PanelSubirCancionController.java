@@ -217,6 +217,9 @@ public class PanelSubirCancionController implements Initializable {
                 nombreCarpeta=nombreCarpeta.substring(0, nombreCarpeta.length()-4);
                 String direccion="src/Archivos/"+nombreCarpeta;
                 File actual = new File("src/Archivos/"+nombreCarpeta);
+                if (!actual.exists()){
+                    actual.mkdir();
+                }
                 for( File f : actual.listFiles()){
                     subirCancion(direccion, f);
                 }
