@@ -7,17 +7,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.net.Socket;
 
 import servidor.Peticion;
 
-public class DescargarAudio implements Runnable {
+public class ReproducirAudio implements Runnable {
 	private Peticion peticion;
 	private Socket socket;
 	
-	public DescargarAudio(Socket socket) {//, Peticion peticion) {
+	public ReproducirAudio(Socket socket) {//, Peticion peticion) {
 		//this.peticion = peticion;
 		this.socket = socket;
 	}
@@ -32,10 +30,10 @@ public class DescargarAudio implements Runnable {
 		try {
 			bis = new BufferedInputStream(new FileInputStream(localFile));
 			bos = new BufferedOutputStream(socket.getOutputStream());
-			DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+			//DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
 			
 			
-			dos.writeUTF(localFile.getName());
+			//dos.writeUTF(localFile.getName());
 			// Enviamos el fichero
 			byte[] byteArray = new byte[8192];
 			while ((in = bis.read(byteArray)) != -1) {
