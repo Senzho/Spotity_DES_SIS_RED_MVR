@@ -55,11 +55,13 @@ public class PanelReproducirCancionController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        this.cola = new ArrayList();
         this.clienteCancion = new ClienteCancion();
     }
 
     public void iniciar(Stage stage, Usuario usuario, EscuchadorCancion escuchador) {
         this.stage = stage;
+        this.usuario = usuario;
         this.escuchador = escuchador;
         this.stage.hide();
     }
@@ -83,20 +85,23 @@ public class PanelReproducirCancionController implements Initializable {
 
     public void generarEstacion(String genero) {
         listaCanciones.getChildren().clear();
-        cola = this.clienteCancion.buscarCanciones(genero);
-        for (Cancion cancion : cola) {
-            this.agregarAVista(cancion, this.cola.size());
-        }
+        cola = new Cancion().obtenerCanciones(genero);
+        cola.forEach((cancion) -> {
+            this.agregarAVista(cancion, 0);
+        });
+        this.stage.show();
     }
 
     public void agregarSiguiente(Cancion cancion) {
         this.cola.add(0, cancion);
         this.agregarAVista(cancion, 0);
+        this.stage.show();
     }
 
     public void agregarFinal(Cancion cancion) {
         this.cola.add(cancion);
-        this.agregarAVista(cancion, this.cola.size());
+        this.agregarAVista(cancion, this.cola.isEmpty()?0:this.cola.size() - 1);
+        this.stage.show();
     }
 
     public void setCola(List<Cancion> cola) {
@@ -104,12 +109,13 @@ public class PanelReproducirCancionController implements Initializable {
     }
 
     public void btnGenerarestacion_onClick() {
-        cola = new ArrayList();
-        listaCanciones.getChildren().clear();
-        cola = this.clienteCancion.buscarCanciones(this.cancionActual.getGenero());
-        for (Cancion cancion : cola) {
-            this.agregarAVista(cancion, this.cola.size());
-        }
+        if (this.cancionActual != null){
+            cola = new ArrayList();
+            listaCanciones.getChildren().clear();
+            cola = new Cancion().obtenerCanciones(this.cancionActual.getGenero());
+            cola.forEach((cancion) -> {
+                this.agregarAVista(cancion, 0);
+            });
+        }  
     }
-
 }

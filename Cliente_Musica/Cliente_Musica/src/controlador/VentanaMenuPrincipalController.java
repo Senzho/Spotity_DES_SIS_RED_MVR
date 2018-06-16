@@ -3,7 +3,6 @@ package controlador;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -52,7 +51,6 @@ public class VentanaMenuPrincipalController implements Initializable, Escuchador
     private Button botonHistorial;
     
     private Usuario usuarioActual;
-    private List<Cancion> cola;
     private PanelReproducirCancionController reproduccion;
 
     /**
@@ -197,12 +195,11 @@ public class VentanaMenuPrincipalController implements Initializable, Escuchador
     public void setUsuario(Usuario usuario){
         this.usuarioActual=usuario;
         etiquetaNombreUsuario.setText(usuarioActual.getNombre());
-        this.cola = new ArrayList();
         try {
             Stage stage = new Stage();
             FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/vista/PanelReproducirCancion.fxml"));
             AnchorPane root = loader.load();
-            Scene scene = new Scene(root, 200, 500);
+            Scene scene = new Scene(root, 700, 500);
             stage.setScene(scene);
             this.reproduccion = loader.getController();
             this.reproduccion.iniciar(stage, this.usuarioActual, this);

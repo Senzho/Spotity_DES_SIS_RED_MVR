@@ -12,10 +12,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="64.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.PanelCancionController">
+<AnchorPane maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="64.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.PanelCancionController">
    <children>
       <ImageView fx:id="play" fitHeight="54.0" fitWidth="54.0" onMouseClicked="#play_onClick" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
-      <Label fx:id="nombre" layoutX="69.0" text="Nombre de cancion" AnchorPane.leftAnchor="69.0" AnchorPane.rightAnchor="374.0" AnchorPane.topAnchor="0.0">
+      <Label fx:id="nombre" layoutX="69.0" prefHeight="35.0" prefWidth="374.0" text="Nombre de cancion" AnchorPane.leftAnchor="69.0" AnchorPane.rightAnchor="157.0" AnchorPane.topAnchor="0.0">
          <font>
             <Font name="Dubai Regular" size="20.0" />
          </font>

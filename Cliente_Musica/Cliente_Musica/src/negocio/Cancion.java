@@ -83,6 +83,21 @@ public class Cancion{
         });
         return canciones;
     }
+    public List<Cancion> obtenerCanciones(String genero){
+        return new ClienteCancion().buscarCanciones(genero);
+    }
+    public boolean disponibleSinConexion(int idUsuario){
+        Cancionprivada canPriv = new ClienteCancionPrivada().obtenerDeCancion(idUsuario, this.idCancion);
+        return canPriv.getId()>0;
+    }
+    public void agregarAColeccion(Usuario usuario){
+        Cancionprivada cancionPriv = new Cancionprivada();
+        cancionPriv.setId(0);
+        cancionPriv.setIdCancion(this);
+        cancionPriv.setIdUsuario(usuario);
+        cancionPriv.setDisponibleSnConexion(false);
+        new ClienteCancionPrivada().create_JSON(cancionPriv);
+    }
     public void descargarCancion(){
         Platform.runLater(() -> {
             byte[] bytes = null;

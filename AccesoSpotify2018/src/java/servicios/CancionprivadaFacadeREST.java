@@ -62,6 +62,24 @@ public class CancionprivadaFacadeREST extends AbstractFacade<Cancionprivada> {
     public Cancionprivada find(@PathParam("id") Integer id) {
         return super.find(id);
     }
+    @GET
+    @Path("de_cancion/{idUsuario}/{idCancion}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Cancionprivada obtenerDeCancion(@PathParam("idUsuario") Integer idUsuario, @PathParam("idCancion") Integer idCancion) {
+        Cancionprivada cancion = new Cancionprivada();
+        try{
+            cancion = (Cancionprivada) this.getEntityManager().createNamedQuery("Cancionprivada.findByCancion")
+                    .setParameter("idUsuario", idUsuario)
+                    .setParameter("idCancion", idCancion)
+                    .getSingleResult();
+            if (!cancion.getDisponibleSnConexion()){
+                cancion.setId(0);
+            }
+        }catch(Exception excepcion){
+            cancion.setId(0);
+        }
+        return cancion;
+    }
 
     @GET
     @Override

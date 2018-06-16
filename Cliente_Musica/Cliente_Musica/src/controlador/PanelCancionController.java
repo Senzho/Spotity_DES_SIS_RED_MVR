@@ -3,6 +3,7 @@ package controlador;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -53,6 +54,9 @@ public class PanelCancionController implements Initializable{
     private void cargarCancion(){
         this.nombre.setText(this.cancion.getNombre());
         this.duracion.setText(this.cancion.getDuracion());
+        Platform.runLater(() -> {
+            this.disponible.setText(this.cancion.disponibleSinConexion(this.usuarioActual.getIdUsuario())?"Disponible sin conexión":"Solo en línea");
+        });
     }
 
     @Override
@@ -95,7 +99,10 @@ public class PanelCancionController implements Initializable{
         Button botonAgregarFinal= new Button();
         botonAgregarFinal.setMaxWidth(189.0);
         botonAgregarFinal.setText("Agregar al final");
-        box.getChildren().addAll(botonAgregar, botonGenerarRadio, botonDescargar, botonAgregarSiguiente, botonAgregarFinal);
+        Button botonAgregarBiblioteca= new Button();
+        botonAgregarBiblioteca.setMaxWidth(189.0);
+        botonAgregarBiblioteca.setText("Agregar a mi colección");
+        box.getChildren().addAll(botonAgregar, botonGenerarRadio, botonDescargar, botonAgregarSiguiente, botonAgregarFinal, botonAgregarBiblioteca);
         pop.setContentNode(box);
         pop.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
         pop.show(opciones);
@@ -133,6 +140,13 @@ public class PanelCancionController implements Initializable{
             public void handle(ActionEvent event) {
                 pop.hide();
                 cancion.descargarCancion();
+            }
+        });
+        botonAgregarBiblioteca.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                pop.hide();
+                cancion.agregarAColeccion(usuarioActual);
             }
         });
     }

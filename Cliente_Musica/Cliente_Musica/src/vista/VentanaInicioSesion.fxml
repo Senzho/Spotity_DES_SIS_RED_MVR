@@ -13,7 +13,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="226.0" prefWidth="368.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.VentanaInicioSesionController">
    <children>
-      <Label layoutX="13.0" layoutY="14.0" text="Inicio sesión">
+      <Label layoutX="13.0" layoutY="14.0" text="Iniciar sesión">
          <font>
             <Font name="System Bold" size="36.0" />
          </font>
@@ -28,14 +28,14 @@
             <Font name="Arial" size="16.0" />
          </font>
       </Label>
-      <PasswordField fx:id="txtContrasena" layoutX="124.0" layoutY="133.0" prefHeight="25.0" prefWidth="226.0" />
-      <Button layoutX="250.0" layoutY="178.0" mnemonicParsing="false" onAction="#registrarUsuario" text="Registrarse">
+      <TextField fx:id="txtUsuario" layoutX="124.0" layoutY="98.0" prefHeight="25.0" prefWidth="226.0" AnchorPane.leftAnchor="124.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="98.0" />
+      <PasswordField fx:id="txtContrasena" layoutX="124.0" layoutY="133.0" prefHeight="25.0" prefWidth="226.0" AnchorPane.leftAnchor="124.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="133.0" />
+      <Button fx:id="botonIngresar" layoutX="149.0" layoutY="178.0" mnemonicParsing="false" onAction="#desplegarMenuPrincipal" prefHeight="32.0" prefWidth="88.0" text="Ingresar" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="131.0">
          <font>
             <Font name="Arial" size="16.0" />
          </font>
       </Button>
-      <TextField fx:id="txtUsuario" layoutX="124.0" layoutY="98.0" prefHeight="25.0" prefWidth="226.0" />
-      <Button fx:id="botonIngresar" layoutX="145.0" layoutY="178.0" mnemonicParsing="false" onAction="#desplegarMenuPrincipal" prefHeight="32.0" prefWidth="88.0" text="Ingresar">
+      <Button layoutX="250.0" layoutY="178.0" mnemonicParsing="false" onAction="#registrarUsuario" text="Registrarse" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="14.0">
          <font>
             <Font name="Arial" size="16.0" />
          </font>
