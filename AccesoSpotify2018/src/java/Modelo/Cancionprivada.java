@@ -32,6 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Cancionprivada.findByCalificacion", query = "SELECT c FROM Cancionprivada c WHERE c.calificacion = :calificacion")
     , @NamedQuery(name = "Cancionprivada.findByDisponibleSnConexion", query = "SELECT c FROM Cancionprivada c WHERE c.disponibleSnConexion = :disponibleSnConexion")
     , @NamedQuery(name = "Cancionprivada.findByUsuario", query = "SELECT c FROM Cancionprivada c WHERE c.idUsuario.idUsuario = :idUsuario")
+    , @NamedQuery(name = "Cancionprivada.findByCancion", query = "SELECT c FROM Cancionprivada c WHERE c.idUsuario.idUsuario = :idUsuario AND c.idCancion.idCancion = :idCancion")
 })
 public class Cancionprivada implements Serializable {
 

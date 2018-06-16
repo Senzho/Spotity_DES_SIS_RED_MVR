@@ -1,13 +1,10 @@
 package negocio;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
+import controlador.EscuchadorDescarga;
+import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -98,28 +95,27 @@ public class Cancion{
         cancionPriv.setDisponibleSnConexion(false);
         new ClienteCancionPrivada().create_JSON(cancionPriv);
     }
-    public void descargarCancion(){
+    public void establecerComoDisponible(int idUsuario){
+        Cancionprivada cancionPriv = new ClienteCancionPrivada().establecerComoDisponible(idUsuario, this.idCancion);
+    }
+    public void descargarCancion(EscuchadorDescarga escuchador){
         Platform.runLater(() -> {
-            byte[] bytes = null;
             try {
                 Socket socket = new Socket("localhost", 9000);
-                Peticion peticion = new Peticion("descargar", this.idCancion);
+                Peticion peticion = new Peticion("descargar", Cancion.this.idCancion);
                 ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
                 oos.writeObject(peticion);
-                BufferedInputStream bis = new BufferedInputStream(socket.getInputStream());
-                int l = bis.read();
-                bytes = new byte[l];
-                bis.read(bytes, 0, l);
-            } catch (IOException ex) {
-                Logger.getLogger(Cancion.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            try {
-                FileOutputStream fos = new FileOutputStream(this.getRuta());
+                DataInputStream dis = new DataInputStream(socket.getInputStream());
+                byte[] bytes = new byte[dis.readInt()];
+                dis.readFully(bytes);
+                FileOutputStream fos = new FileOutputStream(Cancion.this.getRuta());
                 fos.write(bytes);
                 fos.close();
+                escuchador.cancionDescargada(true);
             } catch (IOException ex) {
+                escuchador.cancionDescargada(false);
                 Logger.getLogger(Cancion.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }); 
+        });
     }
 }

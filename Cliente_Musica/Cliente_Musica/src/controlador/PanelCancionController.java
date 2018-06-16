@@ -1,5 +1,6 @@
 package controlador;
 
+import InterfazGrafica.MessageFactory;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -29,7 +30,7 @@ import org.controlsfx.control.PopOver;
 import serviciosCliente.ClienteCancionLista;
 import serviciosCliente.ClienteListaReproduccion;
 
-public class PanelCancionController implements Initializable{
+public class PanelCancionController implements Initializable, EscuchadorDescarga{
     @FXML
     private Label nombre;
     @FXML
@@ -139,7 +140,7 @@ public class PanelCancionController implements Initializable{
             @Override
             public void handle(ActionEvent event) {
                 pop.hide();
-                cancion.descargarCancion();
+                cancion.descargarCancion(PanelCancionController.this);
             }
         });
         botonAgregarBiblioteca.setOnAction(new EventHandler<ActionEvent>(){
@@ -315,5 +316,18 @@ public class PanelCancionController implements Initializable{
     
     public void play_onClick(){
         this.escuchador.cancionAReproduccion(this.cancion);
+    }
+
+    @Override
+    public void cancionDescargada(boolean descargada) {
+        if (descargada){
+            Platform.runLater(() -> {
+                this.cancion.establecerComoDisponible(this.usuarioActual.getIdUsuario());
+            });
+            this.disponible.setText("Disponible sin conexión");
+            MessageFactory.showMessage("Éxito", "Descarga", this.cancion.getNombre() + " fué descargada exitosamente", Alert.AlertType.INFORMATION);
+        }else{
+            MessageFactory.showMessage("Error", "Descarga", this.cancion.getNombre() + " no fué descargada", Alert.AlertType.ERROR);
+        }
     }
 }

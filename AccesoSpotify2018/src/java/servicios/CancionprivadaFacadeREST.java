@@ -49,6 +49,25 @@ public class CancionprivadaFacadeREST extends AbstractFacade<Cancionprivada> {
     public void edit(@PathParam("id") Integer id, Cancionprivada entity) {
         super.edit(entity);
     }
+    
+    @GET
+    @Path("disponible/{idUsuario}/{idCancion}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Cancionprivada establecerComoDisponible(@PathParam("idUsuario") Integer idUsuario, @PathParam("idCancion") Integer idCancion){
+        Cancionprivada cancion = new Cancionprivada();
+        try{
+            cancion = (Cancionprivada) this.getEntityManager().createNamedQuery("Cancionprivada.findByCancion")
+                    .setParameter("idUsuario", idUsuario)
+                    .setParameter("idCancion", idCancion)
+                    .getSingleResult();
+            cancion.setDisponibleSnConexion(true);
+            super.edit(cancion);
+        }catch(Exception excepcion){
+            cancion = new Cancionprivada();
+            cancion.setId(0);
+        }
+        return cancion;
+    }
 
     @DELETE
     @Path("{id}")
@@ -73,6 +92,7 @@ public class CancionprivadaFacadeREST extends AbstractFacade<Cancionprivada> {
                     .setParameter("idCancion", idCancion)
                     .getSingleResult();
             if (!cancion.getDisponibleSnConexion()){
+                cancion = new Cancionprivada();
                 cancion.setId(0);
             }
         }catch(Exception excepcion){

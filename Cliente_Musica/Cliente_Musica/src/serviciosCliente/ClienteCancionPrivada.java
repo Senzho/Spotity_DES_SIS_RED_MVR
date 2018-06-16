@@ -49,6 +49,11 @@ public class ClienteCancionPrivada {
     public void edit_JSON(Object requestEntity, String id) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{id})).request(javax.ws.rs.core.MediaType.APPLICATION_JSON).put(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON));
     }
+    public Cancionprivada establecerComoDisponible(int idUsuario, int idCancion){
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("disponible/{0}/{1}", new Object[]{idUsuario, idCancion}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(new GenericType<Cancionprivada>(){});
+    }
 
     public <T> T find_XML(Class<T> responseType, String id) throws ClientErrorException {
         WebTarget resource = webTarget;
