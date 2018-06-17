@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controlador;
 
 import InterfazGrafica.MessageFactory;
@@ -14,6 +9,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -25,15 +21,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import negocio.Cancion;
+import negocio.Historialreproduccion;
 import negocio.Usuario;
 import serviciosCliente.ClienteCancion;
 
-/**
- *
- * @author Desktop
- */
-public class PanelReproducirCancionController implements Initializable {
-
+public class PanelReproducirCancionController implements Initializable, EscuchadorReproduccion {
     @FXML
     private VBox listaCanciones;
     @FXML
@@ -45,15 +37,23 @@ public class PanelReproducirCancionController implements Initializable {
     @FXML
     private Label lblGenero;
     @FXML
+    private Label lblDuracion;
+    @FXML
     private ImageView imagenAlbum;
     @FXML
     private ImageView btnDetenerCancion;
+    @FXML
+    private ImageView imagenAnterior;
+    @FXML
+    private ImageView imagenSiguiente;
+    
     private ClienteCancion clienteCancion;
     private List<Cancion> cola;
     private Stage stage;
     private Cancion cancionActual;
     private EscuchadorCancion escuchador;
     private Usuario usuario;
+    private int idActual;
 
     private void agregarAVista(Cancion cancion, int posicion) {
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/vista/PanelCancion.fxml"));
@@ -67,11 +67,37 @@ public class PanelReproducirCancionController implements Initializable {
             Logger.getLogger(PanelReproducirCancionController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    private void setIdActual(int idCancion){
+        boolean encontrada = false;
+        for (int i = 0; i < this.cola.size(); i ++) {
+            if (this.cola.get(i).getIdCancion() == idCancion){
+                this.idActual = i;
+                encontrada = true;
+                break;
+            }
+        }
+        if (!encontrada){
+            this.idActual = -1;
+        }
+    }
+    private Cancion getCancion(int idCancion){
+        Cancion cancion = null;
+        for (Cancion cancionLista : this.cola) {
+            if (cancionLista.getIdCancion() == idCancion){
+                cancion = cancionLista;
+                break;
+            }
+        }
+        return cancion;
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.cola = new ArrayList();
         this.clienteCancion = new ClienteCancion();
+        this.imagenAnterior.setImage(new Image(this.getClass().getResourceAsStream("/vista/darkLeftIcon.png")));
+        this.imagenSiguiente.setImage(new Image(this.getClass().getResourceAsStream("/vista/darkRightIcon.png")));
+        this.idActual = -1;
     }
     public void detener(){
         if(this.cancionActual != null){
@@ -86,9 +112,7 @@ public class PanelReproducirCancionController implements Initializable {
     }
 
     public void setCancion(Cancion cancion) {
-        if(this.cancionActual!=null){
-            cancionActual.detenerCancion();
-        }
+        this.detener();
         this.cancionActual = cancion;
         InetAddress ping;
         String ip = "192.168.43.126";
@@ -96,7 +120,8 @@ public class PanelReproducirCancionController implements Initializable {
             ping = InetAddress.getByName(ip);
             if (ping.isReachable(5000)) {
                 this.stage.show ();
-                cancion.reproducirCancion();
+                cancion.reproducirCancion(this);
+                this.setIdActual(cancion.getIdCancion());
                 cargarCancion();
             } else {
                 MessageFactory.showMessage("Aviso", "Conexión fallida", "No es posible acceder al servicio", Alert.AlertType.INFORMATION);
@@ -110,15 +135,16 @@ public class PanelReproducirCancionController implements Initializable {
         this.lblArtista.setText(this.cancionActual.getIdArtista().getNombre());
         this.lblGenero.setText(this.cancionActual.getGenero());
         this.lblNombre.setText(this.cancionActual.getNombre());
-        this.imagenAlbum.setImage(new Image("http://192.168.43.126:8080/Spotify/Albunes/"+this.cancionActual.getIdAlbum().getIdAlbum()+".jpg"));
+        this.lblDuracion.setText(this.cancionActual.getDuracion());
+        this.imagenAlbum.setImage(new Image("http://" + ResourceBundle.getBundle("Recursos/Conectividad").getString("ip_datos") + ":8080/AccesoSpotify2018/Albumes/"+this.cancionActual.getIdAlbum().getIdAlbum()+".jpg"));
     }
-    //verificar reproducción antes de mostrar esta ventana:
-
     public void generarEstacion(String genero) {
+        this.idActual = 0;
         listaCanciones.getChildren().clear();
         cola = new Cancion().obtenerCanciones(genero);
         cola.forEach((cancion) -> {
-            this.agregarAVista(cancion, 0);
+            int tam = this.listaCanciones.getChildren().size();
+            this.agregarAVista(cancion, tam > 0?tam:0);
         });
         this.stage.show();
     }
@@ -126,6 +152,9 @@ public class PanelReproducirCancionController implements Initializable {
     public void agregarSiguiente(Cancion cancion) {
         this.cola.add(0, cancion);
         this.agregarAVista(cancion, 0);
+        if (!this.cola.isEmpty()){
+            this.idActual ++;
+        }
         this.stage.show();
     }
 
@@ -141,12 +170,55 @@ public class PanelReproducirCancionController implements Initializable {
 
     public void btnGenerarestacion_onClick() {
         if (this.cancionActual != null){
-            cola = new ArrayList();
-            listaCanciones.getChildren().clear();
-            cola = new Cancion().obtenerCanciones(this.cancionActual.getGenero());
-            cola.forEach((cancion) -> {
-                this.agregarAVista(cancion, 0);
-            });
+            this.generarEstacion(this.cancionActual.getGenero());
         }  
+    }
+    public void btnSiguiente_onClick(){
+        if (this.idActual > -1){
+            this.detener();
+            if (this.idActual + 1 > this.cola.size() - 1){
+                this.cancionActual = this.cola.get(0);
+            }else{
+                this.cancionActual = this.cola.get(idActual + 1);
+            }
+            this.cancionActual.reproducirCancion(this);
+            this.setIdActual(this.cancionActual.getIdCancion());
+            cargarCancion();
+        }else{
+            MessageFactory.showMessage("Aviso", "Cola", "No hay canciones en la cola", Alert.AlertType.INFORMATION);
+        }
+    }
+    public void btnAnterior_onClick(){
+        if (this.idActual > -1){
+            this.detener();
+            if (this.idActual - 1 < 0){
+                this.cancionActual = this.cola.get(this.cola.size() - 1);
+            }else{
+                this.cancionActual = this.cola.get(idActual - 1);
+            }
+            this.cancionActual.reproducirCancion(this);
+            this.setIdActual(this.cancionActual.getIdCancion());
+            cargarCancion();
+        }else{
+            MessageFactory.showMessage("Aviso", "Cola", "No hay canciones en la cola", Alert.AlertType.INFORMATION);
+        }
+    }
+
+    @Override
+    public void cancionTerminada(int idCancion) {
+        Platform.runLater(() -> {
+            Historialreproduccion historial = new Historialreproduccion();
+            historial.setId(0);
+            historial.setIdUsuario(this.usuario);
+            historial.setIdCancion(this.getCancion(idCancion));
+            historial.agregar();
+            this.btnSiguiente_onClick();
+        });
+    }
+    @Override
+    public void cancionNoReproducida(int idCancion) {
+        Platform.runLater(() -> {
+            MessageFactory.showMessage("Error", "Reproducción", "No se pudo reproducir la canción", Alert.AlertType.ERROR);
+        });
     }
 }

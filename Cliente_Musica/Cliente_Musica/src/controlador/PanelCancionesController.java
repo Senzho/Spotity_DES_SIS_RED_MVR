@@ -46,7 +46,7 @@ public class PanelCancionesController implements Initializable {
     private void cargarAlbum(){
         this.nombreAlbum.setText(this.album.getNombre());
         Platform.runLater(() -> {
-            this.imagen.setImage(new Image("http://localhost:8080/AccesoSpotify2018/Albumes/" + this.album.getIdAlbum() + ".jpg"));
+            this.imagen.setImage(new Image("http://" + ResourceBundle.getBundle("Recursos/Conectividad").getString("ip_datos") + ":8080/AccesoSpotify2018/Albumes/" + this.album.getIdAlbum() + ".jpg"));
         });
     }
 

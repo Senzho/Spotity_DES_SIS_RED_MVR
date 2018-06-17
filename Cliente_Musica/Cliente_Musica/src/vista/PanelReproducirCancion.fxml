@@ -8,52 +8,52 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="497.0" prefWidth="597.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.PanelReproducirCancionController">
    <children>
-      <ImageView fx:id="btnDetenerCancion" fitHeight="86.0" fitWidth="77.0" layoutX="100.0" layoutY="283.0" onMouseClicked="#detener" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="283.0">
+      <ImageView fx:id="btnDetenerCancion" fitHeight="86.0" fitWidth="77.0" layoutX="101.0" layoutY="274.0" onMouseClicked="#detener" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="101.0" AnchorPane.topAnchor="274.0">
          <image>
             <Image url="@1486348532-music-play-pause-control-go-arrow_80458.png" />
          </image>
       </ImageView>
-      <Label layoutX="29.0" layoutY="366.0" text="Canción:" AnchorPane.leftAnchor="14.0">
+      <Label layoutX="14.0" layoutY="349.0" text="Canción:" AnchorPane.leftAnchor="14.0">
          <font>
             <Font name="Arial Bold" size="16.0" />
          </font>
       </Label>
-      <Label layoutX="29.0" layoutY="386.0" text="Artista:" AnchorPane.leftAnchor="14.0">
+      <Label layoutX="14.0" layoutY="369.0" text="Artista:" AnchorPane.leftAnchor="14.0">
          <font>
             <Font name="Arial Bold" size="16.0" />
          </font>
       </Label>
-      <Label layoutX="29.0" layoutY="406.0" text="Album:" AnchorPane.leftAnchor="14.0">
+      <Label layoutX="14.0" layoutY="389.0" text="Album:" AnchorPane.leftAnchor="14.0">
          <font>
             <Font name="Arial Bold" size="16.0" />
          </font>
       </Label>
-      <Label fx:id="lblNombre" layoutX="111.0" layoutY="366.0" prefHeight="20.0" prefWidth="171.0" text="Nombre de canción.">
+      <Label fx:id="lblNombre" layoutX="93.0" layoutY="349.0" prefHeight="20.0" prefWidth="171.0" text="Nombre de canción.">
          <font>
             <Font name="Arial" size="16.0" />
          </font>
       </Label>
-      <Label fx:id="lblArtista" layoutX="111.0" layoutY="386.0" prefHeight="20.0" prefWidth="171.0" text="Nombre de artista.">
+      <Label fx:id="lblArtista" layoutX="93.0" layoutY="369.0" prefHeight="20.0" prefWidth="171.0" text="Nombre de artista.">
          <font>
             <Font name="Arial" size="16.0" />
          </font>
       </Label>
-      <Label fx:id="lblAlbum" layoutX="111.0" layoutY="406.0" prefHeight="20.0" prefWidth="171.0" text="Nombre de album.">
+      <Label fx:id="lblAlbum" layoutX="93.0" layoutY="389.0" prefHeight="20.0" prefWidth="171.0" text="Nombre de album.">
          <font>
             <Font name="Arial" size="16.0" />
          </font>
       </Label>
-      <ImageView fx:id="imagenAlbum" fitHeight="260.0" fitWidth="474.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0">
+      <ImageView fx:id="imagenAlbum" fitHeight="250.0" fitWidth="250.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" smooth="false" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0">
          <image>
             <Image url="@stock-vector-abstract-music-disk-background-vector-illustration-for-your-design-112280339.jpg" />
          </image>
       </ImageView>
-      <Label fx:id="lblGenero" layoutX="111.0" layoutY="426.0" prefHeight="20.0" prefWidth="171.0" text="Genero.">
+      <Label fx:id="lblGenero" layoutX="93.0" layoutY="409.0" prefHeight="20.0" prefWidth="171.0" text="Genero.">
          <font>
             <Font name="Arial" size="16.0" />
          </font>
       </Label>
-      <Label layoutX="29.0" layoutY="426.0" text="Genero:" AnchorPane.leftAnchor="14.0">
+      <Label layoutX="14.0" layoutY="409.0" text="Genero:" AnchorPane.leftAnchor="14.0">
          <font>
             <Font name="Arial Bold" size="16.0" />
          </font>
@@ -68,5 +68,17 @@
             <VBox fx:id="listaCanciones" prefHeight="200.0" prefWidth="100.0" />
          </content>
       </ScrollPane>
+      <ImageView fx:id="imagenSiguiente" fitHeight="50.0" fitWidth="50.0" layoutX="178.0" layoutY="288.0" onMouseClicked="#btnSiguiente_onClick" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="178.0" AnchorPane.topAnchor="288.0" />
+      <ImageView fx:id="imagenAnterior" fitHeight="50.0" fitWidth="50.0" layoutX="51.0" layoutY="288.0" onMouseClicked="#btnAnterior_onClick" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="51.0" AnchorPane.topAnchor="288.0" />
+      <Label layoutX="14.0" layoutY="429.0" text="Duracion:">
+         <font>
+            <Font name="Arial Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblDuracion" layoutX="93.0" layoutY="429.0" prefHeight="20.0" prefWidth="171.0" text="Tiempo.">
+         <font>
+            <Font name="Arial" size="16.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

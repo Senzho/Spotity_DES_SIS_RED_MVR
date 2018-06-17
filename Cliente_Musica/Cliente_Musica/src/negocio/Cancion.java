@@ -1,25 +1,12 @@
 package negocio;
 
-import com.sun.javaws.Main;
 import controlador.EscuchadorDescarga;
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
-import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.application.Platform;
-import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.Player;
 import serviciosCliente.ClienteCancion;
 import serviciosCliente.ClienteCancionPrivada;
+import controlador.EscuchadorReproduccion;
 
 public class Cancion {
 
@@ -124,24 +111,7 @@ public class Cancion {
     }
 
     public void descargarCancion(EscuchadorDescarga escuchador) {
-        Platform.runLater(() -> {
-            try {
-                Socket socket = new Socket("192.168.43.126", 9000);
-                Peticion peticion = new Peticion("descargar", Cancion.this.idCancion);
-                ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-                oos.writeObject(peticion);
-                DataInputStream dis = new DataInputStream(socket.getInputStream());
-                byte[] bytes = new byte[dis.readInt()];
-                dis.readFully(bytes);
-                FileOutputStream fos = new FileOutputStream(Cancion.this.getRuta());
-                fos.write(bytes);
-                fos.close();
-                escuchador.cancionDescargada(true);
-            } catch (IOException ex) {
-                escuchador.cancionDescargada(false);
-                Logger.getLogger(Cancion.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
+        new Thread(new HiloDescarga(this.idCancion, escuchador, this.getRuta())).start();
     }
     public void detenerCancion(){
         if(hiloReproduccion!= null){
@@ -149,8 +119,8 @@ public class Cancion {
         }
     }
 
-    public void reproducirCancion() {
-        this.hiloReproduccion = new HiloReproduccion(this.idCancion);
+    public void reproducirCancion(EscuchadorReproduccion escuchador) {
+        this.hiloReproduccion = new HiloReproduccion(this.idCancion, escuchador);
         new Thread(hiloReproduccion).start();
     }
 }

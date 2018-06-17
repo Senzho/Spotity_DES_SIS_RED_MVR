@@ -5,6 +5,7 @@
  */
 package serviciosCliente;
 
+import java.util.ResourceBundle;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
@@ -28,7 +29,7 @@ public class ClienteUsuario {
 
     private WebTarget webTarget;
     private Client client;
-    private static final String BASE_URI = "http://192.168.43.126:8080/AccesoSpotify2018/webresources";
+    private static final String BASE_URI = "http://" + ResourceBundle.getBundle("Recursos/Conectividad").getString("ip_datos") + ":8080/AccesoSpotify2018/webresources";
 
     public ClienteUsuario() {
         client = javax.ws.rs.client.ClientBuilder.newClient();

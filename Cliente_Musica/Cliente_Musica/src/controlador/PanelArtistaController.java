@@ -28,7 +28,7 @@ public class PanelArtistaController implements Initializable{
             this.generos.setText(this.generos.getText() + " | " + genero.getGenero());
         });
         Platform.runLater(() -> {
-            this.imagen.setImage(new Image("http://localhost:8080/AccesoSpotify2018/Artistas/" + this.artista.getIdArtista() + ".jpg"));
+            this.imagen.setImage(new Image("http://" + ResourceBundle.getBundle("Recursos/Conectividad").getString("ip_datos") + ":8080/AccesoSpotify2018/Artistas/" + this.artista.getIdArtista() + ".jpg"));
         });
     }
 

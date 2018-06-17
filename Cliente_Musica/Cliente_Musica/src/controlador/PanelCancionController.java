@@ -187,7 +187,6 @@ public class PanelCancionController implements Initializable, EscuchadorDescarga
         ComboBox combo = new ComboBox();
         establecerListas();
         combo.setItems(listaListasCombo);
-        //combo.setValue(listaListasCombo.get(0));
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.initStyle(StageStyle.UTILITY);
         alert.setGraphic(combo);
@@ -196,7 +195,6 @@ public class PanelCancionController implements Initializable, EscuchadorDescarga
         alert.setTitle("Listas de Reproducción");
         alert.setHeaderText("Seleccione una lista de reproducción");
         alert.getButtonTypes().setAll(botonOK, botonCancelar);
-        
         alert.showAndWait();
         if(combo.getValue()==null){
             nombreValido=false;
@@ -204,9 +202,7 @@ public class PanelCancionController implements Initializable, EscuchadorDescarga
             nombreListaSeleccionada=combo.getValue().toString();
             nombreValido=true;
         }
-        
         return nombreValido;
-        
     }
     
     public void manejarBotonAgregarLista(){
@@ -250,12 +246,7 @@ public class PanelCancionController implements Initializable, EscuchadorDescarga
                 }
             }
         }
-        
-         
-        
-        
     }
-    
     
     private void crearListaReproduccion() {
         String nombreNuevaLista= JOptionPane.showInputDialog("Por favor ingrese el nombre de la nueva lista que desea crear: ");
@@ -274,7 +265,6 @@ public class PanelCancionController implements Initializable, EscuchadorDescarga
             mensaje="Lo sentimos, parace haber ocurrido un error...";
             listaCreada=false;
         }
-        
         Alert aviso = new Alert(Alert.AlertType.WARNING);
         aviso.setTitle("información");
         aviso.setHeaderText("Aviso");
@@ -320,14 +310,14 @@ public class PanelCancionController implements Initializable, EscuchadorDescarga
 
     @Override
     public void cancionDescargada(boolean descargada) {
-        if (descargada){
-            Platform.runLater(() -> {
+        Platform.runLater(() -> {
+            if (descargada){
                 this.cancion.establecerComoDisponible(this.usuarioActual.getIdUsuario());
-            });
-            this.disponible.setText("Disponible sin conexión");
-            MessageFactory.showMessage("Éxito", "Descarga", this.cancion.getNombre() + " fué descargada exitosamente", Alert.AlertType.INFORMATION);
-        }else{
-            MessageFactory.showMessage("Error", "Descarga", this.cancion.getNombre() + " no fué descargada", Alert.AlertType.ERROR);
-        }
+                this.disponible.setText("Disponible sin conexión");
+                MessageFactory.showMessage("Éxito", "Descarga", this.cancion.getNombre() + " fué descargada exitosamente", Alert.AlertType.INFORMATION);
+            }else{
+                MessageFactory.showMessage("Error", "Descarga", this.cancion.getNombre() + " no fué descargada", Alert.AlertType.ERROR);
+            }
+        });
     }
 }

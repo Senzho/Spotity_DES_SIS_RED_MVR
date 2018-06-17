@@ -29,7 +29,7 @@ public class PanelAlbumController implements Initializable{
         this.fecha.setText(Dates.getSentence(this.album.getFechaLanzamiento()));
         this.compania.setText(this.album.getCompaniaDiscografica());
         Platform.runLater(() -> {
-            this.imagen.setImage(new Image("http://localhost:8080/AccesoSpotify2018/Albumes/" + this.album.getIdAlbum() + ".jpg"));
+            this.imagen.setImage(new Image("http://" + ResourceBundle.getBundle("Recursos/Conectividad").getString("ip_datos") + ":8080/AccesoSpotify2018/Albumes/" + this.album.getIdAlbum() + ".jpg"));
         });
     }
 
