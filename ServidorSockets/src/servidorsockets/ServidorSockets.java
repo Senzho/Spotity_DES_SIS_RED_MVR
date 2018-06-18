@@ -8,7 +8,7 @@ package servidorsockets;
 import negocio.Peticion;
 import FuncionesServidor.DescargarAudio;
 import FuncionesServidor.ReproducirAudio;
-import funcionesServidor.SubirAudio;
+import FuncionesServidor.SubirAudio;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.ServerSocket;
@@ -32,13 +32,13 @@ public class ServidorSockets {
             while(true){
                 Socket cliente = servidor.accept();
                 ObjectInputStream entrada = new ObjectInputStream(cliente.getInputStream());
-                Peticion peticion = (Peticion) entrada.readObject();
+                negocio.Peticion peticion = (negocio.Peticion) entrada.readObject();
                 if(peticion.getTipoPeticion().equals("reproducir")){
-                    new Thread(new ReproducirAudio(cliente, peticion)).start();
+                    new Thread(new FuncionesServidor.ReproducirAudio(cliente, peticion)).start();
                 }else if(peticion.getTipoPeticion().equals("descargar")){
-                    new Thread(new DescargarAudio(cliente, peticion)).start();
+                    new Thread(new FuncionesServidor.DescargarAudio(cliente, peticion)).start();
                 }else if(peticion.getTipoPeticion().equals("subir")){
-                	new Thread(new SubirAudio(cliente, peticion)).start();
+                	new Thread(new FuncionesServidor.SubirAudio(cliente, peticion)).start();
                 }
             }
         } catch (IOException ex) {

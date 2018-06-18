@@ -1,4 +1,4 @@
-package funcionesServidor;
+package FuncionesServidor;
 
 import java.io.DataInputStream;
 import java.io.File;
