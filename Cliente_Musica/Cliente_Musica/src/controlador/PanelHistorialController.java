@@ -1,5 +1,6 @@
 package controlador;
 
+import InterfazGrafica.MessageFactory;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -10,6 +11,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import negocio.Cancion;
@@ -49,8 +51,13 @@ public class PanelHistorialController implements Initializable{
         this.idUsuario= idUsuario;
         this.escuchador = escuchador;
         Platform.runLater(() -> {
-            this.canciones = new Historialreproduccion().consultarHistorial(idUsuario);
-            this.cargarHistorial();
+            try{
+                this.canciones = new Historialreproduccion().consultarHistorial(idUsuario);
+                this.cargarHistorial();
+            }catch(Exception ex){
+                MessageFactory.showMessage("Error", "Datos", "No se pudieron obtener los datos", Alert.AlertType.INFORMATION);
+                Logger.getLogger(PanelBibliotecaPublicaController.class.getName()).log(Level.SEVERE, null, ex);
+            }  
         });
     }
 }

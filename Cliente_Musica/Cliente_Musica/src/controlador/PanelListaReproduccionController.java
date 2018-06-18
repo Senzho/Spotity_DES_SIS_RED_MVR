@@ -5,6 +5,7 @@
  */
 package controlador;
 
+import InterfazGrafica.MessageFactory;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -25,11 +26,9 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javax.swing.JOptionPane;
-import negocio.Cancion;
 import negocio.CancionLista;
 import negocio.Listareproduccion;
 import negocio.Usuario;
-import serviciosCliente.ClienteCancion;
 import serviciosCliente.ClienteCancionLista;
 import serviciosCliente.ClienteListaReproduccion;
 
@@ -60,7 +59,6 @@ public class PanelListaReproduccionController implements Initializable {
         List<CancionLista> listaCanciones = new ArrayList();
         List<CancionLista> cancionesListaReproduccion = new ArrayList();
         listaCanciones=new ClienteCancionLista().findAll_JSON();
-        
         for(int i=0; i<listaCanciones.size(); i++){
             Listareproduccion listaActual;
             listaActual=listaCanciones.get(i).getIdLista();
@@ -92,12 +90,9 @@ public class PanelListaReproduccionController implements Initializable {
         if((!nuevoNombreLista.equals(""))||(!nuevoNombreLista.equals(" "))||(!nuevoNombreLista.equals(null))){
             new ClienteListaReproduccion().edit_JSON(listaEditar, listaEditar.getIdLista());
             mensaje="La lista fué editada exitosamente!";
-            //listaCreada=true;
         }else{
             mensaje="Lo sentimos, parace haber ocurrido un error...";
-            //listaCreada=false;
         }
-        
         Alert aviso = new Alert(Alert.AlertType.WARNING);
         aviso.setTitle("información");
         aviso.setHeaderText("Aviso");
@@ -133,11 +128,16 @@ public class PanelListaReproduccionController implements Initializable {
         boolean cancionesEliminadas=false;
         List <CancionLista>listaCancionesEliminar=new ArrayList();
         listaCancionesEliminar.addAll(listaSeleccionada.getCancionListaCollection());
-        for(int i=0; i<listaSeleccionada.getCancionListaCollection().size(); i++){
-            new ClienteCancionLista().remove(listaCancionesEliminar.get(i).getId());
-        }
-        new ClienteListaReproduccion().remove(listaSeleccionada.getIdLista());
-        cancionesEliminadas=true;
+        try{
+            for(int i=0; i<listaSeleccionada.getCancionListaCollection().size(); i++){
+                new ClienteCancionLista().remove(listaCancionesEliminar.get(i).getId());
+            }
+            new ClienteListaReproduccion().remove(listaSeleccionada.getIdLista());
+            cancionesEliminadas=true;
+        }catch(Exception ex){
+            Logger.getLogger(PanelArtistasController.class.getName()).log(Level.SEVERE, null, ex);
+            MessageFactory.showMessage("Error", "Datos", "No se pudieron obtener los datos", Alert.AlertType.INFORMATION);
+        }  
         return cancionesEliminadas;
     }
 }

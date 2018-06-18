@@ -1,6 +1,7 @@
 
 package controlador;
 
+import InterfazGrafica.MessageFactory;
 import java.io.IOException;
 import negocio.Listareproduccion;
 import serviciosCliente.ClienteListaReproduccion;
@@ -74,19 +75,23 @@ public class PanelListasReproduccionController implements Initializable {
         boolean listaVacia;
         int idUsuarioActual=usuarioActual.getIdUsuario();
         inicializarTablaListas();
-        this.listaListas=new ClienteListaReproduccion().findAll_JSON();
-        if(listaListas.isEmpty()){
-            listaVacia=true;
-        }else{
-            for(int i=0; i<listaListas.size(); i++){
-                Listareproduccion nuevaLista = listaListas.get(i);
-                usuarioLista=nuevaLista.getIdUsuario().getIdUsuario();
-                if(usuarioLista==idUsuarioActual){
-                    this.listas.add(nuevaLista);
+        try{
+            this.listaListas=new ClienteListaReproduccion().findAll_JSON();
+            if(listaListas.isEmpty()){
+                listaVacia=true;
+            }else{
+                for(int i=0; i<listaListas.size(); i++){
+                    Listareproduccion nuevaLista = listaListas.get(i);
+                    usuarioLista=nuevaLista.getIdUsuario().getIdUsuario();
+                    if(usuarioLista==idUsuarioActual){
+                        this.listas.add(nuevaLista);
+                    }
                 }
             }
+        }catch(Exception ex){
+            Logger.getLogger(PanelArtistasController.class.getName()).log(Level.SEVERE, null, ex);
+            MessageFactory.showMessage("Error", "Datos", "No se pudieron obtener los datos", Alert.AlertType.INFORMATION);
         }
-        
         tablaListas.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {

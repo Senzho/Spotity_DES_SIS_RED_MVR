@@ -1,5 +1,6 @@
 package controlador;
 
+import InterfazGrafica.MessageFactory;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
@@ -87,20 +89,25 @@ public class PanelBibliotecaPublicaController implements Initializable, Escuchad
         } 
     }
     private void cargarArtistasPorGenero(String genero){
-        List<Artista> artistasGenero = new Artista().obtenerArtistas(genero);
-        if (!artistasGenero.isEmpty()){
-            this.panelNavegacion.getChildren().clear();
-            artistasGenero.forEach((artista) -> {
-                FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/vista/PanelArtista.fxml"));
-                try {
-                    AnchorPane pane = loader.load();
-                    PanelArtistaController controller = loader.getController();
-                    controller.iniciar(artista, this.escuchador);
-                    this.panelNavegacion.getChildren().add(pane);
-                } catch (IOException ex) {
-                    Logger.getLogger(PanelBibliotecaPublicaController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            });
+        try{
+            List<Artista> artistasGenero = new Artista().obtenerArtistas(genero);
+            if (!artistasGenero.isEmpty()){
+                this.panelNavegacion.getChildren().clear();
+                artistasGenero.forEach((artista) -> {
+                    FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/vista/PanelArtista.fxml"));
+                    try {
+                        AnchorPane pane = loader.load();
+                        PanelArtistaController controller = loader.getController();
+                        controller.iniciar(artista, this.escuchador);
+                        this.panelNavegacion.getChildren().add(pane);
+                    } catch (IOException ex) {
+                        Logger.getLogger(PanelBibliotecaPublicaController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                });
+            }
+        }catch(Exception ex){
+            Logger.getLogger(PanelBibliotecaPublicaController.class.getName()).log(Level.SEVERE, null, ex);
+            MessageFactory.showMessage("Error", "Datos", "No se pudieron obtener los datos", Alert.AlertType.INFORMATION);
         }
     }
 

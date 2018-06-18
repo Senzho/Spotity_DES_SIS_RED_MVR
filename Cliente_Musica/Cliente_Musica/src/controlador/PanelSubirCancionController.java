@@ -1,6 +1,7 @@
 
 package controlador;
 
+import InterfazGrafica.MessageFactory;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -10,6 +11,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import javafx.event.ActionEvent;
@@ -57,10 +60,6 @@ public class PanelSubirCancionController implements Initializable {
     private String rutaNueva;
     boolean archivoCargado;
 
-    
-    
-    
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     }    
@@ -99,13 +98,10 @@ public class PanelSubirCancionController implements Initializable {
                fileName=chooser.getSelectedFile().getAbsolutePath();
             }
             String path = fileName.replace("\\", "\\\\");
-            
             rutaArchivo=path;
             etiquetaRutaArchivo.setText(rutaArchivo);
             archivoCargado=true;
-            
         }
-        
     }
 
     private void subirCancion(String direccion, File archivo) throws IOException, TagException{
@@ -117,7 +113,6 @@ public class PanelSubirCancionController implements Initializable {
         String duracion;
         String archivoActual=archivo.getAbsolutePath();
         archivoActual = archivoActual.replace("\\", "\\\\");
-        //System.out.println("Archivo Actual "+archivoActual);
         MP3File mp3file = new MP3File(archivoActual);
         nombreArtista=mp3file.getID3v2Tag().getLeadArtist();
         if((nombreArtista.equals(""))||(nombreArtista.equals(" "))||(nombreArtista.equals(null))){
@@ -127,7 +122,6 @@ public class PanelSubirCancionController implements Initializable {
         if((nombreAlbum.equals(""))||(nombreAlbum.equals(" "))||(nombreAlbum.equals(null))){
             nombreAlbum="Desconocido";
         }
-
         allo = mp3file.getID3v2Tag().getYearReleased();
         if((allo.equals(""))||(allo.equals(" "))|(allo.equals(null))){
             allo="Desconocido";
@@ -136,35 +130,32 @@ public class PanelSubirCancionController implements Initializable {
         if((tituloCancion.equals(""))||(tituloCancion.equals(" "))||(tituloCancion.equals(null))){
             tituloCancion="Desconocido";
         }
-
-
         genero=mp3file.getID3v2Tag().getSongGenre();
         if((genero.equals(""))||(genero.equals(" "))||(genero.equals(null))){
             genero="Desconocido";
         }
-
         duracion=obtenerDuracion(archivoActual);
-
-
         Cancion nuevaCancion = new Cancion();
         nuevaCancion.setNombre(tituloCancion);
         nuevaCancion.setGenero(genero);
         nuevaCancion.setDuracion(duracion);
         nuevaCancion.setIdArtista(adquirirArtista(nombreArtista, mp3file.getID3v2Tag().getSongGenre()));
         nuevaCancion.setIdAlbum(adquirirAlbum(nombreAlbum, nuevaCancion.getIdArtista(), "nombreCompania", allo));
-
         if(!cancionExiste(nuevaCancion)){
-            new ClienteCancion().create_JSON(nuevaCancion);
-            List<Cancion> listaCanciones= new ClienteCancion().obtenerCancionesAlbum(nuevaCancion.getIdAlbum().getIdAlbum());
-            for(int i=0; i<listaCanciones.size(); i++){
-                if(listaCanciones.get(i).getNombre().equals(nuevaCancion.getNombre())){
-                    System.out.println("ID cancion="+listaCanciones.get(i).getIdCancion());
-                    nuevaCancion.setIdCancion(listaCanciones.get(i).getIdCancion());
-                    break;
+            try{
+                new ClienteCancion().create_JSON(nuevaCancion);
+                List<Cancion> listaCanciones= new ClienteCancion().obtenerCancionesAlbum(nuevaCancion.getIdAlbum().getIdAlbum());
+                for(int i=0; i<listaCanciones.size(); i++){
+                    if(listaCanciones.get(i).getNombre().equals(nuevaCancion.getNombre())){
+                        System.out.println("ID cancion="+listaCanciones.get(i).getIdCancion());
+                        nuevaCancion.setIdCancion(listaCanciones.get(i).getIdCancion());
+                        break;
+                    }
                 }
-            }
-            new serviciosCliente.ClienteCancion().subirCancion(archivo, nuevaCancion);
-            
+                new serviciosCliente.ClienteCancion().subirCancion(archivo, nuevaCancion);
+            }catch(Exception ex){
+                MessageFactory.showMessage("Error", "Datos", "No se pudieron obtener los datos", Alert.AlertType.INFORMATION);
+            }   
         }
     }
 
@@ -193,36 +184,35 @@ public class PanelSubirCancionController implements Initializable {
                 if((nombreAlbum.equals(""))||(nombreAlbum.equals(" "))||(nombreAlbum.equals(null))){
                     nombreAlbum="Desconocido";
                 }
-
                 allo = mp3file.getID3v2Tag().getYearReleased();
-
                 Cancion nuevaCancion = new Cancion();
                 nuevaCancion.setNombre(mp3file.getID3v2Tag().getSongTitle());
                 nuevaCancion.setGenero(mp3file.getID3v2Tag().getSongGenre());
                 nuevaCancion.setDuracion(obtenerDuracion(rutaCancion));
                 nuevaCancion.setIdArtista(adquirirArtista(nombreArtista, mp3file.getID3v2Tag().getSongGenre()));
                 nuevaCancion.setIdAlbum(adquirirAlbum(nombreAlbum, nuevaCancion.getIdArtista(), nombreCompania, allo));
-
                 if(!cancionExiste(nuevaCancion)){
-                    //new ClienteCancion().create_JSON(nuevaCancion);
-                    //Cancion cancionAdquirirda=new ClienteCancion().crear(nuevaCancion.getNombre());
-                    new ClienteCancion().create_JSON(nuevaCancion);
-                    //System.out.println("id cancion: "+idCancionCreada);
-                    List<Cancion> listaCanciones= new ClienteCancion().obtenerCancionesAlbum(nuevaCancion.getIdAlbum().getIdAlbum());
-                    for(int i=0; i<listaCanciones.size(); i++){
-                        if(listaCanciones.get(i).getNombre().equals(nuevaCancion.getNombre())){
-                            System.out.println("ID cancion="+listaCanciones.get(i).getIdCancion());
-                            nuevaCancion.setIdCancion(listaCanciones.get(i).getIdCancion());
-                            break;
+                    try{
+                        new ClienteCancion().create_JSON(nuevaCancion);
+                        List<Cancion> listaCanciones= new ClienteCancion().obtenerCancionesAlbum(nuevaCancion.getIdAlbum().getIdAlbum());
+                        for(int i=0; i<listaCanciones.size(); i++){
+                            if(listaCanciones.get(i).getNombre().equals(nuevaCancion.getNombre())){
+                                System.out.println("ID cancion="+listaCanciones.get(i).getIdCancion());
+                                nuevaCancion.setIdCancion(listaCanciones.get(i).getIdCancion());
+                                break;
+                            }
                         }
-                    }
-                    new serviciosCliente.ClienteCancion().subirCancion(cancionSubir, nuevaCancion);
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.initStyle(StageStyle.UTILITY);
-                    alert.setTitle("Exito");
-                    alert.setHeaderText("Exito al subir archivo");
-                    alert.setContentText("La canción fué subida exitosamente al sistema");
-                    alert.showAndWait();
+                        new serviciosCliente.ClienteCancion().subirCancion(cancionSubir, nuevaCancion);
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.initStyle(StageStyle.UTILITY);
+                        alert.setTitle("Exito");
+                        alert.setHeaderText("Exito al subir archivo");
+                        alert.setContentText("La canción fué subida exitosamente al sistema");
+                        alert.showAndWait();
+                    }catch(Exception ex){
+                        Logger.getLogger(PanelArtistasController.class.getName()).log(Level.SEVERE, null, ex);
+                        MessageFactory.showMessage("Error", "Datos", "No se pudieron obtener los datos", Alert.AlertType.INFORMATION);
+                    } 
                 }else{
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.initStyle(StageStyle.UTILITY);
@@ -238,41 +228,25 @@ public class PanelSubirCancionController implements Initializable {
                 String direccion="src/Archivos/"+nombreCarpeta;
                 File actual = new File("src/Archivos/"+nombreCarpeta);
                 unzip(rutaArchivo, "src/Archivos");
-            
-                //System.out.println("Nombre Carpeta: "+actual.getAbsoluteFile());
-                /*if (!actual.exists()){
-                    actual.mkdir();
-                }*/
-                
                 for( File f : actual.listFiles()){
                     subirCancion(direccion, f);
-                    //System.out.println("Archivo actual= "+f.getAbsolutePath());
                 }
-
-                //Elimina archivos temporales
                 actual = new File("src/Archivos/"+nombreCarpeta);
                 for( File f : actual.listFiles()){
                     f.delete();
                 }
-
                 actual = new File("src/Archivos/");
                 for( File f : actual.listFiles()){
                     f.delete();
                 }
-                
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.initStyle(StageStyle.UTILITY);
                 alert.setTitle("Exito");
                 alert.setHeaderText("Exito al subir archivo");
                 alert.setContentText("El albúm se subió exitosamente al sistema");
                 alert.showAndWait();
-                
-            
             }
         }
-        
-        
-        
     }
 
     @FXML
@@ -302,24 +276,18 @@ public class PanelSubirCancionController implements Initializable {
             File file=new File(ruta);
             AudioFile audioFile = AudioFileIO.read(file);
             duration= audioFile.getAudioHeader().getTrackLength();
-            /*if((null==duration)){
-                duration=0;
-            */
             duracionMinutos=(double)duration;
             minutosEnteros=duration/60;
             minutos=String.valueOf(minutosEnteros);
             duracionMinutos=duracionMinutos/60;
             double x = duracionMinutos - (long) duracionMinutos;
             x=(x*60)/100;
-            
             segundos=String.valueOf(x);
             segundos=segundos.substring(2, 4);
             duracion=minutos+":"+segundos;
-            
         }catch(Exception e){
             System.out.print("ERROR "+e);
         }
-        
         return duracion;
     }
     
@@ -346,9 +314,6 @@ public class PanelSubirCancionController implements Initializable {
             
         }
         GeneroArtista relGenArt=new GeneroArtista();
-        //System.out.println("genero: "+ genero);
-        
-        
         relGenArt.setGenero(genero);
         relGenArt.setIdArtista(artistaCancion);
         new ClienteGeneroArtista().create_JSON(relGenArt);
@@ -371,7 +336,6 @@ public class PanelSubirCancionController implements Initializable {
             nuevoAlbum.setCompaniaDiscografica(nombreCompania);
             nuevoAlbum.setIdArtista(nuevoArtista);
             Calendar cal = Calendar.getInstance();
-            
             cal.set(Integer.parseInt(alloLanzamiento), 0, 0);
             Date fecha = cal.getTime();
             nuevoAlbum.setFechaLanzamiento(fecha);
@@ -382,7 +346,6 @@ public class PanelSubirCancionController implements Initializable {
                     albumCancion=listaAlbums.get(i);
                 }
             }
-            
         }
         return albumCancion;
     }
@@ -395,7 +358,6 @@ public class PanelSubirCancionController implements Initializable {
                 existe=true;
             }
         }
-        
         return existe;
     }
     

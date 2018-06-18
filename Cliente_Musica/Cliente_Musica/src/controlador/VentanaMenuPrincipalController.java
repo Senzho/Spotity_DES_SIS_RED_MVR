@@ -209,8 +209,12 @@ public class VentanaMenuPrincipalController implements Initializable, Escuchador
     }
 
     @Override
-    public void cancionAReproduccion(Cancion cancion) {
-        this.reproduccion.setCancion(cancion);
+    public void cancionAReproduccionRemota(Cancion cancion) {
+        this.reproduccion.setCancion(cancion, false);
+    }
+    @Override
+    public void cancionAReproduccionLocal(Cancion cancion){
+        this.reproduccion.setCancion(cancion, true);
     }
     @Override
     public void cancionGenerarEstacion(Cancion cancion) {

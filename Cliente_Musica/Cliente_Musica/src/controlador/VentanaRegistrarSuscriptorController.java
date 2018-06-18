@@ -56,21 +56,26 @@ public class VentanaRegistrarSuscriptorController implements Initializable {
                 usuario.setIdUsuario(0);
                 usuario.setContrasena(contrasena);
                 usuario.setNombre(nombreUsuario);
-                cliente.create_JSON(usuario);
-                MessageFactory.showMessage("Usuario registrado", "Usuario registrado exitosamente", "Bienvenido " + nombreUsuario, Alert.AlertType.CONFIRMATION);
-                FXMLLoader loger = new FXMLLoader(getClass().getResource("/vista/VentanaInicioSesion.fxml"));
-                Parent root = null;
-                try {
-                    root = (Parent) loger.load();
-                } catch (IOException ex) {
-                    Logger.getLogger(VentanaRegistrarSuscriptorController.class.getName()).log(Level.SEVERE, null, ex);
+                try{
+                    cliente.create_JSON(usuario);
+                    MessageFactory.showMessage("Usuario registrado", "Usuario registrado exitosamente", "Bienvenido " + nombreUsuario, Alert.AlertType.CONFIRMATION);
+                    FXMLLoader loger = new FXMLLoader(getClass().getResource("/vista/VentanaInicioSesion.fxml"));
+                    Parent root = null;
+                    try {
+                        root = (Parent) loger.load();
+                    } catch (IOException ex) {
+                        Logger.getLogger(VentanaRegistrarSuscriptorController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    VentanaInicioSesionController controller = loger.getController();
+                    Stage menu = new Stage();
+                    menu.setScene(new Scene(root));
+                    menu.show();
+                    Stage ventanaAnterior = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    ventanaAnterior.close();
+                }catch(Exception ex){
+                    Logger.getLogger(PanelArtistasController.class.getName()).log(Level.SEVERE, null, ex);
+                    MessageFactory.showMessage("Error", "Datos", "No se pudieron obtener los datos", Alert.AlertType.INFORMATION);
                 }
-                VentanaInicioSesionController controller = loger.getController();
-                Stage menu = new Stage();
-                menu.setScene(new Scene(root));
-                menu.show();
-                Stage ventanaAnterior = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                ventanaAnterior.close();
             } else {
                 MessageFactory.showMessage("Datos incorrectos", "Las contraseñas no coinciden", "Revise su información", Alert.AlertType.ERROR);
             }

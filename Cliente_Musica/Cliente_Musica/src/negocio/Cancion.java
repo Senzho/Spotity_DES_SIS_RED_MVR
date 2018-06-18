@@ -7,6 +7,7 @@ import java.util.List;
 import serviciosCliente.ClienteCancion;
 import serviciosCliente.ClienteCancionPrivada;
 import controlador.EscuchadorReproduccion;
+import javax.ws.rs.ClientErrorException;
 
 public class Cancion {
 
@@ -16,7 +17,8 @@ public class Cancion {
     private String duracion;
     private Album idAlbum;
     private Artista idArtista;
-    private HiloReproduccion hiloReproduccion;
+    private HiloReproduccionRemota hiloReproduccion;
+    private HiloReproduccionLocal hiloReproduccionLocal;
 
     private String getRuta() {
         String ruta = "C:/SpotifyCli/Biblioteca/" + this.idArtista.getIdArtista() + "/" + this.idAlbum.getIdAlbum();
@@ -76,11 +78,11 @@ public class Cancion {
         this.idArtista = idArtista;
     }
 
-    public List<Cancion> obtenerCanciones(int idAlbum) {
+    public List<Cancion> obtenerCanciones(int idAlbum) throws ClientErrorException{
         return new ClienteCancion().obtenerCancionesAlbum(idAlbum);
     }
 
-    public List<Cancion> obtenerCancionesUsuario(int idUsuario) {
+    public List<Cancion> obtenerCancionesUsuario(int idUsuario) throws ClientErrorException{
         List<Cancion> canciones = new ArrayList();
         new ClienteCancionPrivada().obtenerDeUsuario(idUsuario).forEach((canPriv) -> {
             canciones.add(canPriv.getIdCancion());
@@ -88,16 +90,16 @@ public class Cancion {
         return canciones;
     }
 
-    public List<Cancion> obtenerCanciones(String genero) {
+    public List<Cancion> obtenerCanciones(String genero) throws ClientErrorException{
         return new ClienteCancion().buscarCanciones(genero);
     }
 
-    public boolean disponibleSinConexion(int idUsuario) {
+    public boolean disponibleSinConexion(int idUsuario) throws ClientErrorException{
         Cancionprivada canPriv = new ClienteCancionPrivada().obtenerDeCancion(idUsuario, this.idCancion);
         return canPriv.getId() > 0;
     }
 
-    public void agregarAColeccion(Usuario usuario) {
+    public void agregarAColeccion(Usuario usuario) throws ClientErrorException{
         Cancionprivada cancionPriv = new Cancionprivada();
         cancionPriv.setId(0);
         cancionPriv.setIdCancion(this);
@@ -106,7 +108,7 @@ public class Cancion {
         new ClienteCancionPrivada().create_JSON(cancionPriv);
     }
 
-    public void establecerComoDisponible(int idUsuario) {
+    public void establecerComoDisponible(int idUsuario) throws ClientErrorException{
         Cancionprivada cancionPriv = new ClienteCancionPrivada().establecerComoDisponible(idUsuario, this.idCancion);
     }
 
@@ -116,11 +118,17 @@ public class Cancion {
     public void detenerCancion(){
         if(hiloReproduccion!= null){
             hiloReproduccion.detenerCancion();
+        }else if (this.hiloReproduccionLocal != null){
+            this.hiloReproduccionLocal.detenerCancion();
         }
     }
 
     public void reproducirCancion(EscuchadorReproduccion escuchador) {
-        this.hiloReproduccion = new HiloReproduccion(this.idCancion, escuchador);
+        this.hiloReproduccion = new HiloReproduccionRemota(this.idCancion, escuchador);
         new Thread(hiloReproduccion).start();
+    }
+    public void reproducirLocal(EscuchadorReproduccion escuchador){
+        this.hiloReproduccionLocal = new HiloReproduccionLocal(this.idCancion, escuchador);
+        new Thread(hiloReproduccionLocal).start();
     }
 }

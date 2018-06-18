@@ -13,12 +13,12 @@ import controlador.EscuchadorReproduccion;
 import java.util.ResourceBundle;
 import util.Archivos;
 
-public class HiloReproduccion implements Runnable {
+public class HiloReproduccionRemota implements Runnable {
     private final int idCancion;
     private Player apl;
     private final EscuchadorReproduccion escuchador;
     
-    public HiloReproduccion(int idCancion, EscuchadorReproduccion escuchador){
+    public HiloReproduccionRemota(int idCancion, EscuchadorReproduccion escuchador){
         this.idCancion = idCancion;
         this.escuchador = escuchador;
     }

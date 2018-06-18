@@ -111,7 +111,7 @@ public class PanelReproducirCancionController implements Initializable, Escuchad
         this.stage.hide();
     }
 
-    public void setCancion(Cancion cancion) {
+    public void setCancion(Cancion cancion, boolean local) {
         this.detener();
         this.cancionActual = cancion;
         InetAddress ping;
@@ -120,7 +120,11 @@ public class PanelReproducirCancionController implements Initializable, Escuchad
             ping = InetAddress.getByName(ip);
             if (ping.isReachable(5000)) {
                 this.stage.show ();
-                cancion.reproducirCancion(this);
+                if (local){
+                    cancion.reproducirLocal(this);
+                }else{
+                    cancion.reproducirCancion(this);
+                }
                 this.setIdActual(cancion.getIdCancion());
                 cargarCancion();
             } else {

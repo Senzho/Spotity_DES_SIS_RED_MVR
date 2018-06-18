@@ -140,7 +140,11 @@ public class PanelCancionController implements Initializable, EscuchadorDescarga
             @Override
             public void handle(ActionEvent event) {
                 pop.hide();
-                cancion.descargarCancion(PanelCancionController.this);
+                if (disponible.getText().startsWith("Solo")){
+                    cancion.descargarCancion(PanelCancionController.this);
+                }else{
+                    MessageFactory.showMessage("Aviso", "Descarga", "Ya has descargado esta canción", Alert.AlertType.WARNING);
+                }
             }
         });
         botonAgregarBiblioteca.setOnAction(new EventHandler<ActionEvent>(){
@@ -305,7 +309,11 @@ public class PanelCancionController implements Initializable, EscuchadorDescarga
     //Eventos:
     
     public void play_onClick(){
-        this.escuchador.cancionAReproduccion(this.cancion);
+        if (this.disponible.getText().startsWith("Solo")){
+            this.escuchador.cancionAReproduccionRemota(this.cancion);
+        }else{
+            this.escuchador.cancionAReproduccionLocal(cancion);
+        }
     }
 
     @Override

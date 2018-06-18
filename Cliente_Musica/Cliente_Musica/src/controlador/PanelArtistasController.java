@@ -1,5 +1,6 @@
 package controlador;
 
+import InterfazGrafica.MessageFactory;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -97,8 +99,13 @@ public class PanelArtistasController implements Initializable{
         this.cargarCombo();
         this.cargarArtista();
         Platform.runLater(() -> {
-            this.albumes = new Album().adquirirAlbumes(artista.getIdArtista());
-            this.cargarAlbumes();
+            try{
+                this.albumes = new Album().adquirirAlbumes(artista.getIdArtista());
+                this.cargarAlbumes();
+            }catch(Exception ex){
+                MessageFactory.showMessage("Error", "Datos", "No se pudieron obtener los datos", Alert.AlertType.INFORMATION);
+                Logger.getLogger(PanelArtistasController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
     }
     

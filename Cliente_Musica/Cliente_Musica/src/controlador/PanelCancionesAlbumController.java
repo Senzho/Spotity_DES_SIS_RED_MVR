@@ -1,5 +1,6 @@
 package controlador;
 
+import InterfazGrafica.MessageFactory;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -9,6 +10,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -37,17 +39,22 @@ public class PanelCancionesAlbumController implements Initializable{
         });
     }
     private void cargarCanciones(){
-        new Cancion().obtenerCanciones(this.album.getIdAlbum()).forEach((cancion) -> {
-            FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/vista/PanelCancion.fxml"));
-            try {
-                AnchorPane pane = loader.load();
-                PanelCancionController controller = loader.getController();
-                controller.iniciar(cancion, usuarioActual, this.escuchador);
-                this.panelCanciones.getChildren().add(pane);
-            } catch (IOException ex) {
-                Logger.getLogger(PanelArtistasController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
+        try{
+            new Cancion().obtenerCanciones(this.album.getIdAlbum()).forEach((cancion) -> {
+                FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/vista/PanelCancion.fxml"));
+                try {
+                    AnchorPane pane = loader.load();
+                    PanelCancionController controller = loader.getController();
+                    controller.iniciar(cancion, usuarioActual, this.escuchador);
+                    this.panelCanciones.getChildren().add(pane);
+                } catch (IOException ex) {
+                    Logger.getLogger(PanelArtistasController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        }catch(Exception ex){
+            MessageFactory.showMessage("Error", "Datos", "No se pudieron obtener los datos", Alert.AlertType.INFORMATION);
+            Logger.getLogger(PanelArtistasController.class.getName()).log(Level.SEVERE, null, ex);
+        }   
     }
 
     @Override

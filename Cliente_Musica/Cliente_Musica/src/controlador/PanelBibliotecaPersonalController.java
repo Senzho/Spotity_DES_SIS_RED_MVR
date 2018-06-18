@@ -1,5 +1,6 @@
 package controlador;
 
+import InterfazGrafica.MessageFactory;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -11,12 +12,12 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import negocio.Cancion;
 import negocio.Usuario;
-import serviciosCliente.ClienteCancionPrivada;
 import serviciosCliente.ClienteUsuario;
 
 public class PanelBibliotecaPersonalController implements Initializable{
@@ -46,10 +47,15 @@ public class PanelBibliotecaPersonalController implements Initializable{
     }
     private void cargarCanciones(){
         Platform.runLater(() -> {
-            new Cancion().obtenerCancionesUsuario(this.idUsuario).forEach((cancion) -> {
-                this.canciones.add(cancion);
-            });
-            this.mostrarCanciones();
+            try{
+                new Cancion().obtenerCancionesUsuario(this.idUsuario).forEach((cancion) -> {
+                    this.canciones.add(cancion);
+                });
+                this.mostrarCanciones();
+            }catch(Exception ex){
+                MessageFactory.showMessage("Error", "Datos", "No se pudieron obtener los datos", Alert.AlertType.INFORMATION);
+                Logger.getLogger(PanelArtistasController.class.getName()).log(Level.SEVERE, null, ex);
+            }   
         });
     }
 
