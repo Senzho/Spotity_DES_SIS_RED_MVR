@@ -13,7 +13,7 @@ public class Ruta {
             for (File album : artista.listFiles()){
                 //canciones
                 for (File cancion : album.listFiles()){
-                    if (cancion.getName().startsWith(idCancion + "")){
+                    if (cancion.getName().equals(idCancion + "")){
                         ruta = cancion.getAbsolutePath() + "/" + calidad + ".mp3";
                         break fors;
                     }
