@@ -155,6 +155,16 @@ public class PanelSubirCancionController implements Initializable {
 
         if(!cancionExiste(nuevaCancion)){
             new ClienteCancion().create_JSON(nuevaCancion);
+            List<Cancion> listaCanciones= new ClienteCancion().obtenerCancionesAlbum(nuevaCancion.getIdAlbum().getIdAlbum());
+            for(int i=0; i<listaCanciones.size(); i++){
+                if(listaCanciones.get(i).getNombre().equals(nuevaCancion.getNombre())){
+                    System.out.println("ID cancion="+listaCanciones.get(i).getIdCancion());
+                    nuevaCancion.setIdCancion(listaCanciones.get(i).getIdCancion());
+                    break;
+                }
+            }
+            new serviciosCliente.ClienteCancion().subirCancion(archivo, nuevaCancion);
+            
         }
     }
 
@@ -389,23 +399,22 @@ public class PanelSubirCancionController implements Initializable {
         return existe;
     }
     
-    private static void unzip(String zipFilePath, String destDir) {
-        File dir = new File(destDir);
+    private static void unzip(String rutaArchivo, String destino) {
+        File dir = new File(destino);
         FileInputStream fis;
         byte[] buffer = new byte[1024];
         try {
-            fis = new FileInputStream(zipFilePath);
+            fis = new FileInputStream(rutaArchivo);
             ZipInputStream zis = new ZipInputStream(fis);
             ZipEntry ze = zis.getNextEntry();
             while(ze != null){
                 String fileName = ze.getName();
-                File newFile = new File(destDir +File.separator+fileName);
-                //System.out.println("Unzipping to "+newFile.getAbsolutePath());
+                File newFile = new File(destino +File.separator+fileName);
                 new File(newFile.getParent()).mkdirs();
                 FileOutputStream fos = new FileOutputStream(newFile);
                 int len;
                 while ((len = zis.read(buffer)) > 0) {
-                fos.write(buffer, 0, len);
+                    fos.write(buffer, 0, len);
                 }
                 fos.close();
                 zis.closeEntry();
@@ -417,12 +426,5 @@ public class PanelSubirCancionController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
-        
     }
-    
-    
-
-    
-    
 }
