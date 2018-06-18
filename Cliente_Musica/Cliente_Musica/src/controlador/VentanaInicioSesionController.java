@@ -40,24 +40,28 @@ public class VentanaInicioSesionController implements Initializable {
     private void desplegarMenuPrincipal(ActionEvent event) {
         String usuario = txtUsuario.getText();
         String contrasena = txtContrasena.getText();
-        Usuario usuarioLogin = clienteUsuario.iniciarsesion(usuario, contrasena);
-        if (usuarioLogin.getIdUsuario() == 0) {
-            MessageFactory.showMessage("Usuario incorrecto", "Datos incorrectos","Usuario o contraseña invalidos", Alert.AlertType.ERROR);
+        if (usuario.equals("") || contrasena.equals("")) {
+            MessageFactory.showMessage("Datos incorrectos", "Usuario y/o contraseña vacíos", "Usuario o contraseña invalidos", Alert.AlertType.ERROR);
         } else {
-            FXMLLoader loger = new FXMLLoader(getClass().getResource("/vista/MenuPrincipal.fxml"));
-            Parent root = null;
-            try {
-                root = (Parent) loger.load();
-            } catch (IOException ex) {
-                Logger.getLogger(VentanaInicioSesionController.class.getName()).log(Level.SEVERE, null, ex);
+            Usuario usuarioLogin = clienteUsuario.iniciarsesion(usuario, contrasena);
+            if (usuarioLogin.getIdUsuario() == 0) {
+                MessageFactory.showMessage("Usuario incorrecto", "Datos incorrectos", "Usuario o contraseña invalidos", Alert.AlertType.ERROR);
+            } else {
+                FXMLLoader loger = new FXMLLoader(getClass().getResource("/vista/MenuPrincipal.fxml"));
+                Parent root = null;
+                try {
+                    root = (Parent) loger.load();
+                } catch (IOException ex) {
+                    Logger.getLogger(VentanaInicioSesionController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                VentanaMenuPrincipalController menuController = loger.getController();
+                menuController.setUsuario(usuarioLogin);
+                Stage menu = new Stage();
+                menu.setScene(new Scene(root));
+                menu.show();
+                Stage ventanaAnterior = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                ventanaAnterior.close();
             }
-            VentanaMenuPrincipalController menuController = loger.getController();
-            menuController.setUsuario(usuarioLogin);
-            Stage menu = new Stage();
-            menu.setScene(new Scene(root));
-            menu.show();
-            Stage ventanaAnterior = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            ventanaAnterior.close();
         }
     }
 

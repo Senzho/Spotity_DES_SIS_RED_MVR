@@ -31,6 +31,11 @@ public class GuardarCancion implements Runnable {
     @Override
     public void run() {
         comando = "cmd /C start /wait " + RUTA_REGISTRO + " -i " + (char) 34 + rutaCancion + (char) 34 + " -ab " + calidad + "k " + calidad + ".mp3";
+        try {
+            Process pr = Runtime.getRuntime().exec(comando);
+        } catch (IOException ex) {
+            Logger.getLogger(GuardarCancion.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

@@ -49,27 +49,31 @@ public class VentanaRegistrarSuscriptorController implements Initializable {
         String nombreUsuario = this.txtNombre.getText();
         String contrasena = this.txtContrasena.getText();
         Usuario usuario = new Usuario();
-        if (contrasena.equals(this.txtConfirmar.getText())) {
-            usuario.setIdUsuario(0);
-            usuario.setContrasena(contrasena);
-            usuario.setNombre(nombreUsuario);
-            cliente.create_JSON(usuario);
-            MessageFactory.showMessage("Usuario registrado", "Usuario registrado exitosamente", "Bienvenido " + nombreUsuario, Alert.AlertType.CONFIRMATION);
-            FXMLLoader loger = new FXMLLoader(getClass().getResource("/vista/VentanaInicioSesion.fxml"));
-            Parent root = null;
-            try {
-                root = (Parent) loger.load();
-            } catch (IOException ex) {
-                Logger.getLogger(VentanaRegistrarSuscriptorController.class.getName()).log(Level.SEVERE, null, ex);
+        if (nombreUsuario.equals("") || contrasena.equals("") || txtConfirmar.getText().equals("")) {
+             MessageFactory.showMessage("Datos incorrectos", "Usuario y/o contraseña vacíos", "Los campos se encuentran vacíos", Alert.AlertType.ERROR);
+        } else {
+            if (contrasena.equals(this.txtConfirmar.getText())) {
+                usuario.setIdUsuario(0);
+                usuario.setContrasena(contrasena);
+                usuario.setNombre(nombreUsuario);
+                cliente.create_JSON(usuario);
+                MessageFactory.showMessage("Usuario registrado", "Usuario registrado exitosamente", "Bienvenido " + nombreUsuario, Alert.AlertType.CONFIRMATION);
+                FXMLLoader loger = new FXMLLoader(getClass().getResource("/vista/VentanaInicioSesion.fxml"));
+                Parent root = null;
+                try {
+                    root = (Parent) loger.load();
+                } catch (IOException ex) {
+                    Logger.getLogger(VentanaRegistrarSuscriptorController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                VentanaInicioSesionController controller = loger.getController();
+                Stage menu = new Stage();
+                menu.setScene(new Scene(root));
+                menu.show();
+                Stage ventanaAnterior = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                ventanaAnterior.close();
+            } else {
+                MessageFactory.showMessage("Datos incorrectos", "Las contraseñas no coinciden", "Revise su información", Alert.AlertType.ERROR);
             }
-            VentanaInicioSesionController controller = loger.getController();
-            Stage menu = new Stage();
-            menu.setScene(new Scene(root));
-            menu.show();
-            Stage ventanaAnterior = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            ventanaAnterior.close();
-        }else{
-             MessageFactory.showMessage("Datos incorrectos", "Las contraseñas no coinciden", "Revise su información", Alert.AlertType.ERROR);
         }
     }
 }
