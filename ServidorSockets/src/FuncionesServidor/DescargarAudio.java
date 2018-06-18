@@ -30,7 +30,7 @@ public class DescargarAudio implements Runnable {
     public void run() {
         FileInputStream imputStream = null;
         try {
-            File file = new File(Ruta.getRutaCancion(this.peticion.getIdCancion()));
+            File file = new File(Ruta.getRutaCancion(this.peticion.getIdCancion(), "320"));
             imputStream = new FileInputStream(file);
             byte[] buffer = new byte[(int) file.length()];
             imputStream.read(buffer);

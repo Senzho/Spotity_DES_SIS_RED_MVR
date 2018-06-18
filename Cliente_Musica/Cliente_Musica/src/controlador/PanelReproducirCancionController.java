@@ -115,7 +115,7 @@ public class PanelReproducirCancionController implements Initializable, Escuchad
         this.detener();
         this.cancionActual = cancion;
         InetAddress ping;
-        String ip = "192.168.43.126";
+        String ip = ResourceBundle.getBundle("Recursos/Conectividad").getString("ip_archivos");
         try {
             ping = InetAddress.getByName(ip);
             if (ping.isReachable(5000)) {

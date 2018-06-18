@@ -123,15 +123,14 @@ public class ClienteCancion {
     }
     
     public void subirCancion(File archivo, Cancion datosCancion) throws IOException{
-        
         byte[] cancion= new byte [(int)archivo.length()];
         FileInputStream fis = new FileInputStream(archivo);
         fis.read(cancion);
         int idAlbum=datosCancion.getIdAlbum().getIdAlbum();
         int idCancion=datosCancion.getIdCancion();
         int idArtista=datosCancion.getIdArtista().getIdArtista();
-        Peticion peticion=new Peticion("subir", cancion, idAlbum, idCancion, idArtista);
-        Socket socket = new Socket("localhost",9000);
+        Peticion peticion=new Peticion("subir", cancion, idAlbum, idArtista, idCancion);
+        Socket socket = new Socket(ResourceBundle.getBundle("Recursos/Conectividad").getString("ip_archivos"),9000);
         ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
         oos.writeObject(peticion);
         oos.close();

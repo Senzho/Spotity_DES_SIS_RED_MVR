@@ -18,6 +18,7 @@ public class Peticion implements Serializable {
     private byte[] cancion;
     private int idAlbum;
     private int idArtista;
+    private String calidad;
 
     public Peticion(String tipoPeticion, byte[] cancion, int idAlbum, int idArtista, int idCancion) {
         this.tipoPeticion = tipoPeticion;
@@ -45,6 +46,12 @@ public class Peticion implements Serializable {
 
     public void setCancion(byte[] cancion) {
         this.cancion = cancion;
+    }
+    public void setCalidad(String calidad){
+        this.calidad = calidad;
+    }
+    public String getCalidad(){
+        return this.calidad;
     }
 
     public int getIdAlbum() {

@@ -51,14 +51,13 @@ public class VentanaCalidadAudioController implements Initializable {
                 calidad = "medio";
             } else if (this.btnAlto.isSelected()) {
                 calidad = "alto";
-            }   String ruta = "C:\\calidadAudio";
+            }   String ruta = "C:\\SpotifyCli";
             File directorio = new File(ruta);
             if (!directorio.exists()) {
                 directorio.mkdir();
             }   File archivo = new File(directorio + "\\calidad.txt");
             fw = new FileWriter(archivo);
             PrintWriter pw = new PrintWriter(fw);
-            System.out.println("Guardando calidad");
             MessageFactory.showMessage("Calidad seleccionada", "Calidad cambiada","La calidad seleccionada es "+calidad, Alert.AlertType.INFORMATION);
             pw.println(calidad);
         } catch (IOException ex) {

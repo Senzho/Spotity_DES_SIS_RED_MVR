@@ -11,6 +11,7 @@ import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 import controlador.EscuchadorReproduccion;
 import java.util.ResourceBundle;
+import util.Archivos;
 
 public class HiloReproduccion implements Runnable {
     private final int idCancion;
@@ -27,6 +28,21 @@ public class HiloReproduccion implements Runnable {
             apl.close();
         }
     }
+    public String getCalidad(){
+        String calidad = Archivos.leer("C:/SpotifyCli/calidad.txt");
+        if (calidad.equals("")){
+            calidad = "320";
+        }else{
+            if (calidad.equals("bajo")){
+                calidad = "48";
+            }else if (calidad.equals("medio")){
+                calidad = "256";
+            }else if (calidad.equals("alto")){
+                calidad = "320";
+            }
+        }
+        return calidad;
+    }
     @Override
     public void run() {
         try {
@@ -35,9 +51,9 @@ public class HiloReproduccion implements Runnable {
             DataInputStream dis = new DataInputStream(connection.getInputStream());
             ObjectOutputStream salidaObjeto = new ObjectOutputStream(connection.getOutputStream());
             Peticion peticion = new Peticion("reproducir", this.idCancion);
+            peticion.setCalidad(this.getCalidad());
             salidaObjeto.writeObject(peticion);
             int tamano = dis.readInt();
-            System.out.println(tamano);
             byte[] cancion2 = new byte[tamano];
             if (tamano > 0) {
                 dis.readFully(cancion2);

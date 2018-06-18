@@ -34,4 +34,7 @@ public class Historialreproduccion{
     public List<Cancion> consultarHistorial(int idUduario){
         return new ClienteHistorialReproduccion().obtenerHistorial(idUduario);
     }
+    public void agregar(){
+        new ClienteHistorialReproduccion().create_JSON(this);
+    }
 }

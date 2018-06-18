@@ -25,12 +25,12 @@ public class ReproducirAudio implements Runnable {
     public ReproducirAudio(Socket cliente, Peticion peticion){
         this.peticion = peticion;
         this.cliente = cliente;
-    }//aqui va el streaming
+    }
     @Override
     public void run() {
-        final String filename = Ruta.getRutaCancion(peticion.getIdCancion());
+        final String filename = Ruta.getRutaCancion(peticion.getIdCancion(), peticion.getCalidad());
         File cancion = new File(filename);
-        DataOutputStream salida = null;
+        DataOutputStream salida;
         try {
             FileInputStream entradaArchivo = new FileInputStream(cancion);
             byte[] archivo = new byte[(int) cancion.length()];
