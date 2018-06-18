@@ -1,67 +1,63 @@
 package funcionesServidor;
 
+import FuncionesServidor.DescargarAudio;
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.Player;
-import servidor.Peticion;
+import negocio.Peticion;
 
 public class SubirAudio implements Runnable {
 
-	private Peticion peticion;
-	private Socket socket;
+    private final String ALTO = "320.mp3";
+    private final String MEDIO = "256.mp3";
+    private final String BAJO = "48.mp3";
+    private Peticion peticion;
+    private Socket socket;
+    private final String ruta = "C:\\Spotify\\Biblioteca\\";
+    private byte[] bytesCancion;
+    
+    public SubirAudio(Socket socket, Peticion peticion) {
+        this.peticion = peticion;
+        this.socket = socket;
+    }
 
-	public SubirAudio(Socket socket) {// , Peticion peticion) {
-		// this.peticion = peticion;
-		this.socket = socket;
-	}
-
-	@Override
-	public void run() {
-		byte[] receivedData;
-		int in;
-		String file;
-		while (true) {
-			receivedData = new byte[1024];
-			BufferedInputStream bis;
-			try {
-				bis = new BufferedInputStream(socket.getInputStream());
-
-				DataInputStream dis = new DataInputStream(socket.getInputStream());
-				// ObjectOutputStream salidaObjeto = new
-				// ObjectOutputStream(connection.getOutputStream());
-				// Peticion peticion = new Peticion("descargar",0);
-				// salidaObjeto.writeObject(peticion);
-				file = dis.readUTF();
-				file = file.substring(file.indexOf('\\') + 1, file.length());
-				BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-				while ((in = bis.read(receivedData)) != -1) {
-					bos.write(receivedData, 0, in);
-				}
-				FileInputStream f2 = new FileInputStream(file);
-				Player apl;
-				try {
-					apl = new Player(f2);
-					System.out.println("reproduciendo...");
-					apl.play();
-				} catch (JavaLayerException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				bos.close();
-				dis.close();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			
-		}
-	}
+    @Override
+    public void run() {
+        DataInputStream entradaDatos = null;
+        try {
+            entradaDatos = new DataInputStream(socket.getInputStream());
+            bytesCancion = peticion.getCancion();
+            entradaDatos.readFully(bytesCancion);
+            
+            FileOutputStream salida = new FileOutputStream("archivo.mp3");
+            salida.write(bytesCancion);
+            salida.close();
+            File archivo = new File("archivo.mp3");
+            Thread h1 = new Thread(new GuardarCancion(archivo.getAbsolutePath(),this.ALTO));
+            Thread h2 = new Thread(new GuardarCancion(archivo.getAbsolutePath(),this.MEDIO));
+            Thread h3 = new Thread(new GuardarCancion(archivo.getAbsolutePath(),this.BAJO));
+            h1.start();
+            h2.start();
+            h3.start();
+            
+        } catch (IOException ex) {
+            Logger.getLogger(SubirAudio.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                entradaDatos.close();
+            } catch (IOException ex) {
+                Logger.getLogger(SubirAudio.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 
 }

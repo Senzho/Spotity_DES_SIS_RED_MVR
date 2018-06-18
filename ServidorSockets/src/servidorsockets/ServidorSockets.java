@@ -37,7 +37,7 @@ public class ServidorSockets {
                     System.out.println("peticion");
                     new Thread(new DescargarAudio(cliente, peticion)).start();
                 }else if(peticion.getTipoPeticion().equals("subir")){
-                	new Thread(new SubirAudio(cliente, peticion)).start();
+                	//new Thread(new SubirAudio(cliente, peticion)).start();
                 }
             }
         } catch (IOException ex) {

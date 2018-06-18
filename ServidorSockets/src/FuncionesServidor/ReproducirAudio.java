@@ -5,15 +5,14 @@
  */
 package FuncionesServidor;
 
+import Util.Ruta;
 import java.net.Socket;
-import clienteprueba.Peticion;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import negocio.Peticion;
 
 /**
  *
@@ -29,7 +28,6 @@ public class ReproducirAudio implements Runnable {
     }//aqui va el streaming
     @Override
     public void run() {
-        int in;
         final String filename = Ruta.getRutaCancion(peticion.getIdCancion());
         File cancion = new File(filename);
         DataOutputStream salida = null;
@@ -45,7 +43,6 @@ public class ReproducirAudio implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
     
 }
